@@ -6,4 +6,5 @@
 ## Features
   Hier wird eine Liste stehen an Features, welche wir in unsere Website implementieren möchten
 
-##
+## Installationsanleitung (falls nötig)
+
