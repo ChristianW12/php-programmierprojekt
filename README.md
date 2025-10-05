@@ -1,5 +1,10 @@
 # Unser Programmierprojekt
 
+## Mögliche Namen
+
+1. Bidora
+2. Auktify 
+
 ## Beschreibung
   Hier wird die Beschreibung von unserer Webiste stehen inkl. was wir mit ihr erreichen wollen
 
