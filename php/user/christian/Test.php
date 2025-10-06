@@ -12,7 +12,7 @@
 <body>
     <?php
     for ($i = 0; $i < 1000; $i++) {
-        echo "<p style='color: #c341ff; font-size: 50px'>Romanes eunt domus</p>";
+        echo "<p style='color: #c341df; font-size: 50px'>Romanes eunt domus</p>";
     }
     ?>
 </body>
