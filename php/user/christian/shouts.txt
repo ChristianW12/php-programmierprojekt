@@ -22,22 +22,4 @@
             <td bgcolor="beige">Alex</td> 
             <td bgcolor="beige">Er hat einen Switch Eintrag</td> 
           </tr> 
-        </table> 
-        <table cellspacing="2" align="center" width="350"> 
-          <tr> 
-            <td bgcolor="beige">Alex</td> 
-            <td bgcolor="beige">Er hat einen Switch Eintrag</td> 
-          </tr> 
-        </table> 
-        <table cellspacing="2" align="center" width="350"> 
-          <tr> 
-            <td bgcolor="beige">Alex</td> 
-            <td bgcolor="beige">Er hat einen Switch Eintrag</td> 
-          </tr> 
-        </table> 
-        <table cellspacing="2" align="center" width="350"> 
-          <tr> 
-            <td bgcolor="beige">Alex</td> 
-            <td bgcolor="beige">Er hat einen Switch Eintrag</td> 
-          </tr> 
         </table>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Header mit Links und Filter</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f2f2f2;
+            padding: 15px 30px;
+        }
+        .header-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .header-links a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        .header-links a:hover {
+            color: #007bff;
+        }
+        .main-container {
+            display: flex;
+        }
+        aside {
+            width: 220px;
+            background: #e9ecef;
+            padding: 20px;
+            min-height: 80vh;
+        }
+        .content {
+            flex: 1;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">Mein Portal</div>
+        <nav class="header-links">
+            <a href="#">gespeicherte Angebote</a>
+            <a href="#">eigene Angebote</a>
+            <a href="#">Profil</a>
+        </nav>
+    </header>
+    <div class="main-container">
+        <aside>
+            <h3>Filter</h3>
+            <!-- Hier können Filteroptionen eingefügt werden -->
+            <label>
+                <input type="checkbox"> Option 1
+            </label><br>
+            <label>
+                <input type="checkbox"> Option 2
+            </label>
+        </aside>
+        <div class="content">
+            <!-- Hauptinhalt -->
+        </div>
+    </div>
+</body>
+</html>
