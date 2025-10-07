@@ -1,0 +1,34 @@
+<?php
+function save($user, $content)
+{
+    $file = fopen('shouts.txt', 'a');
+    if (!empty($user) && !empty($content)) {
+        switch (strtolower($user)) {
+            case 'christian':
+                $bgColor = '#95dea8';
+                break;
+            case 'melina':
+                $bgColor = '#ca6fd6';
+                break;
+            case 'lars':
+                $bgColor = '#92f0ed';
+                break;
+            default:
+                $bgColor = 'beige';
+                break;
+        }
+        if ($file) {
+            $zeile = ' 
+        <table cellspacing="2" align="center" width="350"> 
+          <tr> 
+            <td bgcolor="' . $bgColor . '">' . $user . '</td> 
+            <td bgcolor="' . $bgColor . '">' . $content . '</td> 
+          </tr> 
+        </table>';
+            fwrite($file, $zeile);
+            fclose($file);
+        } else {
+            echo 'Datei nicht schreibbar!';
+        }
+    }
+}
