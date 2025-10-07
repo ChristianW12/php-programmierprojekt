@@ -11,41 +11,12 @@
 
 <?php
 
-    if(!empty($_REQUEST['content']) && !empty($_REQUEST['user'])) {
-        switch(strtolower($_REQUEST['user'])) {
-            case 'alex':
-                $bgColor = 'red';
-                break;
-            case 'ahristian':
-                $bgColor = 'blue';
-                break;
-            case 'aabrina':
-            case 'alira':
-                $bgColor = 'green';
-                break;
-            default:
-                $bgColor = '#3399CC';
-        }
-        $file = fopen('shoutbox.txt', 'a');
-        if($file) {
-            $zeile = '<tr>
-                        <td bgcolor='.$bgColor.'>'.$_REQUEST['user'].'</td>
-                        <td bgcolor='.$bgColor.'>'.$_REQUEST['content'].'</td>
-                      </tr>';
-            fwrite($file, $zeile);
-            fclose($file);
-        }}
-        echo '<table cellspacing="2" align="center" width="350">';
-        $file = fopen('shoutbox.txt', 'r');
-        if ($file) {
-            while (!feof($file)) {
-                $zeile = fgets($file);
-                echo $zeile;
-            }
-            fclose($file);
-        }
-        echo '</table>';
-
+        require_once('functions.php');
+        $shout = new Shout('user', 'content');
+        if(!empty($_REQUEST['content']) && !empty($_REQUEST['user'])) {
+        $shout->save($_REQUEST['user'], $_REQUEST['content']);
+    }
+        Shout::listshouts();
 ?>
 
 <form action="ShoutboxUebung.php" method="post">
@@ -56,7 +27,7 @@
         </tr>
         <tr>
             <td>Inhalt: </td>
-            <td><input type="text" name="content" value=""</td>
+            <td><input type="text" name="content" value=""></td>
         </tr>
         <tr>
             <td colspan="2" align="center">
@@ -65,6 +36,5 @@
         </tr>
     </table>
 </form>
-
 </body>
 </html>
