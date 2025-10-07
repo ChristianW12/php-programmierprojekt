@@ -22,31 +22,19 @@
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <input type="submit" name="shout" value="rufen" />
+                    <input type="submit" name="shout" value="senden" />
                 </td>
             </tr>
         </table>
     </form>
 <?php
 // Die Datei mit der Funktion einbinden
-require_once 'functions.php';
+require 'Shout.php';
 // Abfrage ob einer der Beiden Parameter gesetzt ist
 if (!empty($_REQUEST['user']) && !empty($_REQUEST['content'])) {
-    save($_REQUEST['user'], $_REQUEST['content']);
+    Shout::save($_REQUEST['user'], $_REQUEST['content']);
 }
-?>
-<?php
-// Ausgabe der Inhalte der Datei
-$file = fopen('shouts.txt', 'r');
-if ($file) {
-    while (!feof($file)) {
-        $zeile = fgets($file);
-        echo $zeile;
-    }
-    fclose($file);
-} else {
-    echo 'Datei nicht lesbar!';
-}
+Shout::shoutAusgeben();
 ?>
 </body>
 </html>

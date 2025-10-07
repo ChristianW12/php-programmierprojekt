@@ -40,4 +40,10 @@
             <td bgcolor="beige">Flügel </td> 
             <td bgcolor="beige">Das ist ein weiterer Nachname</td> 
           </tr> 
+        </table> 
+        <table cellspacing="2" align="center" width="350"> 
+          <tr> 
+            <td bgcolor="beige">Name 11:25</td> 
+            <td bgcolor="beige">Das ist ein Test</td> 
+          </tr> 
         </table>

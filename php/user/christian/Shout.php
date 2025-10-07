@@ -1,7 +1,23 @@
 <?php
-function save($user, $content)
-{
-    $file = fopen('shouts.txt', 'a');
+class Shout{
+
+    public static function shoutAusgeben(){
+        // Ausgabe der Inhalte der Datei
+        $file = fopen('shouts.txt', 'r');
+        if ($file) {
+            while (!feof($file)) {
+                $zeile = fgets($file);
+                echo $zeile;
+            }
+            fclose($file);
+        } else {
+            echo 'Datei nicht lesbar!';
+        }
+    }
+
+    public static function save($user, $content)
+    {
+        $file = fopen('shouts.txt', 'a');
         switch (strtolower($user)) {
             case 'christian':
                 $bgColor = '#95dea8';
@@ -29,4 +45,5 @@ function save($user, $content)
         } else {
             echo 'Datei nicht schreibbar!';
         }
+    }
 }
