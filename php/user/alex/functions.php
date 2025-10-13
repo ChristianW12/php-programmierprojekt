@@ -1,52 +1,61 @@
 <?php
-    class Shout {
+    class Shout_klasse {
         public $user;
         public $content;
+        public $db;
 
-        public function __construct($user, $content) {
+        public function __construct($user, $content, $db) {
             $this->user = $user;
             $this->content = $content;
+            $this->db = $db;
         }
 
-        static public function listshouts() {
+        static public function listshouts($db)
+        {
+
+            $query = 'SELECT * FROM shout ORDER BY shout_id DESC LIMIT 10';
+            $res = $db->query($query);
+
+            $res->setFetchMode(PDO::FETCH_OBJ);
             echo '<table cellspacing="2" align="center" width="350">';
-            $file = fopen('shoutbox.txt', 'r');
-            if ($file) {
-                while (!feof($file)) {
-                    $zeile = fgets($file);
-                    echo $zeile;
+            foreach ($res as $row) {
+                switch (strtolower($row->user)) {
+                    case 'alex':
+                        $bgColor = 'red';
+                        break;
+                    case 'christian':
+                        $bgColor = 'blue';
+                        break;
+                    case 'sabrina':
+                    case 'elira':
+                        $bgColor = 'pink';
+                        break;
+                    default:
+                        $bgColor = '#3399CC';
+                        break;
                 }
-                fclose($file);
+            echo'
+            <tr> 
+            <td style="background-color: '.$bgColor.'" > '.$row->shout_id.' </td>
+            <td style="background-color: '.$bgColor.'" > '.$row->user.'    </td>
+            <td style="background-color: '.$bgColor.'" > '.$row->shout_text.' </td>
+            <td style="background-color: '.$bgColor.'" > '.$row->created.'    </td>       
+            </tr >';
             }
             echo '</table>';
+
         }
 
-        public function save($user, $content) {
-            switch (strtolower($user)) {
-                case 'alex':
-                    $bgColor = 'red';
-                    break;
-                case 'christian':
-                    $bgColor = 'blue';
-                    break;
-                case 'sabrina':
-                case 'elira':
-                    $bgColor = 'pink';
-                    break;
-                default:
-                    $bgColor = '#3399CC';
-                    break;
+        public function save($user, $content, $db) {
+            $query = 'INSERT INTO shout(user, shout_text) VALUES (?, ?)';
+            $stmt = $db->prepare($query);
+
+            $stmt->bindParam(1, $user, PDO::PARAM_STR);
+            $stmt->bindParam(2, $content, PDO::PARAM_STR);
+            $stmt->execute();
+
             }
-            $file = fopen('shoutbox.txt', 'a');
-            if($file) {
-                $zeile = '<tr>
-                        <td style="background-color:' .$bgColor. '">'.$user.'</td>
-                        <td style="background-color:' .$bgColor. '">'.$content.'</td>
-                      </tr>';
-                fwrite($file, $zeile);
-                fclose($file);
-            }
-        }
+
     }
 
 ?>
