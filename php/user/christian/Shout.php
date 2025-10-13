@@ -1,7 +1,7 @@
 <?php
 class Shout{
 
-    public static function shoutAusgeben(){
+    public  function shoutAusgeben(){
         // Ausgabe der Inhalte der Datei
         $file = fopen('shouts.txt', 'r');
         if ($file)              {
@@ -15,7 +15,7 @@ class Shout{
         }
     }
 
-    public static function save($user, $content){
+    public function save($user, $content){
         $file = fopen('shouts.txt', 'a');
         switch (strtolower($user)) {
         case 'christian':

@@ -30,11 +30,14 @@
 <?php
 // Die Datei mit der Funktion einbinden
 require 'Shout.php';
+// Erstellen eines Objekts
+$shout = new Shout();
 // Abfrage ob einer der Beiden Parameter gesetzt ist
 if (!empty($_REQUEST['user']) && !empty($_REQUEST['content'])) {
-    Shout::save($_REQUEST['user'], $_REQUEST['content']);
+    $shout->save($_REQUEST['user'], $_REQUEST['content']);
 }
-Shout::shoutAusgeben();
+// Ausgabe des Inhalts der shouts.txt Datei mit Hilfe der shoutAusgeben Methode
+$shout->shoutAusgeben();
 ?>
 </body>
 </html>
