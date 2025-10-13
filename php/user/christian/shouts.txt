@@ -41,9 +41,9 @@
             <td bgcolor="beige">Das ist ein weiterer Nachname</td> 
           </tr> 
         </table> 
-        <table cellspacing="2" align="center" width="350"> 
-          <tr> 
-            <td bgcolor="beige">Name 11:25</td> 
-            <td bgcolor="beige">Das ist ein Test</td> 
-          </tr> 
-        </table> 
+                <table cellspacing="2" align="center" width="350"> 
+                <tr> 
+                <td bgcolor="#cf5be3">Kathrin</td> 
+                <td bgcolor="#cf5be3">Das ist ein kleiner Test</td> 
+                </tr> 
+                </table>

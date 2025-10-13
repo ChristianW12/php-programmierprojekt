@@ -1,7 +1,6 @@
 <?php
 class Shout{
-
-    public  function shoutAusgeben(){
+    public  function shoutAusgebenTxt(){
         // Ausgabe der Inhalte der Datei
         $file = fopen('shouts.txt', 'r');
         if ($file)              {
@@ -14,8 +13,7 @@ class Shout{
             echo 'Datei nicht lesbar!';
         }
     }
-
-    public function save($user, $content){
+    public function saveInTxt($user, $content){
         $file = fopen('shouts.txt', 'a');
         switch (strtolower($user)) {
         case 'christian':
@@ -29,6 +27,7 @@ class Shout{
             break;       
         case 'kathrin':
             $bgColor = '#cf5be3';
+            break;
         default:
             $bgColor = 'beige';
             break;
@@ -46,5 +45,27 @@ class Shout{
         } else {
             echo 'Datei nicht schreibbar!';
         }
+    }
+
+    public function saveInDB( $db, $user, $content ){
+        // Insert Statement vorbereiten
+        $query = 'INSERT INTO shout (user, shout_text) VALUES (?,?)';
+        $stmt = $db->prepare( $query );
+        $stmt->bindParam( 1, $user, PDO::PARAM_STR );
+        $stmt->bindParam( 2, $content, PDO::PARAM_STR );
+        // Insert Statement ausführen
+        $stmt->execute();
+    }
+
+    public function outputShoutDB($db){
+        $query = "select user, shout_text 
+            from shout
+            ";
+        $ausgabe = $db->query($query);
+
+        foreach ($ausgabe as $reihe) {
+            echo '<br/>'.$reihe['user'].','.$reihe['shout_text']; 
+        }
+        unset($ausgabe);
     }
 }

@@ -14,7 +14,7 @@
         require_once('functions.php');
         $shout = new Shout('user', 'content');
         if(!empty($_REQUEST['content']) && !empty($_REQUEST['user'])) {
-        $shout->save($_REQUEST['user'], $_REQUEST['content']);
+        $shout->saveInTxt($_REQUEST['user'], $_REQUEST['content']);
     }
         Shout::listshouts();
 ?>
