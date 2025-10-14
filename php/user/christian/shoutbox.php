@@ -1,41 +1,120 @@
 <?php
+session_start(); // Session starten
+
 date_default_timezone_set('Europe/Berlin');
 require 'Db.php';
 require 'Shout.php';
 
-$shout = new Shout();
+// --- Login-Logik ---
 
-// Setzt bei jedem Laden der Seite ein Cookie für die letzte Besuchszeit.
-// Der Wert ist beim *nächsten* Laden der Seite verfügbar.
-setcookie('last_visit', date('d.m.Y H:i:s'), time() + (86400 * 30), "/");
-
-//
-if (!empty($_REQUEST['user']) && !empty($_REQUEST['content'])) {
-    // Set username cookie for future visits
-    setcookie('username', $_REQUEST['user'], time() + (86400 * 30), "/");
-
-    // Hochzählen der Shouts für diesen User
-    $shout_count = ($_COOKIE['shout_count'] ?? 0) + 1;
-    setcookie('shout_count', $shout_count, time() + (86400 * 30), "/");
-    // Verbindung zur Datenbank
-    $dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
-    try {
-        $db = new Db( $dsn, 'root', '' );
-    } catch ( PDOException $e ) {
-        exit( 'Connect failed: '.$e->getMessage() );
-    }
-
-    //Speichern in der DB von User und Content
-    $shout->saveInDB($db, $_REQUEST['user'], $_REQUEST['content']);
-    unset($db);
-    //Redirect auf die shoutbox.php um ein erneutes Senden vom Nutzer und Content
-    //beim Reload der Seite zu verhindern
+// Logout-Verarbeitung
+if (isset($_GET['logout'])) {
+    session_destroy();
     header("Location: shoutbox.php");
     exit();
 }
 
-// Get username from cookie to pre-fill the form
-$username = $_COOKIE['username'] ?? '';
+// Anmeldeversuch verarbeiten
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login_submit'])) {
+    $user_input = $_POST['login'] ?? '';
+    $password_input = $_POST['password'] ?? '';
+
+    // Datenbankverbindung herstellen
+    $dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
+    try {
+        $db = new Db($dsn, 'root', '');
+    } catch (PDOException $e) {
+        exit('Connect failed: ' . $e->getMessage());
+    }
+
+    // Benutzer aus der Datenbank abfragen.
+    // Die Tabelle heißt `user` und die Spalten sind `login` (Benutzername) und `passwd` (Passwort).
+    $stmt = $db->prepare("SELECT * FROM user WHERE login = :login");
+    $stmt->execute([':login' => $user_input]);
+    $user_from_db = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Passwort überprüfen.
+    // WICHTIG: In einer echten Anwendung sollten Passwörter gehasht gespeichert
+    // und mit password_verify() überprüft werden.
+    if ($user_from_db && $password_input === $user_from_db['passwd']) {
+        // Anmeldedaten korrekt, Session setzen
+        $_SESSION['loggedin'] = true;
+        $_SESSION['user'] = $user_from_db['login'];
+        header("Location: shoutbox.php");
+        exit();
+    } else {
+        $login_error = "Ungültiger Benutzername oder Passwort.";
+    }
+}
+
+// Prüfen, ob der Benutzer angemeldet ist
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    // --- Wenn nicht angemeldet, Login-Formular anzeigen ---
+    ?>
+    <!doctype html>
+    <html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <title>Login zur Shoutbox</title>
+    </head>
+    <body>
+        <h2>Bitte melde dich an</h2>
+        <?php if (isset($login_error)) { echo '<p style="color:red;">' . htmlspecialchars($login_error) . '</p>'; } ?>
+        <form action="shoutbox.php" method="post">
+            <table align="center" width="300">
+                <tr>
+                    <td>Benutzername:</td>
+                    <td><input type="text" name="login" required /></td>
+                </tr>
+                <tr>
+                    <td>Passwort:</td>
+                    <td><input type="password" name="password" required /></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" name="login_submit" value="Anmelden" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+    </html>
+    <?php
+    exit(); // Skript beenden, da der Rest nur für angemeldete Benutzer ist
+}
+
+// --- Ab hier nur für angemeldete Benutzer ---
+
+$shout = new Shout();
+
+// Cookie für den letzten Besuch setzen
+setcookie('last_visit', date('d.m.Y H:i:s'), time() + (86400 * 30), "/");
+
+// Neuen Shout verarbeiten
+if (!empty($_REQUEST['user']) && !empty($_REQUEST['content'])) {
+    // Shout-Zähler-Cookie hochzählen
+    $shout_count = ($_COOKIE['shout_count'] ?? 0) + 1;
+    setcookie('shout_count', $shout_count, time() + (86400 * 30), "/");
+
+    // Datenbankverbindung
+    $dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
+    try {
+        $db = new Db($dsn, 'root', '');
+    } catch (PDOException $e) {
+        exit('Connect failed: ' . $e->getMessage());
+    }
+
+    // Shout in der DB speichern
+    $shout->saveInDB($db, $_REQUEST['user'], $_REQUEST['content']);
+    unset($db);
+
+    // Umleitung, um erneutes Senden bei Reload zu verhindern
+    header("Location: shoutbox.php");
+    exit();
+}
+
+// Benutzername aus der Session holen
+$username = $_SESSION['user'];
 ?>
 <!doctype html>
 <html lang="de">
@@ -47,8 +126,9 @@ $username = $_COOKIE['username'] ?? '';
     <title>ShoutBox</title>
 </head>
 <body>
+    <p>Angemeldet als: <strong><?php echo htmlspecialchars($username); ?></strong> | <a href="shoutbox.php?logout=1">Abmelden</a></p>
 <?php
-// Display info from cookies
+// Infos aus Cookies anzeigen
 if (isset($_COOKIE['last_visit'])) {
     echo "Dein letzter Besuch war am: " . htmlspecialchars($_COOKIE['last_visit']) . "<br>";
 }
@@ -65,7 +145,7 @@ if (isset($_COOKIE['shout_count'])) {
         </tr>
         <tr>
             <td>Inhalt:</td>
-            <td><input type="text" name="content" value="" /></td>
+            <td><input type="text" name="content" value="" autofocus /></td>
         </tr>
         <tr>
             <td colspan="2" align="center">
@@ -78,31 +158,16 @@ if (isset($_COOKIE['shout_count'])) {
 /*
  * ============================================================
  */
-// Skript für Datenbankverbindung
+// Datenbankverbindung für die Anzeige der Shouts
 $dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
 try {
-    // Nicht mehr POD sondern Db da wir von dieser erben
-    // und in dieser nun Error Handling machen
-    $db = new Db( $dsn, 'root', '' );
-} catch ( PDOException $e ) {
-    exit( 'Connect failed: '.$e->getMessage() );
+    $db = new Db($dsn, 'root', '');
+} catch (PDOException $e) {
+    exit('Connect failed: ' . $e->getMessage());
 }
-// Display all shouts from the database
+// Alle Shouts aus der Datenbank anzeigen
 $shout->outputShoutDB($db);
 unset($db);
-//
-// close DB connection
-//if not needed anymore
-//
-//Die Datei mit der Funktion einbinden
-//Erstellen eines Objekts
-//$shout = new Shout();
-//if (!empty($_REQUEST['user']) && !empty($_REQUEST['content'])) {
-//    $shout->saveInTxt($_REQUEST['user'], $_REQUEST['content']);
-//}
-//Ausgabe des Inhalts der shouts.txt Datei mit Hilfe der shoutAusgeben Methode
-//$shout->shoutAusgebenTxt();
-
 ?>
 </body>
 </html>
