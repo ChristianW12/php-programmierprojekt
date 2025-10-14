@@ -55,28 +55,85 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <html lang="de">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login zur Shoutbox</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f0f2f5;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            }
+            .login-container {
+                background-color: #fefefe; /* Etwas dunkleres Weiß */
+                padding: 2rem 3rem;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Schwebe-Effekt */
+                width: 100%;
+                max-width: 400px;
+                box-sizing: border-box;
+            }
+            h2 {
+                text-align: center;
+                margin-bottom: 1.5rem;
+                color: #333;
+            }
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+            label {
+                display: block;
+                margin-bottom: 0.5rem;
+                color: #555;
+            }
+            input[type="text"], input[type="password"] {
+                width: 100%;
+                padding: 0.8rem;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-sizing: border-box;
+                font-size: 1rem;
+            }
+            input[type="submit"] {
+                width: 100%;
+                padding: 0.9rem;
+                border: none;
+                border-radius: 5px;
+                background-color: #007bff;
+                color: white;
+                font-size: 1.1rem;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+            .error {
+                color: #d93025;
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+        </style>
     </head>
     <body>
-        <h2>Bitte melde dich an</h2>
-        <?php if (isset($login_error)) { echo '<p style="color:red;">' . htmlspecialchars($login_error) . '</p>'; } ?>
-        <form action="shoutbox.php" method="post">
-            <table align="center" width="300">
-                <tr>
-                    <td>Benutzername:</td>
-                    <td><input type="text" name="login" required /></td>
-                </tr>
-                <tr>
-                    <td>Passwort:</td>
-                    <td><input type="password" name="password" required /></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center">
-                        <input type="submit" name="login_submit" value="Anmelden" />
-                    </td>
-                </tr>
-            </table>
-        </form>
+        <div class="login-container">
+            <h2>Bitte melde dich an</h2>
+            <?php if (isset($login_error)) { echo '<p class="error">' . htmlspecialchars($login_error) . '</p>'; } ?>
+            <form action="shoutbox.php" method="post">
+                <div class="form-group">
+                    <label for="login">Benutzername:</label>
+                    <input type="text" id="login" name="login" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Passwort:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <input type="submit" name="login_submit" value="Anmelden">
+            </form>
+        </div>
     </body>
     </html>
     <?php
@@ -120,54 +177,183 @@ $username = $_SESSION['user'];
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ShoutBox</title>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            color: #333;
+        }
+        .header {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header .user-info {
+            color: #555;
+        }
+        .header .user-info strong {
+            color: #000;
+        }
+        .header a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .header a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .card {
+            background-color: #fefefe;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .cookie-info {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        /* Styling for the shout table */
+        .shout-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+        .shout-table th, .shout-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .shout-table th {
+            background-color: #fcfcfc;
+            font-weight: 600;
+            color: #555;
+        }
+        .shout-table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+        .shout-table .user-cell {
+            font-weight: bold;
+            width: 150px;
+        }
+        .shout-table .date-cell {
+            width: 160px;
+            font-size: 0.9em;
+            color: #777;
+            white-space: nowrap;
+        }
+        .no-shouts {
+            text-align: center;
+            color: #777;
+            padding: 2rem;
+        }
+    </style>
 </head>
 <body>
-    <p>Angemeldet als: <strong><?php echo htmlspecialchars($username); ?></strong> | <a href="shoutbox.php?logout=1">Abmelden</a></p>
-<?php
-// Infos aus Cookies anzeigen
-if (isset($_COOKIE['last_visit'])) {
-    echo "Dein letzter Besuch war am: " . htmlspecialchars($_COOKIE['last_visit']) . "<br>";
-}
-if (isset($_COOKIE['shout_count'])) {
-    echo "Anzahl deiner Shouts: " . htmlspecialchars($_COOKIE['shout_count']) . "<br>";
-}
-?>
-<br />
-<form action="shoutbox.php" method="post">
-    <table align="center" width="350">
-        <tr>
-            <td>Name:</td>
-            <td><input type="text" name="user" value="<?php echo htmlspecialchars($username); ?>" /></td>
-        </tr>
-        <tr>
-            <td>Inhalt:</td>
-            <td><input type="text" name="content" value="" autofocus /></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <input type="submit" name="shout" value="senden" />
-            </td>
-        </tr>
-    </table>
-</form>
-<?php
-/*
- * ============================================================
- */
-// Datenbankverbindung für die Anzeige der Shouts
-$dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
-try {
-    $db = new Db($dsn, 'root', '');
-} catch (PDOException $e) {
-    exit('Connect failed: ' . $e->getMessage());
-}
-// Alle Shouts aus der Datenbank anzeigen
-$shout->outputShoutDB($db);
-unset($db);
-?>
+
+    <header class="header">
+        <div class="user-info">
+            Angemeldet als: <strong><?php echo htmlspecialchars($username); ?></strong>
+        </div>
+        <a href="shoutbox.php?logout=1">Abmelden</a>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Neue Nachricht</h2>
+            <div class="cookie-info">
+            <?php
+            // Infos aus Cookies anzeigen
+            if (isset($_COOKIE['last_visit'])) {
+                echo "Dein letzter Besuch: " . htmlspecialchars($_COOKIE['last_visit']) . "<br>";
+            }
+            if (isset($_COOKIE['shout_count'])) {
+                echo "Anzahl deiner Shouts: " . htmlspecialchars($_COOKIE['shout_count']);
+            }
+            ?>
+            </div>
+            <form action="shoutbox.php" method="post">
+                <div class="form-group">
+                    <label for="user">Name:</label>
+                    <input type="text" id="user" name="user" value="<?php echo htmlspecialchars($username); ?>" />
+                </div>
+                <div class="form-group">
+                    <label for="content">Inhalt:</label>
+                    <input type="text" id="content" name="content" value="" autofocus />
+                </div>
+                <input type="submit" name="shout" value="Senden" />
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Shoutbox</h2>
+            <?php
+            /*
+            * ============================================================
+            */
+            // Datenbankverbindung für die Anzeige der Shouts
+            $dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
+            try {
+                $db = new Db($dsn, 'root', '');
+            } catch (PDOException $e) {
+                exit('Connect failed: ' . $e->getMessage());
+            }
+            // Alle Shouts aus der Datenbank anzeigen
+            $shout->outputShoutDB($db);
+            unset($db);
+            ?>
+        </div>
+    </div>
+
 </body>
 </html>
