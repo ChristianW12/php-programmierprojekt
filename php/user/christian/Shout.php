@@ -58,14 +58,39 @@ class Shout{
     }
 
     public function outputShoutDB($db){
-        $query = "select user, shout_text 
-            from shout
-            ";
+        $query = "SELECT user, shout_text FROM shout";
         $ausgabe = $db->query($query);
 
+        echo '<table border="1" cellspacing="2" align="center" width="350">';
+        echo '<tr><th>User</th><th>Shout</th></tr>';
         foreach ($ausgabe as $reihe) {
-            echo '<br/>'.$reihe['user'].','.$reihe['shout_text']; 
+            echo '<tr>';
+            echo '<td bgcolor="' . $this->color($reihe['user']) . '">' . $reihe['user'] . '</td>';
+            echo '<td bgcolor="' . $this->color($reihe['user']) . '">' . $reihe['shout_text'] . '</td>';
+            echo '</tr>';
         }
+        echo '</table>';
         unset($ausgabe);
+    }
+
+    public function color($user): string{
+        switch (strtolower(trim($user))) {
+            case 'christian':
+                $bgColor = 'lightblue';
+                break;
+            case 'melina':
+                $bgColor = 'pink';
+                break;
+            case 'lars':
+                $bgColor = 'red';
+                break;
+            case 'kathrin':
+                $bgColor = 'purple';
+                break;
+            default:
+                $bgColor = 'beige';
+                break;
+        }
+        return $bgColor;
     }
 }
