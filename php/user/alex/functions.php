@@ -4,6 +4,7 @@
         public $content;
         public $db;
 
+
         public function __construct($user, $content, $db) {
             $this->user = $user;
             $this->content = $content;
@@ -12,7 +13,6 @@
 
         static public function listshouts($db)
         {
-
             $query = 'SELECT * FROM shout ORDER BY shout_id DESC LIMIT 10';
             $res = $db->query($query);
 
@@ -44,6 +44,8 @@
             }
             echo '</table>';
 
+
+            unset($db);
         }
 
         public function save($user, $content, $db) {
@@ -53,6 +55,7 @@
             $stmt->bindParam(1, $user, PDO::PARAM_STR);
             $stmt->bindParam(2, $content, PDO::PARAM_STR);
             $stmt->execute();
+            unset($db);
 
             }
 
