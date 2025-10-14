@@ -2,68 +2,119 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Header mit Links und Filter</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #d8e8d8;
-            padding: 15px 30px;
-        }
-        .header-title {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-        .header-links a {
-            margin-left: 25px;
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-        }
-        .header-links a:hover {
-            color: #6c8c6c;
-        }
-        .main-container {
-            display: flex;
-        }
-        aside {
-            width: 220px;
-            background: #f2f2f2;
-            padding: 20px;
-            min-height: 80vh;
-        }
-        .content {
-            flex: 1;
-            padding: 30px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Auktify | Auktionen entdecken</title>
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-title">Mein Portal</div>
-        <nav class="header-links">
-            <a href="#">gespeicherte Angebote</a>
-            <a href="#">eigene Angebote</a>
-            <a href="#">Profil</a>
-        </nav>
-    </header>
-    <div class="main-container">
-        <aside>
-            <h3>Filter</h3>
-            <label>
-                <input type="checkbox"> Option 1
-            </label><br>
-            <label>
-                <input type="checkbox"> Option 2
-            </label>
-        </aside>
-        <div class="content">
+    <header class="site-header">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true">A</div>
+            <span class="brand-name">Auktify</span>
         </div>
-    </div>
+        <nav class="main-nav" aria-label="Hauptnavigation">
+            <a href="#about">Über uns</a>
+            <a href="#auctions">Auktionen</a>
+        </nav>
+        <form class="search" action="#">
+            <label class="sr-only" for="search">Suche</label>
+            <input id="search" type="search" name="q" placeholder="Suche" autocomplete="off">
+            <button type="submit">Suchen</button>
+        </form>
+        <div class="user-actions">
+            <div class="user-menu">
+                <button type="button" class="icon-button user-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-panel">
+                    <span aria-hidden="true">👤</span>
+                </button>
+                <div class="user-menu-panel" id="user-menu-panel">
+                    <ul class="user-menu-list">
+                        <li><a href="#">Meine Auktionen</a></li>
+                        <li><a href="#">Meine Angebote</a></li>
+                        <li><a href="#">Meine Favoriten</a></li>
+                        <li><a href="#">Einstellungen</a></li>
+                    </ul>
+                    <button type="button" class="logout-button">Abmelden</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="section accent" id="welcome">
+            <div class="content-grid">
+                <div class="section-text">
+                    <div class="section-intro">Willkommen!</div>
+                    <h1>Entdecke dein nächstes Lieblingsstück</h1>
+                    <p>
+                        Stöbere durch kuratierte Auktionen und sichere dir besondere Fundstücke.
+                        Von Vintage bis Moderne – wir bringen Anbieter und Liebhaber auf einer
+                        Plattform zusammen.
+                    </p>
+                </div>
+                <figure class="image-placeholder has-image">
+                    <img src="bilder/Vase.png" alt="Kunstvolle Vase aus einer Auktion">
+                </figure>
+            </div>
+        </section>
+
+        <section class="section" id="about">
+            <div class="content-grid single">
+                <div class="section-text center">
+                    <h2>Über uns</h2>
+                    <p>
+                        Wir sind ein motiviertes Team aus Sammlerinnen und Sammlern, das
+                        besondere Geschichten hinter einzigartigen Gegenständen sichtbar macht.
+                        Unsere Mission ist es, das Auktions-Erlebnis ins digitale Zeitalter zu holen,
+                        ohne den Charme klassischer Auktionen zu verlieren.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section accent" id="auctions">
+            <div class="content-grid reversed">
+                <div class="section-text">
+                    <div class="section-intro">Unser Ziel</div>
+                    <h2>Transparente Auktionen für alle</h2>
+                    <p>
+                        Wir glauben, dass Auktionen fair, zugänglich und transparent sein sollten.
+                        Deshalb bieten wir klare Abläufe, sichere Zahlungen und hilfreiche Tools,
+                        damit du jede Auktion mit einem guten Gefühl abschließen kannst.
+                    </p>
+                    <button class="primary-action" type="button">Jetzt loslegen</button>
+                </div>
+                <figure class="image-placeholder has-image">
+                    <img src="bilder/Transaktion.png" alt="Zwei Personen schließen eine Auktionstransaktion ab">
+                </figure>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-brand">
+            <span class="brand-name">Auktify</span>
+            <address>
+                Rotebühlplatz 31<br>
+                70178<br>
+                Stuttgart
+            </address>
+        </div>
+        <div class="footer-info">
+            <strong>Info</strong>
+            <ul>
+                <li>Über uns</li>
+                <li>Auktionen</li>
+                <li>Hilfe</li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <strong>Kontakt</strong>
+            <ul>
+                <li>Mail?</li>
+                <li>Support</li>
+            </ul>
+        </div>
+    </footer>
+    <script src="scripts/app.js"></script>
 </body>
 </html>
