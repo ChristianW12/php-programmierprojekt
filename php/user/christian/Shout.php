@@ -61,15 +61,18 @@ class Shout{
         $query = "SELECT user, shout_text FROM shout";
         $ausgabe = $db->query($query);
 
-        echo '<table border="1" cellspacing="2" align="center" width="350">';
-        echo '<tr><th>User</th><th>Shout</th></tr>';
-        foreach ($ausgabe as $reihe) {
-            echo '<tr>';
-            echo '<td bgcolor="' . $this->color($reihe['user']) . '">' . $reihe['user'] . '</td>';
-            echo '<td bgcolor="' . $this->color($reihe['user']) . '">' . $reihe['shout_text'] . '</td>';
-            echo '</tr>';
-        }
-        echo '</table>';
+       echo '<table style="width: 80%; margin: 20px auto; border-collapse: collapse; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-family: Arial, sans-serif;">';
+       echo '<thead><tr style="background-color: #f8f9fa;"><th style="padding: 12px 15px; text-align: left; border-bottom: 2px solid #dee2e6;">User</th><th style="padding: 12px 15px; text-align: left; border-bottom: 2px solid #dee2e6;">Shout</th></tr></thead>';
+       echo '<tbody>';
+       foreach ($ausgabe as $reihe) {
+           $userColor = $this->color($reihe['user']);
+           echo '<tr>';
+           echo '<td style="padding: 10px 15px; border-bottom: 1px solid #e9ecef; background-color: ' . $userColor . '; opacity: 0.85;">' . htmlspecialchars($reihe['user']) . '</td>';
+           echo '<td style="padding: 10px 15px; border-bottom: 1px solid #e9ecef; background-color: ' . $userColor . '; opacity: 0.85;">' . htmlspecialchars($reihe['shout_text']) . '</td>';
+           echo '</tr>';
+       }
+       echo '</tbody>';
+       echo '</table>';
         unset($ausgabe);
     }
 
