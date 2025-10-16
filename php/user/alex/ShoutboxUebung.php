@@ -17,13 +17,15 @@
 
         session_start();
 
-        if (!empty($_REQUEST['user']) && !empty($_REQUEST['password'])) {
-        $query = 'SELECT * FROM user WHERE login = "'.$_REQUEST['user'].'" AND passwd = "'.$_REQUEST['password'].'" ';
-        $res = $db->query($query);
-        $res->setFetchMode(PDO::FETCH_OBJ);
-        $row = $res->fetch();
-        if($row->password == $_REQUEST['password']) {
-            $_SESSION['user'] = $row->login;
+
+        if (!empty($_REQUEST['login']) && !empty($_REQUEST['password'])) {
+            $query = 'SELECT * FROM user WHERE login = "'.$_REQUEST['login'].'" AND passwd = "'.$_REQUEST['password'].'" ';
+            $res = $db->query($query);
+            $res->setFetchMode(PDO::FETCH_OBJ);
+            $row = $res->fetch();
+            if($row->passwd == $_REQUEST['password']) {
+                $_SESSION['user'] = $row->login;
+        }
         }
 
         if(empty($_SESSION['user'])) {
@@ -36,10 +38,6 @@
             </form>';
             exit;
         }
-        }
-
-
-
 
 
 
@@ -79,7 +77,7 @@
         </tr>
         <tr>
             <td>Letzter Besuch: </td>
-            <td><?php echo 'Hallo '.$lastUser. ' dein letzter Besuch war am: '.$_COOKIE['besucht']?></td>
+            <td><?php echo 'Hallo '.$lastUser. '  dein letzter Besuch war am: '.$_COOKIE['besucht']?></td>
         </tr>
         <tr>
             <td>Shouts: </td>
