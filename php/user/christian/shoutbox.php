@@ -34,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login_submit'])) {
     $user_from_db = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Passwort überprüfen.
-    // WICHTIG: In einer echten Anwendung sollten Passwörter gehasht gespeichert
     // und mit password_verify() überprüft werden.
     if ($user_from_db && $password_input === $user_from_db['passwd']) {
         // Anmeldedaten korrekt, Session setzen
@@ -119,21 +118,21 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         </style>
     </head>
     <body>
-        <div class="login-container">
-            <h2>Bitte melde dich an</h2>
-            <?php if (isset($login_error)) { echo '<p class="error">' . htmlspecialchars($login_error) . '</p>'; } ?>
-            <form action="shoutbox.php" method="post">
-                <div class="form-group">
-                    <label for="login">Benutzername:</label>
-                    <input type="text" id="login" name="login" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Passwort:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <input type="submit" name="login_submit" value="Anmelden">
-            </form>
-        </div>
+    <div class="login-container">
+        <h2>Bitte melde dich an</h2>
+        <?php if (isset($login_error)) { echo '<p class="error">' . htmlspecialchars($login_error) . '</p>'; } ?>
+        <form action="shoutbox.php" method="post">
+            <div class="form-group">
+                <label for="login">Benutzername:</label>
+                <input type="text" id="login" name="login" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Passwort:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <input type="submit" name="login_submit" value="Anmelden">
+        </form>
+    </div>
     </body>
     </html>
     <?php
@@ -148,7 +147,7 @@ $shout = new Shout();
 setcookie('last_visit', date('d.m.Y H:i:s'), time() + (86400 * 30), "/");
 
 // Neuen Shout verarbeiten
-if (!empty($_REQUEST['user']) && !empty($_REQUEST['content'])) {
+if (!empty($_REQUEST['content'])) {
     // Shout-Zähler-Cookie hochzählen
     $shout_count = ($_COOKIE['shout_count'] ?? 0) + 1;
     setcookie('shout_count', $shout_count, time() + (86400 * 30), "/");
@@ -162,7 +161,7 @@ if (!empty($_REQUEST['user']) && !empty($_REQUEST['content'])) {
     }
 
     // Shout in der DB speichern
-    $shout->saveInDB($db, $_REQUEST['user'], $_REQUEST['content']);
+    $shout->saveInDB($db, $_SESSION['user'], $_REQUEST['content']);
     unset($db);
 
     // Umleitung, um erneutes Senden bei Reload zu verhindern
@@ -180,6 +179,7 @@ $username = $_SESSION['user'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ShoutBox</title>
+
     <style>
         body {
             background-color: #f0f2f5;
@@ -257,10 +257,9 @@ $username = $_SESSION['user'];
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
-        .cookie-info {
+        .header-cookie-info {
             font-size: 0.9rem;
-            color: #777;
-            margin-bottom: 1.5rem;
+            color: #666;
             text-align: center;
         }
         /* Styling for the shout table */
@@ -301,59 +300,60 @@ $username = $_SESSION['user'];
 </head>
 <body>
 
-    <header class="header">
-        <div class="user-info">
-            Angemeldet als: <strong><?php echo htmlspecialchars($username); ?></strong>
-        </div>
-        <a href="shoutbox.php?logout=1">Abmelden</a>
-    </header>
-
-    <div class="container">
-        <div class="card">
-            <h2>Neue Nachricht</h2>
-            <div class="cookie-info">
-            <?php
-            // Infos aus Cookies anzeigen
-            if (isset($_COOKIE['last_visit'])) {
-                echo "Dein letzter Besuch: " . htmlspecialchars($_COOKIE['last_visit']) . "<br>";
-            }
-            if (isset($_COOKIE['shout_count'])) {
-                echo "Anzahl deiner Shouts: " . htmlspecialchars($_COOKIE['shout_count']);
-            }
-            ?>
-            </div>
-            <form action="shoutbox.php" method="post">
-                <div class="form-group">
-                    <label for="user">Name:</label>
-                    <input type="text" id="user" name="user" value="<?php echo htmlspecialchars($username); ?>" />
-                </div>
-                <div class="form-group">
-                    <label for="content">Inhalt:</label>
-                    <input type="text" id="content" name="content" value="" autofocus />
-                </div>
-                <input type="submit" name="shout" value="Senden" />
-            </form>
-        </div>
-
-        <div class="card">
-            <h2>Shoutbox</h2>
-            <?php
-            /*
-            * ============================================================
-            */
-            // Datenbankverbindung für die Anzeige der Shouts
-            $dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
-            try {
-                $db = new Db($dsn, 'root', '');
-            } catch (PDOException $e) {
-                exit('Connect failed: ' . $e->getMessage());
-            }
-            // Alle Shouts aus der Datenbank anzeigen
-            $shout->outputShoutDB($db);
-            unset($db);
-            ?>
-        </div>
+<header class="header">
+    <div class="user-info">
+        Angemeldet als: <strong><?php echo htmlspecialchars($username); ?></strong>
     </div>
+    <div class="header-cookie-info">
+        <?php
+        $cookie_parts = [];
+        if (isset($_COOKIE['last_visit'])) {
+            $cookie_parts[] = "Letzter Besuch: " . htmlspecialchars($_COOKIE['last_visit']);
+        }
+        if (isset($_COOKIE['shout_count'])) {
+            $cookie_parts[] = "Anzahl Shouts: " . htmlspecialchars($_COOKIE['shout_count']);
+        }
+        echo implode(' | ', $cookie_parts);
+        ?>
+    </div>
+    <a href="shoutbox.php?logout=1">Abmelden</a>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>Neue Nachricht</h2>
+        <form action="shoutbox.php" method="post">
+            <div class="form-group">
+                <label for="user">Name:</label>
+                <input type="text" id="user" name="user" value="<?php echo htmlspecialchars($username); ?>" disabled />
+            </div>
+            <div class="form-group">
+                <label for="content">Inhalt:</label>
+                <input type="text" id="content" name="content" value="" autofocus />
+            </div>
+            <input type="submit" name="shout" value="Senden" />
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Shoutbox</h2>
+        <?php
+        /*
+        * ============================================================
+        */
+        // Datenbankverbindung für die Anzeige der Shouts
+        $dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
+        try {
+            $db = new Db($dsn, 'root', '');
+        } catch (PDOException $e) {
+            exit('Connect failed: ' . $e->getMessage());
+        }
+        // Alle Shouts aus der Datenbank anzeigen
+        $shout->outputShoutDB($db);
+        unset($db);
+        ?>
+    </div>
+</div>
 
 </body>
 </html>
