@@ -29,9 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login_submit'])) {
 
     // Benutzer aus der Datenbank abfragen.
     // Die Tabelle heißt `user` und die Spalten sind `login` (Benutzername) und `passwd` (Passwort).
+    // Variable setzen in der vorbereiteten SQL Abfrage um später einzufügen und SQL Injektion zu vermeiden
     $stmt = $db->prepare("SELECT * FROM user WHERE login = :login");
     $stmt->execute([':login' => $user_input]);
-    $user_from_db = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user_from_db = $stmt->fetch(Db::FETCH_ASSOC);
 
     // Passwort überprüfen.
     // und mit password_verify() überprüft werden.
@@ -338,9 +339,6 @@ $username = $_SESSION['user'];
     <div class="card">
         <h2>Shoutbox</h2>
         <?php
-        /*
-        * ============================================================
-        */
         // Datenbankverbindung für die Anzeige der Shouts
         $dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
         try {
