@@ -9,9 +9,10 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - Secruity beachten
 
 ## Features
-- Möglichkeit Benutzer zu bewerten
 - Filter auf der Startseite um nach verschiedenen Angeboten zu filtern
 - Login Pop-Up: Regestrieren; Kontrolle, ob Konto schon vorhanden
+- Kommentarfunktion: Nutzer können auf dem Profil anderer Nutzer Kommentare hinterlassen um diese zu bewerten
+- Ebay-Bieten Funktion
 
 ## Installationsanleitung (falls nötig)
 
