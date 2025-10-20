@@ -21,7 +21,4 @@
 /log/*
 !/log/.gitkeep
 
-
-/*.sql
-
 /AGENTS.md
