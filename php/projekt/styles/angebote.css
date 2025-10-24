@@ -1,0 +1,33 @@
+
+.angebote-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.angebot-karte {
+    background: var(--white);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(20, 54, 59, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.angebot-karte h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(20, 54, 59, 0.1);
+}
+
+.angebot-details {
+    padding: 1.5rem;
+    display: grid;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--muted-text);
+}
