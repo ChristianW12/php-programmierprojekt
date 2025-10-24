@@ -18,11 +18,27 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 Hinweis: Bei Implementierung immer auf Anforderungen schauen
 
-## Features
+## Obligatorische Features
 
-- Filter auf der Startseite um nach verschiedenen Angeboten zu filtern
-- Login Pop-Up: Regestrieren; Kontrolle, ob Konto schon vorhanden
-- Kommentarfunktion: Nutzer können auf dem Profil anderer Nutzer Kommentare hinterlassen um diese zu bewerten
-- Ebay-Bieten Funktion
+- Artikel als Hauptentität: Titel, Text (HTML/Markdown), Bild, Beginn- und Endzeitpunkt der Auktion
+- CRUD-Funktionalität für Artikel: Erstellen, Anzeigen, Bearbeiten, Löschen
+- Login-geschützte Verwaltung: Nur angemeldete Benutzer können Artikel anlegen, ändern oder löschen
+- Anzeigen für Besucher: Artikel werden absteigend nach Endzeitpunkt angezeigt
+- Gebote für Besucher: Höchstpreis + E-Mail-Adresse können abgegeben werden
 
-## Installationsanleitung (falls nötig)
+## Optionale Features / Erweiterungen
+
+- Ebay-Gebote: Höchstbietender zahlt nur 1 € mehr als zweithöchster Bieter; Anpassung bei neuen Geboten
+- Weitere Artikelattribute: Kategorie, mehrere Bilder, Notizen
+- Erweiterte Suche: Fuzzy Search für unscharfe Treffer
+- E-Mail-Benachrichtigung am Ende der Auktion an Bieter und Käufer
+- Benutzerverwaltung & Kommentare: Bewertungen, Feedback, Dashboard
+- Filterung: Seitenleiste um nach gewünschten Anforderungen zu sortieren
+
+## Voraussetzungen
+
+- wip
+
+## Installationsanleitung 
+
+- wip
