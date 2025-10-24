@@ -8,7 +8,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 ✅ Datenbank anlegen
 
-- Login Mechanismus + Formular
+- Login Mechanismus + Formular [Login mit email und passwort, user name kann bei erstellung mit dazu gegeben werden]
 - Auktionen per Funktion aus Datenbank holen + Frontend
 - Modal für Auktionen
 - Auktionen anlegen + Frontend
