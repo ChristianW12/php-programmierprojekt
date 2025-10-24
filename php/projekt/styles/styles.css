@@ -444,3 +444,93 @@ address {
         padding: clamp(2.5rem, 8vw, 4rem) clamp(1.25rem, 5vw, 3rem);
     }
 }
+
+/* Styles for Angebote Page Layout */
+.angebote-main {
+    display: flex;
+}
+
+.filter-sidebar {
+    position: fixed;
+    top: 85px; /* Approximate height of the header */
+    left: 0;
+    width: 260px;
+    height: calc(100vh - 85px); /* Full height minus header */
+    background: var(--white);
+    border-right: 1px solid rgba(20, 54, 59, 0.1);
+    padding: 1.5rem;
+    overflow-y: auto; /* Allow scrolling for many filters */
+    z-index: 4; /* Below user menu */
+}
+
+.angebote-container {
+    margin-left: 292px; /* Width of sidebar + padding */
+    padding: 1.5rem;
+    width: 100%;
+}
+
+/* Styles for Filter Elements */
+.filter-sidebar h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+    border-bottom: 2px solid var(--mint-light);
+    padding-bottom: 0.5rem;
+}
+
+.filter-sidebar form {
+    display: grid;
+    gap: 2rem;
+}
+
+.filter-sidebar fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filter-sidebar legend {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+}
+
+.price-slider {
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--muted-text);
+}
+
+.price-slider input[type="range"] {
+    width: 100%;
+}
+
+.sort-options {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.sort-options label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-sidebar button[type="submit"] {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    border-radius: 999px;
+    padding: 0.7rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s ease;
+}
+
+.filter-sidebar button[type="submit"]:hover {
+    background: #245553;
+}
+

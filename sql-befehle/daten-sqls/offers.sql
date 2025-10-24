@@ -1,0 +1,130 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: db
+-- Erstellungszeit: 24. Okt 2025 um 13:02
+-- Server-Version: 11.5.2-MariaDB-ubu2404
+-- PHP-Version: 8.3.26
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Datenbank: `auktion`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `offers`
+--
+
+CREATE TABLE `offers` (
+  `offer_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `beschreibung` text DEFAULT NULL,
+  `startpreis` decimal(10,2) NOT NULL,
+  `start` datetime NOT NULL,
+  `ende` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `offers`
+--
+
+INSERT INTO `offers` (`offer_id`, `user_id`, `title`, `beschreibung`, `startpreis`, `start`, `ende`) VALUES
+(1, 1, 'Vintage Kamera', 'Analoge Kamera in gutem Zustand, inkl. Tasche.', 25.00, '2025-10-01 10:00:00', '2025-11-01 12:00:00'),
+(2, 2, 'Gaming Headset', 'Over-Ear, Noise-Cancelling, kaum genutzt.', 30.00, '2025-10-02 09:00:00', '2025-10-30 18:00:00'),
+(3, 3, 'Sammlerfigur', 'Limitierte Edition, OVP.', 50.00, '2025-10-03 12:00:00', '2025-11-05 20:00:00'),
+(4, 4, 'Mountainbike 26\"', 'Guter Zustand, Alurahmen.', 120.00, '2025-10-04 08:00:00', '2025-11-20 15:00:00'),
+(5, 5, 'Bücherpaket', '10 Romane gemischter Genres.', 15.00, '2025-10-05 14:00:00', '2025-10-31 21:00:00'),
+(6, 6, 'Kaffeemaschine', 'Vollautomat mit Entkalker.', 80.00, '2025-10-06 11:00:00', '2025-11-10 11:00:00'),
+(7, 7, 'Smartwatch Series X', 'Mit Ladegerät und Armband.', 45.00, '2025-10-07 16:00:00', '2025-10-29 20:00:00'),
+(8, 8, 'LEGO Technik Set', 'Vollständig, inkl. Anleitung.', 70.00, '2025-10-08 10:30:00', '2025-11-02 13:00:00'),
+(9, 9, 'Schallplatten Mix', '10 Vinyls, Rock & Jazz.', 40.00, '2025-10-09 09:00:00', '2025-11-15 19:00:00'),
+(10, 1, 'Bürostuhl ergonomisch', 'Rückenfreundlich, höhenverstellbar.', 35.00, '2025-10-10 08:30:00', '2025-10-28 17:00:00'),
+(11, 2, 'Grafikkarte Mittelklasse', 'Läuft einwandfrei, mit OVP.', 95.00, '2025-10-11 10:00:00', '2025-11-25 18:00:00'),
+(12, 3, 'Küchenmaschine', 'Viel Zubehör, sauber.', 60.00, '2025-10-12 09:15:00', '2025-11-12 12:00:00'),
+(13, 4, 'Sneaker Größe 42', 'Kaum getragen, sauber.', 55.00, '2025-10-13 13:00:00', '2025-10-30 14:00:00'),
+(14, 5, 'Monitor 24 Zoll', 'Full HD, IPS-Panel.', 75.00, '2025-10-14 11:45:00', '2025-11-05 11:45:00'),
+(15, 6, 'Telefonanlage', 'Basis + 4 Mobilteile.', 25.00, '2025-10-15 12:00:00', '2025-11-10 12:00:00'),
+(16, 7, 'E-Gitarre', 'Einsteiger-Modell, inkl. Tasche.', 85.00, '2025-10-16 15:00:00', '2025-11-16 15:00:00'),
+(17, 8, 'Staubsauger Roboter', 'Mit Ladestation, funktionsfähig.', 120.00, '2025-10-17 10:00:00', '2025-11-17 10:00:00'),
+(18, 9, 'Action-Cam 4K', 'Wasserdichtes Gehäuse inkl.', 65.00, '2025-10-18 12:30:00', '2025-11-18 12:30:00'),
+(19, 1, 'Kindersitz Auto', 'ECE geprüft, sauber.', 30.00, '2025-10-19 09:00:00', '2025-11-08 09:00:00'),
+(20, 2, 'Campingkocher', 'Gaskocher, leicht, robust.', 20.00, '2025-10-20 08:00:00', '2025-11-05 08:00:00'),
+(21, 3, 'Blu-ray Sammlung', '20 Filme, verschiedene Genres.', 40.00, '2025-10-21 18:00:00', '2025-11-21 18:00:00'),
+(22, 4, 'Mikrofon USB', 'Podcast/Streaming geeignet.', 35.00, '2025-10-22 19:00:00', '2025-11-22 19:00:00'),
+(23, 5, 'Schreibtischlampe LED', 'Dimmbar, warm/kalt.', 18.00, '2025-10-23 20:00:00', '2025-11-10 20:00:00'),
+(24, 6, 'Fahrradhelm L', 'Unfallfrei, verstellbar.', 22.00, '2025-10-24 10:00:00', '2025-11-12 10:00:00'),
+(25, 7, 'Externe SSD 1TB', 'NVMe im Gehäuse, schnell.', 75.00, '2025-10-25 11:00:00', '2025-11-25 11:00:00'),
+(26, 8, 'Nintendo Switch Lite', 'Mit Tasche, guter Zustand.', 120.00, '2025-10-26 12:00:00', '2025-11-26 12:00:00'),
+(27, 9, 'Drohne Einsteiger', 'Mit Kamera, Ersatzpropeller.', 90.00, '2025-10-27 13:00:00', '2025-11-27 13:00:00'),
+(28, 1, 'Winterjacke M', 'Warm, wasserabweisend.', 28.00, '2025-10-28 14:00:00', '2025-11-18 14:00:00'),
+(29, 2, 'Rucksack 30L', 'Laptopfach, regenfest.', 22.00, '2025-10-29 15:00:00', '2025-11-15 15:00:00'),
+(30, 3, 'PC-Gehäuse ATX', 'Mit 3 Lüftern, schwarz.', 45.00, '2025-10-30 16:00:00', '2025-11-20 16:00:00'),
+(31, 4, 'Keramikmesser Set', '3-teilig, sehr scharf.', 20.00, '2025-11-01 09:00:00', '2025-11-21 09:00:00'),
+(32, 5, 'Gaming Maus', 'RGB, viele Tasten.', 25.00, '2025-11-02 10:00:00', '2025-11-22 10:00:00'),
+(33, 6, 'Bluetooth Lautsprecher', 'Wasserfest, kräftiger Sound.', 30.00, '2025-11-03 11:00:00', '2025-11-23 11:00:00'),
+(34, 7, 'Skihelm M', 'Mit Visier, kaum genutzt.', 40.00, '2025-11-04 12:00:00', '2025-11-24 12:00:00'),
+(35, 8, 'LED-Beamer', 'Wohnzimmer-tauglich, HDMI.', 85.00, '2025-11-05 13:00:00', '2025-11-25 13:00:00'),
+(36, 9, 'Fitness Tracker', 'Herzfrequenz, GPS.', 28.00, '2025-11-06 14:00:00', '2025-11-26 14:00:00'),
+(37, 1, 'Küchenwaage', 'Digital, präzise.', 12.00, '2025-11-07 15:00:00', '2025-11-27 15:00:00'),
+(38, 2, 'Esstisch 160cm', 'Eiche Dekor, mit Gebrauchsspuren.', 60.00, '2025-11-08 16:00:00', '2025-12-01 16:00:00'),
+(39, 3, 'Kinderspiel Küche', 'Zubehör inkl.', 25.00, '2025-11-09 17:00:00', '2025-12-02 17:00:00'),
+(40, 4, 'Drehstuhl', 'Mesh-Rückenlehne.', 35.00, '2025-11-10 18:00:00', '2025-12-03 18:00:00'),
+(41, 5, 'Schreibtisch 120cm', 'Weiß, höhenverstellbar (manuell).', 55.00, '2025-11-11 19:00:00', '2025-12-04 19:00:00'),
+(42, 6, 'Fotodrucker', 'A6, inkl. 20 Blatt.', 45.00, '2025-11-12 20:00:00', '2025-12-05 20:00:00'),
+(43, 7, 'Tastatur mechanisch', 'Klicky Switches, DE-Layout.', 35.00, '2025-11-13 09:30:00', '2025-12-06 09:30:00'),
+(44, 8, 'Katzenkratzbaum', '170cm, stabil.', 40.00, '2025-11-14 10:30:00', '2025-12-07 10:30:00'),
+(45, 9, 'Luftreiniger', 'HEPA-Filter, leise.', 50.00, '2025-11-15 11:30:00', '2025-12-08 11:30:00'),
+(46, 1, 'Winterreifen Satz 16\"', 'Mit Felgen, Profil gut.', 120.00, '2025-11-16 12:30:00', '2025-12-09 12:30:00'),
+(47, 2, 'Raclette Grill', 'Für 8 Personen.', 25.00, '2025-11-17 13:30:00', '2025-12-10 13:30:00'),
+(48, 3, 'Holzregal', '3 Ebenen, stabil.', 20.00, '2025-11-18 14:30:00', '2025-12-11 14:30:00'),
+(49, 4, 'Smartphone Zubehör Set', 'Hülle, Panzerglas, Ladegerät.', 15.00, '2025-11-19 15:30:00', '2025-12-12 15:30:00'),
+(50, 5, 'Koffer 65L', 'Hartschale, leicht.', 35.00, '2025-11-20 16:30:00', '2025-12-13 16:30:00');
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `offers`
+--
+ALTER TABLE `offers`
+  ADD PRIMARY KEY (`offer_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `offers`
+--
+ALTER TABLE `offers`
+  MODIFY `offer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- Constraints der exportierten Tabellen
+--
+
+--
+-- Constraints der Tabelle `offers`
+--
+ALTER TABLE `offers`
+  ADD CONSTRAINT `offers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
