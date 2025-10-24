@@ -13,7 +13,8 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - Modal für Auktionen
 - Auktionen anlegen + Frontend
 - Seitenleiste für Filteroption
-- Bieten auf Angebote
+- Bieten auf Angebote + Mail Benachrichtung
+- Fuzzy Search
 
 Hinweis: Bei Implementierung immer auf Anforderungen schauen
 
