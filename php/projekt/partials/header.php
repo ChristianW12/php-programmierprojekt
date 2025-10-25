@@ -1,6 +1,7 @@
 <?php
-$homeHrefPrefix = $homeHrefPrefix ?? '';
-$angeboteHref = $angeboteHref ?? 'angebote.php';
+$verlinkungHomepage = $verlinkungHomepage ?? 'index.php';
+$verlinkungAngebot = $verlinkungAngebot ?? 'angebote.php';
+$verlinkungProfil = $verlinkungProfil ?? 'profile.php';
 ?>
 <header class="site-header">
     <div class="brand">
@@ -8,8 +9,8 @@ $angeboteHref = $angeboteHref ?? 'angebote.php';
         <span class="brand-name">Auktify</span>
     </div>
     <nav class="main-nav" aria-label="Hauptnavigation">
-        <a href="<?= $homeHrefPrefix ?>#about">Über uns</a>
-        <a href="<?= $angeboteHref ?>">Angebote</a>
+        <a href="<?= $verlinkungHomepage ?>#about">Über uns</a>
+        <a href="<?= $verlinkungAngebot ?>">Angebote</a>
     </nav>
     <form class="search" action="#">
         <label class="sr-only" for="search">Suche</label>
@@ -26,7 +27,7 @@ $angeboteHref = $angeboteHref ?? 'angebote.php';
                     <li><a href="#">Meine Auktionen</a></li>
                     <li><a href="#">Meine Angebote</a></li>
                     <li><a href="#">Meine Favoriten</a></li>
-                    <li><a href="#">Einstellungen</a></li>
+                    <li><a href="<?= $verlinkungProfil ?>">Profil</a></li>
                 </ul>
                 <button type="button" class="logout-button">Abmelden</button>
             </div>

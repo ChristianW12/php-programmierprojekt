@@ -27,8 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login_submit'])) {
         exit('Connect failed: ' . $e->getMessage());
     }
 
-    // Benutzer aus der Datenbank abfragen.
-    // Die Tabelle heißt `user` und die Spalten sind `login` (Benutzername) und `passwd` (Passwort).
+    // Benutzer aus der Datenbank abfragen
     // Variable setzen in der vorbereiteten SQL Abfrage um später einzufügen und SQL Injektion zu vermeiden
     $stmt = $db->prepare("SELECT * FROM user WHERE login = :login");
     $stmt->execute([':login' => $user_input]);
