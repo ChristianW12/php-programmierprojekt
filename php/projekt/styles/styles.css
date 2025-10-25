@@ -32,7 +32,8 @@ a {
     align-items: center;
     gap: 1.5rem;
     padding: 1rem clamp(1rem, 5vw, 3rem);
-    background: var(--mint-light);
+    background: var(--mint-dark);
+    color: var(--white);
     border-bottom: 1px solid rgba(20, 54, 59, 0.1);
 }
 
@@ -42,7 +43,7 @@ a {
     gap: 0.5rem;
     font-weight: 600;
     font-size: 1.25rem;
-    color: var(--accent);
+    color: var(--white);
     cursor: pointer;
 }
 
@@ -52,7 +53,7 @@ a {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.9);
     font-weight: 700;
 }
 
@@ -60,11 +61,11 @@ a {
     display: flex;
     gap: 1.5rem;
     font-weight: 500;
-    color: var(--muted-text);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .main-nav a:hover {
-    color: var(--accent);
+    color: var(--white);
 }
 
 .search {
@@ -91,7 +92,7 @@ a {
 
 .search button {
     border: none;
-    background: var(--mint-dark);
+    background: var(--accent);
     color: var(--white);
     padding: 0.45rem 1.1rem;
     border-radius: 999px;
@@ -100,7 +101,7 @@ a {
 }
 
 .search button:hover {
-    background: var(--accent);
+    background: #21514f;
 }
 
 .user-actions {
@@ -321,7 +322,8 @@ main {
 }
 
 .site-footer {
-    background: var(--mint-light);
+    background: var(--mint);
+    color: rgba(255, 255, 255, 0.9);
     padding: clamp(2rem, 6vw, 3rem) clamp(1.5rem, 6vw, 4rem);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -338,7 +340,7 @@ main {
 
 address {
     font-style: normal;
-    color: var(--muted-text);
+    color: rgba(255, 255, 255, 0.75);
     line-height: 1.4;
 }
 
@@ -352,7 +354,7 @@ address {
     margin: 0;
     padding: 0;
     list-style: none;
-    color: var(--muted-text);
+    color: rgba(255, 255, 255, 0.75);
     display: grid;
     gap: 0.35rem;
 }

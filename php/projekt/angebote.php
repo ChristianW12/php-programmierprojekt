@@ -1,3 +1,6 @@
+<?php
+$homeHrefPrefix = 'index.php';
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -8,39 +11,7 @@
     <link rel="stylesheet" href="styles/angebote.css">
 </head>
 <body>
-    <header class="site-header">
-        <div class="brand">
-            <div class="brand-icon" aria-hidden="true">A</div>
-            <span class="brand-name">Auktify</span>
-        </div>
-        <nav class="main-nav" aria-label="Hauptnavigation">
-            <a href="index.html#about">Über uns</a>
-            <a href="index.html#auctions">Auktionen</a>
-            <a href="angebote.php">Angebote</a>
-        </nav>
-        <form class="search" action="#">
-            <label class="sr-only" for="search">Suche</label>
-            <input id="search" type="search" name="q" placeholder="Suche" autocomplete="off">
-            <button type="submit">Suchen</button>
-        </form>
-        <div class="user-actions">
-            <div class="user-menu">
-                <button type="button" class="icon-button user-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-panel">
-                    <span aria-hidden="true">👤</span>
-                </button>
-                <div class="user-menu-panel" id="user-menu-panel">
-                    <ul class="user-menu-list">
-                        <li><a href="#">Meine Auktionen</a></li>
-                        <li><a href="#">Meine Angebote</a></li>
-                        <li><a href="#">Meine Favoriten</a></li>
-                        <li><a href="#">Einstellungen</a></li>
-                    </ul>
-                    <button type="button" class="logout-button">Abmelden</button>
-                </div>
-            </div>
-        </div>
-    </header>
-
+    <?php require __DIR__ . '/partials/header.php'; ?>
     <main>
         <section class="section">
             <div class="section-text center">
@@ -51,31 +22,6 @@
             </div>
         </section>
     </main>
-
-    <footer class="site-footer">
-        <div class="footer-brand">
-            <span class="brand-name">Auktify</span>
-            <address>
-                Rotebühlplatz 31<br>
-                70178<br>
-                Stuttgart
-            </address>
-        </div>
-        <div class="footer-info">
-            <strong>Info</strong>
-            <ul>
-                <li><a href="index.html#about">Über uns</a></li>
-                <li><a href="index.html#auctions">Auktionen</a></li>
-                <li>Hilfe</li>
-            </ul>
-        </div>
-        <div class="footer-contact">
-            <strong>Kontakt</strong>
-            <ul>
-                <li>Mail?</li>
-                <li>Support</li>
-            </ul>
-        </div>
-    </footer>
+    <?php require __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>
