@@ -1,5 +1,22 @@
 <?php
+session_start();
+require __DIR__ . '/php-code/Db.php';
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header('Location: login.php');
+    exit;
+}
+
 $homeHrefPrefix = 'index.php';
+
+$dsn = 'mysql:dbname=auktion;host=db;port=3306';
+
+try{
+    $db = new Db($dsn, 'root', '');
+}catch(PDOException $e){
+    echov'Verbindungsfehler: ' .$e->getMessage();
+}
 ?>
 <!DOCTYPE html>
 <html lang="de">
