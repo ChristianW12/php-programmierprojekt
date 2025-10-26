@@ -3,6 +3,7 @@ session_start(); // Session starten
 
 date_default_timezone_set('Europe/Berlin');
 require 'Db.php';
+
 require 'Shout.php';
 
 // --- Login-Logik ---
@@ -12,14 +13,8 @@ if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: shoutbox.php");
     exit();
-}
 
-// Anmeldeversuch verarbeiten
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login_submit'])) {
-    $user_input = $_POST['login'] ?? '';
-    $password_input = $_POST['password'] ?? '';
 
-    // Datenbankverbindung herstellen
     $dsn = 'mysql:dbname=shoutbox;host=db;port=3306';
     try {
         $db = new Db($dsn, 'root', '');
@@ -28,6 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login_submit'])) {
     }
 
     // Benutzer aus der Datenbank abfragen
+
+    #
+
     // Variable setzen in der vorbereiteten SQL Abfrage um später einzufügen und SQL Injektion zu vermeiden
     $stmt = $db->prepare("SELECT * FROM user WHERE login = :login");
     $stmt->execute([':login' => $user_input]);
