@@ -212,7 +212,6 @@ main {
     display: flex;
     flex-direction: column;
     gap: 0;
-    flex-grow: 1;
 }
 
 .section {

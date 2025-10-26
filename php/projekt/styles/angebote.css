@@ -1,33 +1,104 @@
+/* Main Layout */
+.angebote-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2rem;
+    flex-grow: 1;
+}
 
+main {
+    flex-grow: 1;
+}
+
+/* Filter Sidebar */
+.filter-bereich {
+    width: 250px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.filter-bereich h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+}
+
+/* Form elements */
+#filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sort-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.sort-buttons button,
+.price-filter button {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-weight: 500;
+}
+
+.sort-buttons button:hover,
+.price-filter button:hover {
+    background-color: #e9ecef;
+}
+
+.price-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.price-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.price-input-group label {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.price-input-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.price-filter button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.price-filter button:hover {
+    background-color: #0056b3;
+}
+
+/* Angebote Grid */
 .angebote-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.angebot-karte {
-    background: var(--white);
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 12px rgba(20, 54, 59, 0.08);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-.angebot-karte h2 {
-    font-size: 1.25rem;
-    margin: 0;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid rgba(20, 54, 59, 0.1);
-}
-
-.angebot-details {
-    padding: 1.5rem;
-    display: grid;
-    gap: 0.75rem;
-    font-size: 0.95rem;
-    color: var(--muted-text);
 }

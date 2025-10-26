@@ -15,7 +15,7 @@ $dsn = 'mysql:dbname=auktion;host=db;port=3306';
 try{
     $db = new Db($dsn, 'root', '');
 }catch(PDOException $e){
-    echov'Verbindungsfehler: ' .$e->getMessage();
+    echo'Verbindungsfehler: ' .$e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -28,7 +28,28 @@ try{
     <link rel="stylesheet" href="styles/angebote.css">
 </head>
 <body>
-    <?php require __DIR__ . '/partials/header.php'; ?>
+<?php require __DIR__ . '/partials/header.php'; ?>
+<div class="angebote-container">
+    <aside class="filter-bereich">
+        <h2>Filter</h2>
+        <form id="filter-form">
+            <div class="sort-buttons">
+                <button type="button">Neuste</button>
+                <button type="button">Beliebteste</button>
+            </div>
+            <div class="price-filter">
+                <div class="price-input-group">
+                    <label for="min-preis">Min. Preis:</label>
+                    <input type="number" id="min-preis" name="min-preis" placeholder="0">
+                </div>
+                <div class="price-input-group">
+                    <label for="max-preis">Max. Preis:</label>
+                    <input type="number" id="max-preis" name="max-preis" placeholder="1000">
+                </div>
+                <button type="submit">Preisspanne anwenden</button>
+            </div>
+        </form>
+    </aside>
     <main>
         <section class="section">
             <div class="section-text center">
@@ -39,6 +60,7 @@ try{
             </div>
         </section>
     </main>
-    <?php require __DIR__ . '/partials/footer.php'; ?>
+</div>
+<?php require __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>
