@@ -3,23 +3,46 @@ session_start();
 require __DIR__ . '/php-code/Db.php';
 require __DIR__ . '/php-code/Filter.php';
 
-$homeHrefPrefix = 'index.php';
 $dsn = 'mysql:dbname=auktion;host=db;port=3306';
 $dataRows = [];
 
-try{
+try {
     $db = new Db($dsn, 'root', '');
     $filter = new Filter($db);
+
+    // Standarddaten
     $dataRows = $filter->getData();
-    $angebote = orderPreis($filter);
-    if($angebote){
-        $dataRows = $angebote;
-        foreach($dataRows as $row){
-            echo $row['startpreis'];
+
+    // Toggle-Status initialisieren
+    if (!isset($_SESSION['sort_neueste_aktiv'])) {
+        $_SESSION['sort_neueste_aktiv'] = false;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        // Preisfilter
+        if (!empty($_POST['min-preis']) && !empty($_POST['max-preis'])) {
+            $minPreis = floatval($_POST['min-preis']);
+            $maxPreis = floatval($_POST['max-preis']);
+            $dataRows = $filter->nachPreisspanne($minPreis, $maxPreis);
+        }
+
+        // Sortierung
+        if (isset($_POST['sort'])) {
+            $sortOption = $_POST['sort'];
+            if ($sortOption === 'neueste') {
+                $_SESSION['sort_neueste_aktiv'] = !$_SESSION['sort_neueste_aktiv'];
+            }
         }
     }
-}catch(PDOException $e){
-    echo'Verbindungsfehler: ' .$e->getMessage();
+
+    // Sortierung nur anwenden, wenn aktiv
+    if ($_SESSION['sort_neueste_aktiv']) {
+        $dataRows = $filter->nachNeuste();
+    }
+
+} catch (PDOException $e) {
+    echo 'Verbindungsfehler: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
 }
 ?>
 <!DOCTYPE html>
@@ -38,22 +61,31 @@ try{
         <h2>Filter</h2>
         <form id="filter-form" method="post">
             <div class="sort-buttons">
-                <button type="button" name="sort" value="neueste">Neuste</button>
-                <button type="button" name="sort" value="beliebteste">Beliebteste</button>
+                <button type="submit"
+                        name="sort"
+                        value="neueste">
+                    Neueste
+                </button>
+
+                <button type="submit" name="sort" value="beliebteste">Beliebteste</button>
             </div>
+
             <div class="price-filter">
                 <div class="price-input-group">
                     <label for="min-preis">Min. Preis:</label>
-                    <input type="number" id="min-preis" name="min-preis" placeholder="0">
+                    <input type="number" id="min-preis" name="min-preis" placeholder="0"
+                           value="<?= htmlspecialchars($_POST['min-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                 </div>
                 <div class="price-input-group">
                     <label for="max-preis">Max. Preis:</label>
-                    <input type="number" id="max-preis" name="max-preis" placeholder="1000">
+                    <input type="number" id="max-preis" name="max-preis" placeholder="1000"
+                           value="<?= htmlspecialchars($_POST['max-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                 </div>
-                <button type="button" name="preisfilter">Preisspanne anwenden</button>
+                <button type="submit" name="preisfilter" value="1">Preisspanne anwenden</button>
             </div>
         </form>
     </aside>
+
     <main>
         <section class="section">
             <div class="section-text center">
@@ -62,7 +94,9 @@ try{
             <div class="angebote-grid">
                 <?php if (!empty($dataRows)): ?>
                     <?php foreach ($dataRows as $angebot): ?>
-                        <?php require __DIR__ . '/partials/angebot-card.php'; ?>
+                        <div class="angebot-card-wrapper">
+                            <?php require __DIR__ . '/partials/angebot-card.php'; ?>
+                        </div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <p class="keine-angebote">Derzeit sind keine Angebote verfügbar.</p>
@@ -71,13 +105,7 @@ try{
         </section>
     </main>
 </div>
-<?php require __DIR__ . '/partials/footer.php'; 
-function orderPreis($filter){
-    $rows = $filter->nachPreisspanne(10,100);
-    return $rows;
-}
-?>
+<?php require __DIR__ . '/partials/footer.php'; ?>
 <script src="scripts/app.js"></script>
 </body>
 </html>
-

@@ -51,4 +51,5 @@ if (!empty($angebot['ende'])) {
             <dd><?= $endeDatum ?></dd>
         </div>
     </dl>
+    <button type="button" class="bieten-button">Jetzt bieten</button>
 </article>

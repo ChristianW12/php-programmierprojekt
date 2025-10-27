@@ -23,7 +23,6 @@ class Filter {
         $this->dbconnection = $db;
         $this->data = [];
     }
-
     public function getData() {
         $query = 'SELECT offer_id, user_id, title, beschreibung, startpreis, start, ende FROM offers';
         $result = $this->dbconnection->query($query);
@@ -34,7 +33,6 @@ class Filter {
             return $this->data;
         }
     }
-
     public function nachNeuste() {
         if(empty($this->data)) {
             $this->getData();
@@ -44,13 +42,10 @@ class Filter {
                 return strtotime($b['start']) - strtotime($a['start']);
             });
         }
-    }
-    
-    public function nachBeliebteste() {
-
+        return $this->data;
     }
 
-    public function nachPreisspanne($anfang, $ende) {
+    public function nachPreisspanne($anfang,$ende) {
         if(empty($this->data)) {
             $this->getData();
         }
@@ -58,15 +53,20 @@ class Filter {
             $this->data = array_filter($this->data, function($item) use ($anfang, $ende) {
                 return $item['startpreis'] >= $anfang && $item['startpreis'] <= $ende;
             });
-            return $this->data;
         }
+        return $this->data;
     }
 
-    public function nachTag() {
-    }
+    public function nachSuche($suchbegriff) {
+        if(empty($this->data)) {
+            $this->getData();
+        }
+        if(!empty($this->data)){
+            $this->data = array_filter($this->data, function($item) use ($suchbegriff) {
+                return stripos($item['title'], $suchbegriff) !== false || stripos($item['beschreibung'], $suchbegriff) !== false;
+            });
+        }
+        return $this->data;
 
-    public function nachSuche($eingabe){
-
     }
-    
 }
