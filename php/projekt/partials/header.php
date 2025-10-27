@@ -19,8 +19,8 @@ $verlinkungProfil = $verlinkungProfil ?? 'profile.php';
     </form>
     <div class="user-actions">
         <div class="user-menu">
-            <button type="button" class="icon-button user-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-panel">
-                <span aria-hidden="true">👤</span>
+            <button type="button" class="icon-button user-toggle" id="user-menu-toggle">
+                <span>👤</span>
             </button>
             <div class="user-menu-panel" id="user-menu-panel">
                 <ul class="user-menu-list">

@@ -145,24 +145,24 @@ a {
     padding: 1rem;
     background: var(--white);
     border-radius: 0.75rem;
-    box-shadow: 0 12px 28px rgba(15, 34, 42, 0.16);
-    border: 1px solid rgba(20, 54, 59, 0.08);
+    box-shadow: 0 12px 28px rgba(15,34,42,0.16);
+    border: 1px solid rgba(20,54,59,0.08);
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+
     opacity: 0;
     transform: translateY(-0.5rem);
     pointer-events: none;
     transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 10;
 }
 
-.user-menu.open .user-menu-panel,
-.user-menu:focus-within .user-menu-panel {
+.user-menu.open .user-menu-panel {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
 }
-
 .user-menu-list {
     list-style: none;
     margin: 0;

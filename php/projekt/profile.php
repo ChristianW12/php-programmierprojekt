@@ -20,5 +20,6 @@ $verlinkungHomepage = 'index.php';
         </section>
     </main>
     <?php require __DIR__ . '/partials/footer.php'; ?>
+    <script src="scripts/app.js"></script>
 </body>
 </html>

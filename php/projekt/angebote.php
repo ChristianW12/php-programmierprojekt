@@ -1,19 +1,23 @@
 <?php
 session_start();
 require __DIR__ . '/php-code/Db.php';
-
-if (isset($_GET['logout'])) {
-    session_destroy();
-    header('Location: login.php');
-    exit;
-}
+require __DIR__ . '/php-code/Filter.php';
 
 $homeHrefPrefix = 'index.php';
-
 $dsn = 'mysql:dbname=auktion;host=db;port=3306';
+$dataRows = [];
 
 try{
     $db = new Db($dsn, 'root', '');
+    $filter = new Filter($db);
+    $dataRows = $filter->getData();
+    $angebote = orderPreis($filter);
+    if($angebote){
+        $dataRows = $angebote;
+        foreach($dataRows as $row){
+            echo $row['startpreis'];
+        }
+    }
 }catch(PDOException $e){
     echo'Verbindungsfehler: ' .$e->getMessage();
 }
@@ -32,10 +36,10 @@ try{
 <div class="angebote-container">
     <aside class="filter-bereich">
         <h2>Filter</h2>
-        <form id="filter-form">
+        <form id="filter-form" method="post">
             <div class="sort-buttons">
-                <button type="button">Neuste</button>
-                <button type="button">Beliebteste</button>
+                <button type="button" name="sort" value="neueste">Neuste</button>
+                <button type="button" name="sort" value="beliebteste">Beliebteste</button>
             </div>
             <div class="price-filter">
                 <div class="price-input-group">
@@ -46,7 +50,7 @@ try{
                     <label for="max-preis">Max. Preis:</label>
                     <input type="number" id="max-preis" name="max-preis" placeholder="1000">
                 </div>
-                <button type="submit">Preisspanne anwenden</button>
+                <button type="button" name="preisfilter">Preisspanne anwenden</button>
             </div>
         </form>
     </aside>
@@ -54,13 +58,26 @@ try{
         <section class="section">
             <div class="section-text center">
                 <h1>Aktuelle Angebote</h1>
-                <p>Hier sehen Sie eine Liste der aktuellsten Angebote, die von unseren Benutzern erstellt wurden.</p>
             </div>
             <div class="angebote-grid">
+                <?php if (!empty($dataRows)): ?>
+                    <?php foreach ($dataRows as $angebot): ?>
+                        <?php require __DIR__ . '/partials/angebot-card.php'; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="keine-angebote">Derzeit sind keine Angebote verfügbar.</p>
+                <?php endif; ?>
             </div>
         </section>
     </main>
 </div>
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php require __DIR__ . '/partials/footer.php'; 
+function orderPreis($filter){
+    $rows = $filter->nachPreisspanne(10,100);
+    return $rows;
+}
+?>
+<script src="scripts/app.js"></script>
 </body>
 </html>
+

@@ -117,5 +117,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
     </section>
 </main>
 <?php require __DIR__ . '/partials/footer.php'; ?>
+<script src="scripts/app.js"></script>
 </body>
 </html>
