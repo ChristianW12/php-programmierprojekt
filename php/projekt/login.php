@@ -40,12 +40,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
         $_SESSION['user_mail'] = $user_from_db['mail'];
 
         // Zurückführen auf die zuletzt besuchte Seite
-        if(!isset($_SESSION['last_site'])){
+
+    switch ($_SESSION['last_site']) {
+        case 'profile':
+            header('Location: profile.php');
+            break;
+        case 'angebot':
+            header('Location: angebot.php');
+            break;
+        default:
             header('Location: index.php');
-            exit();
-        }else{
-            exit();
-        }
+    }
+        exit();
 
     }else{
         $login_error = "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
