@@ -8,14 +8,6 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 ✅ Datenbank anlegen
 
-- Login Mechanismus + Formular [Login mit email und passwort, user name kann bei erstellung mit dazu gegeben werden]
-- Auktionen per Funktion aus Datenbank holen + Frontend
-- Modal für Auktionen
-- Auktionen anlegen + Frontend
-- Seitenleiste für Filteroption
-- Bieten auf Angebote + Mail Benachrichtung
-- Fuzzy Search
-
 Hinweis: Bei Implementierung immer auf Anforderungen schauen
 
 ## Obligatorische Features
@@ -40,6 +32,6 @@ Hinweis: Bei Implementierung immer auf Anforderungen schauen
 
 - wip
 
-## Installationsanleitung 
+## Installationsanleitung
 
 - wip
