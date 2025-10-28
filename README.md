@@ -7,21 +7,14 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 ## TODO
 
 ✅ Datenbank anlegen
+
 - Login fertig machen (Christian)
-- Filterung: Button für Filter zurücksetzten, Preis DESC, Buttons farbig hinterlegen
-- Bieten: Pop-up für "Jetz Bieten" und "Angebot hinzufügen"
-- Funktionalität für "Jetzt loslegen"
-- Plus-Icon unterhalb Filterung: fixed
-------
-- Login Mechanismus + Formular [Login mit email und passwort, user name kann bei erstellung mit dazu gegeben werden]
-- Auktionen per Funktion aus Datenbank holen + Frontend
-- Modal für Auktionen
-- Auktionen anlegen + Frontend
-- Seitenleiste für Filteroption 
-- Bieten auf Angebote + Mail Benachrichtung?
-- Fuzzy Search
-  
-Hinweis: Bei Implementierung immer auf Anforderungen schauen
+- Filterung: Wenn auf Profil Männchen geclicked wird, dann Überprüfung ob eingeloggt, sonst zu extra Profilseite (Luca)
+- Funktionalität "Jetzt loslegen" (Alex)
+- Neues Angebot hinzufügen mit Plus Button fixed darunter (Alex)
+- Bug Profil Seite (Melina)
+- Profilseite erstellen mit Abmelden, Account löschen, Accountdaten (Melina)
+  Hinweis: Bei Implementierung immer auf Anforderungen schauen
 
 ## Obligatorische Features
 
