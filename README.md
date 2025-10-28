@@ -14,7 +14,6 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - Neues Angebot hinzufügen mit Plus Button fixed darunter (Alex)
 - Bug Profil Seite (Melina)
 - Profilseite erstellen mit Abmelden, Account löschen, Accountdaten (Melina)
-  Hinweis: Bei Implementierung immer auf Anforderungen schauen
 
 ## Obligatorische Features
 
