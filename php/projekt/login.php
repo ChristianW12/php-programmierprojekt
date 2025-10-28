@@ -16,16 +16,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
     $user_mail = $_POST['email'] ?? '';
     $user_password = $_POST['password'] ?? '';
 
-    // Datenbankverbindung herstellen
-    $dsn = 'mysql:dbname=auktion;host=db;port=3306';
-
-    // Sichergehen das eine Datenbankvebindung hergestellt werden kann
-    try{
-        $db = new Db($dsn, 'root', '');
-    } catch (PDOException $e){
-        echo 'Verbindungsfehler: ' . $e->getMessage();
-        exit;
-    }
+    require_once __DIR__ . '/php-code/db-connection.php';
 
     // Benutzer in der Datenbank suchen
     $stmt = $db->prepare("select* from users where mail = :mail");
