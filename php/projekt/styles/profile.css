@@ -20,6 +20,63 @@
     text-align: left;
 }
 
+/* General Form Styling */
+.form-group, .form-group-display {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label, .form-group-display label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: bold;
+    text-align: left;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box; /* Add this */
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group input[type="email"]::placeholder {
+    color: #aaa;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 5px rgba(40, 120, 117, 0.5);
+}
+
+/* Display-only fields */
+.form-control-display {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f2f2f2; /* Slightly different background */
+    font-size: 1rem;
+    text-align: left;
+    color: #333;
+    box-sizing: border-box; /* Add this */
+}
+
+/* Adjustments for profile container */
+.profile-container h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+
 .profile-actions {
     text-align: center;
     margin-top: 20px;

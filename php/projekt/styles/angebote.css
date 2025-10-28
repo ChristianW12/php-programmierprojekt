@@ -33,7 +33,7 @@ main {
 }
 
 /* Form elements */
-#filter-form {
+#filter-form, .sort-buttons {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -43,10 +43,11 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
-.sort-buttons button,
-.price-filter button {
+.btn-sort {
+    display: block;
     padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -54,11 +55,20 @@ main {
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
     font-weight: 500;
+    text-align: center;
+    color: #333;
+    text-decoration: none;
 }
 
-.sort-buttons button:hover,
-.price-filter button:hover {
+.btn-sort:hover {
     background-color: #e9ecef;
+}
+
+.btn-sort.active,
+.btn-sort.active:hover {
+    background-color: #9bbabf; /* Footer color */
+    color: white;
+    border-color: #9bbabf;
 }
 
 .price-filter {
@@ -83,16 +93,24 @@ main {
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    box-sizing: border-box;
 }
 
-.price-filter button {
+.price-filter button,
+.angebot-erstellen-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: 500;
+    border: none;
     background-color: #007bff;
     color: white;
-    border: none;
 }
 
-.price-filter button:hover {
+.price-filter button:hover,
+.angebot-erstellen-btn:hover {
     background-color: #0056b3;
 }
 

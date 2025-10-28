@@ -13,7 +13,6 @@ $userIconLink = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true ?
 ?>
 <header class="site-header">
     <div class="brand">
-        <div class="brand-icon" aria-hidden="true">A</div>
         <span class="brand-name">Auktify</span>
     </div>
     <nav class="main-nav" aria-label="Hauptnavigation">

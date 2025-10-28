@@ -69,4 +69,16 @@ class Filter {
         return $this->data;
 
     }
+
+    public function nachBeliebteste() {
+        $query = 'SELECT o.*, COUNT(b.bid_id) AS bid_count FROM offers o LEFT JOIN bids b ON o.offer_id = b.offer_id GROUP BY o.offer_id ORDER BY bid_count DESC';
+        $result = $this->dbconnection->query($query);
+
+        if($result !== false && $result->rowCount() > 0){
+            $rows = $result->fetchAll(PDO::FETCH_ASSOC);
+            $this->data = $rows;
+            return $this->data;
+        }
+        return [];
+    }
 }

@@ -39,18 +39,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
         $_SESSION['loggedin'] = true;
         $_SESSION['user_mail'] = $user_from_db['mail'];
 
-        // Zurückführen auf die zuletzt besuchte Seite
-
-    switch ($_SESSION['last_site']) {
-        case 'profile':
-            header('Location: profile.php');
-            break;
-        case 'angebot':
-            header('Location: angebot.php');
-            break;
-        default:
-            header('Location: index.php');
-    }
+        // Redirect to the offers page after successful login
+        header('Location: angebote.php');
         exit();
 
     }else{

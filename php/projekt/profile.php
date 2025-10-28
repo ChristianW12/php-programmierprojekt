@@ -8,11 +8,13 @@ if(!isset($_SESSION['loggedin']) ){
     exit;
 }
 
+// Dateien für DB-Verbindung und DB-Hilfsfunktionen einbinden
 require 'php-code/db-connection.php';
 require_once 'php-code/Db.php';
 
 $db = mitDBverbinden();
 
+// Nutzer anhand der E-Mail aus der Session laden
 $stmt = $db->prepare("select* from users where mail = :mail");
 $stmt->execute([':mail' => $_SESSION['user_mail']]);
 // Daten vom User in einem Array speichern
@@ -37,13 +39,28 @@ $verlinkungHomepage = 'index.php';
                 <h1><strong>Mein Profil</h1>
                 <hr>
                 <h3><strong>Persönliche Informationen</strong></h3>
-                <p><strong>Name: </strong> <?php echo htmlspecialchars($user_from_db['name']); ?></p>
-                <p><strong>E-Mail: </strong> <?php echo htmlspecialchars($user_from_db['mail']); ?></p>
+                <div class="form-group-display">
+                    <label>Name</label>
+                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['name']); ?></div>
+                </div>
+                <div class="form-group-display">
+                    <label>E-Mail</label>
+                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['mail']); ?></div>
+                </div>
                 <hr>
                 <h3><strong>Adresse</strong></h3>
-                <p><strong>Ort: </strong><?php echo htmlspecialchars($user_from_db['ort']) ?></p>
-                <p><strong>Postleitzahl: </strong><?php echo htmlspecialchars($user_from_db['plz']) ?></p>
-                <p><strong>Straße: </strong> <?php echo htmlspecialchars($user_from_db['str']) ?></p>
+                <div class="form-group-display">
+                    <label>Ort</label>
+                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['ort']); ?></div>
+                </div>
+                <div class="form-group-display">
+                    <label>Postleitzahl</label>
+                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['plz']); ?></div>
+                </div>
+                <div class="form-group-display">
+                    <label>Straße</label>
+                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['str']); ?></div>
+                </div>
             </div>
             <div class="profile-actions">
                 <a href="profile-edit.php" class="btn">Profil bearbeiten</a>
