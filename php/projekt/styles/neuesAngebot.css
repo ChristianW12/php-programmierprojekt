@@ -1,0 +1,63 @@
+/* styles/neuesAngebot.css */
+
+.angebot-erstellen {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.angebot-erstellen h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.angebot-formular .form-gruppe {
+    margin-bottom: 1.5rem;
+}
+
+.angebot-formular label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.angebot-formular input[type="text"],
+.angebot-formular input[type="number"],
+.angebot-formular input[type="datetime-local"],
+.angebot-formular textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Important for padding and width */
+}
+
+.angebot-formular textarea {
+    resize: vertical;
+}
+
+.angebot-formular .form-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.angebot-formular button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.angebot-formular button[type="submit"]:hover {
+    background-color: #0056b3;
+}

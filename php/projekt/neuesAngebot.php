@@ -11,12 +11,15 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Auktify | Neues Angebot</title>
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/neuesAngebot.css">
 </head>
 <body>
 <?php require __DIR__ . '/partials/header.php'; ?>
 <main>
     <section class="angebot-erstellen">
         <h1>Neues Angebot erstellen</h1>
+        <hr>
+        </br>
         <form action="angebotSpeichern.php" method="post" class="angebot-formular">
             <div class="form-gruppe">
                 <label for="titel">Titel des Angebots:</label>
