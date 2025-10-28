@@ -9,13 +9,14 @@ if(!isset($_SESSION['loggedin']) ){
 }
 
 require 'php-code/db-connection.php';
+require_once 'php-code/Db.php';
 
 $db = mitDBverbinden();
 
 $stmt = $db->prepare("select* from users where mail = :mail");
 $stmt->execute([':mail' => $_SESSION['user_mail']]);
 // Daten vom User in einem Array speichern
-$user_from_db = $stmt->fetch(Db::FETCH_ASSOC);
+$user_from_db = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $verlinkungHomepage = 'index.php';
 ?>
@@ -36,17 +37,17 @@ $verlinkungHomepage = 'index.php';
                 <h1><strong>Mein Profil</h1>
                 <hr>
                 <h3><strong>Persönliche Informationen</strong></h3>
-                <p><strong>Name: </strong> <?php echo $user_from_db['name']; ?></p>
-                <p><strong>E-Mail: </strong> <?php echo $user_from_db['mail']; ?></p>
+                <p><strong>Name: </strong> <?php echo htmlspecialchars($user_from_db['name']); ?></p>
+                <p><strong>E-Mail: </strong> <?php echo htmlspecialchars($user_from_db['mail']); ?></p>
                 <hr>
                 <h3><strong>Adresse</strong></h3>
-                <p><strong>Ort: </strong><?php echo $user_from_db['ort'] ?></p>
-                <p><strong>Postleitzahl: </strong><?php echo $user_from_db['plz'] ?></p>
-                <p><strong>Straße: </strong> <?php echo $user_from_db['str'] ?></p>
+                <p><strong>Ort: </strong><?php echo htmlspecialchars($user_from_db['ort']) ?></p>
+                <p><strong>Postleitzahl: </strong><?php echo htmlspecialchars($user_from_db['plz']) ?></p>
+                <p><strong>Straße: </strong> <?php echo htmlspecialchars($user_from_db['str']) ?></p>
             </div>
             <div class="profile-actions">
-                <button class="btn">Profil bearbeiten</button>
-                <button class="btn btn-danger">Abmelden</button>
+                <a href="profile-edit.php" class="btn">Profil bearbeiten</a>
+                <a href="logout.php" class="btn btn-danger">Abmelden</a>
             </div>
         </section>
     </main>
