@@ -53,7 +53,7 @@ $homeHrefPrefix = '';
                         Deshalb bieten wir klare Abläufe, sichere Zahlungen und hilfreiche Tools,
                         damit du jede Auktion mit einem guten Gefühl abschließen kannst.
                     </p>
-                    <button class="primary-action" type="button">Jetzt loslegen</button>
+                    <!-- <button class="primary-action" type="button">Jetzt loslegen</button> -->
                 </div>
                 <figure class="image-placeholder has-image">
                     <img src="bilder/Transaktion.png" alt="Zwei Personen schließen eine Auktionstransaktion ab">

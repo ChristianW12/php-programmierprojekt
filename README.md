@@ -10,7 +10,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 - Login fertig machen (Christian)
 - Filterung: Wenn auf Profil Männchen geclicked wird, dann Überprüfung ob eingeloggt, sonst zu extra Profilseite (Luca)
-- Funktionalität "Jetzt loslegen" (Alex)
+- Funktionalität "Jetzt loslegen" (Alex) -> Brauchen wir den Button?
 - Neues Angebot hinzufügen mit Plus Button fixed darunter (Alex)
 - Bug Profil Seite (Melina)
 - Profilseite erstellen mit Abmelden, Account löschen, Accountdaten (Melina)
