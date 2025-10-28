@@ -1,0 +1,50 @@
+.profile-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin: 20px auto;
+    width: 50%;
+}
+
+.profile-container hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+    margin: 20px 0;
+}
+
+.profile-container p,
+.profile-container h2,
+.profile-container h3 {
+    text-align: left;
+}
+
+.profile-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-actions .btn {
+    background-color: var(--accent);
+    color: var(--white);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+.profile-actions .btn:hover {
+    background-color: #21514f;
+}
+
+.profile-actions .btn-danger {
+    background-color: #f44336;
+}
+
+.profile-actions .btn-danger:hover {
+    background-color: #d32f2f;
+}
