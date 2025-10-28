@@ -1,7 +1,15 @@
 <?php
+// Session starten, falls noch nicht geschehen
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Standard-Links definieren
 $verlinkungHomepage = $verlinkungHomepage ?? 'index.php';
 $verlinkungAngebot = $verlinkungAngebot ?? 'angebote.php';
-$verlinkungProfil = $verlinkungProfil ?? 'profile.php';
+
+// Ziellink für das Benutzer-Icon basierend auf dem Login-Status festlegen
+$userIconLink = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true ? 'profile.php' : 'login.php';
 ?>
 <header class="site-header">
     <div class="brand">
@@ -18,19 +26,8 @@ $verlinkungProfil = $verlinkungProfil ?? 'profile.php';
         <button type="submit">Suchen</button>
     </form>
     <div class="user-actions">
-        <div class="user-menu">
-            <button type="button" class="icon-button user-toggle" id="user-menu-toggle">
-                <span>👤</span>
-            </button>
-            <div class="user-menu-panel" id="user-menu-panel">
-                <ul class="user-menu-list">
-                    <li><a href="#">Meine Auktionen</a></li>
-                    <li><a href="#">Meine Angebote</a></li>
-                    <li><a href="#">Meine Favoriten</a></li>
-                    <li><a href="<?= $verlinkungProfil ?>">Profil</a></li>
-                </ul>
-                <button type="button" class="logout-button">Abmelden</button>
-            </div>
-        </div>
+        <a href="<?= $userIconLink ?>" class="icon-button" aria-label="Benutzerprofil oder Login">
+            <span>👤</span>
+        </a>
     </div>
 </header>

@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require __DIR__ . '/php-code/Db.php';
 require __DIR__ . '/php-code/Filter.php';
 
