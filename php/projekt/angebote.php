@@ -10,24 +10,19 @@ try {
     $db = new Db($dsn, 'root', '');
     $filter = new Filter($db);
 
-    // Standarddaten
     $dataRows = $filter->getData();
 
-    // Toggle-Status initialisieren
     if (!isset($_SESSION['sort_neueste_aktiv'])) {
         $_SESSION['sort_neueste_aktiv'] = false;
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-        // Preisfilter
         if (!empty($_POST['min-preis']) && !empty($_POST['max-preis'])) {
             $minPreis = floatval($_POST['min-preis']);
             $maxPreis = floatval($_POST['max-preis']);
             $dataRows = $filter->nachPreisspanne($minPreis, $maxPreis);
         }
 
-        // Sortierung
         if (isset($_POST['sort'])) {
             $sortOption = $_POST['sort'];
             if ($sortOption === 'neueste') {
@@ -36,7 +31,6 @@ try {
         }
     }
 
-    // Sortierung nur anwenden, wenn aktiv
     if ($_SESSION['sort_neueste_aktiv']) {
         $dataRows = $filter->nachNeuste();
     }
