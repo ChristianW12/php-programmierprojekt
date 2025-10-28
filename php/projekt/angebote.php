@@ -14,6 +14,19 @@ try {
 
     $dataRows = $filter->getData();
 
+    if (isset($_POST['neuesAngebot'])) {
+        if($_SESSION['loggedin']) {
+            header("Location: neuesAngebot.php");
+            exit;
+        } else {
+            $_SESSION['last_site'] = 'angebote';
+            header("Location: login.php");
+            exit;
+        }
+
+    }
+
+
     if (!isset($_SESSION['sort_neueste_aktiv'])) {
         $_SESSION['sort_neueste_aktiv'] = false;
     }
@@ -78,6 +91,7 @@ try {
                            value="<?= htmlspecialchars($_POST['max-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                 </div>
                 <button type="submit" name="preisfilter" value="1">Preisspanne anwenden</button>
+                <button type="submit" name="neuesAngebot">Angebot erstellen</button>
             </div>
         </form>
     </aside>
