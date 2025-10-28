@@ -25,6 +25,7 @@ Hinweis: Bei Implementierung immer auf Anforderungen schauen
 - Login-geschützte Verwaltung: Nur angemeldete Benutzer können Artikel anlegen, ändern oder löschen
 - Anzeigen für Besucher: Artikel werden absteigend nach Endzeitpunkt angezeigt
 - Gebote für Besucher: Höchstpreis + E-Mail-Adresse können abgegeben werden
+- Admins können jedes Angebot bearbeiten
 
 ## Optionale Features / Erweiterungen
 
