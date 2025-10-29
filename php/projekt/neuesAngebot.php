@@ -3,6 +3,24 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require 'php-code/db-connection.php';
+require_once 'php-code/Db.php';
+require_once 'php-code/neuesAngebotEdit.php';
+
+$db = mitDBverbinden();
+
+if(isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin']) ) {
+    $angebotNeu = new neuesAngebotEdit($db);
+    $angebotNeu->angebotErstellen($_SESSION['user_id'], $_POST['titel'], $_POST['beschreibung'], (float)$_POST['startpreis'], $_POST['enddatum'], $db);
+    header('Location: angebote.php');
+    exit;
+
+} else if (!isset($_SESSION['loggedin'])) {     // Prüfen ob der Nutzer eingeloggt ist, sonst Weiterleitung.
+    header('Location: login.php');
+    exit;
+}
+
+
 ?>
 <!doctype html>
 <html lang="de">
@@ -20,10 +38,10 @@ if (session_status() === PHP_SESSION_NONE) {
         <h1>Neues Angebot erstellen</h1>
         <hr>
         </br>
-        <form action="angebotSpeichern.php" method="post" class="angebot-formular">
+        <form action="neuesAngebot.php" method="post" class="angebot-formular">
             <div class="form-gruppe">
                 <label for="titel">Titel des Angebots:</label>
-                <input type="text" id="titel" name="titel" placeholder="z. B. iPhone 14 Pro" required>
+                <input type="text" id="titel" name="titel" placeholder="z.B. Samsung A52" required>
             </div>
 
             <div class="form-gruppe">
@@ -37,13 +55,8 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
             <div class="form-gruppe">
-                <label for="startdatum">Startdatum:</label>
-                <input type="datetime-local" id="startdatum" name="startdatum" required>
-            </div>
-
-            <div class="form-gruppe">
-                <label for="endedatum">Endedatum:</label>
-                <input type="datetime-local" id="endedatum" name="endedatum" required>
+                <label for="enddatum">Enddatum:</label>
+                <input type="datetime-local" id="enddatum" name="enddatum" required  min="<?php echo date('Y-m-d\TH:i', strtotime('+1 hour')); ?>">
             </div>
 
             <div class="form-actions">

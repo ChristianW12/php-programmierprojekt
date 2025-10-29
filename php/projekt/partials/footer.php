@@ -1,7 +1,7 @@
 <?php
 
 // Standard-Links definieren
-$homeHrefPrefix = $homeHrefPrefix ?? '';
+$verlinkungHomepage = $verlinkungHomepage ?? 'index.php';
 $verlinkungAngebot = $verlinkungAngebot ?? 'angebote.php';
 ?>
 <footer class="site-footer">
@@ -16,7 +16,7 @@ $verlinkungAngebot = $verlinkungAngebot ?? 'angebote.php';
     <div class="footer-info">
         <strong>Info</strong>
         <ul>
-            <li><a href="<?= $homeHrefPrefix ?>#about">Über uns</a></li>
+            <li><a href="<?= $verlinkungHomepage ?>#about">Über uns</a></li>
             <li><a href="<?= $verlinkungAngebot ?>#auctions">Auktionen</a></li>
             <li>Hilfe</li>
         </ul>
