@@ -9,7 +9,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 ✅ Datenbank anlegen
 
 - Account löschen/erstellen (Melina)
-- Funktionalität "Jetzt loslegen" (Alex) -> Brauchen wir den Button?
+- Funktionalität "Jetzt loslegen" (Alex)
 - Neues Angebot hinzufügen (Alex)
 - Neues Angebot hinzufügen Button (Luca)
 - Jetzt Bieten (Luca)

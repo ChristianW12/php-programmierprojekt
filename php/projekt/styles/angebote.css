@@ -7,16 +7,22 @@
     flex-grow: 1;
 }
 
+.angebote-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
 main {
     flex-grow: 1;
 }
 
 /* Filter Sidebar */
 .filter-bereich {
-    width: 320px;
-    flex-shrink: 0;
-    position: sticky;
-    top: 2rem;
     background-color: #f8f9fa;
     border-radius: 8px;
     padding: 2rem;
@@ -96,8 +102,7 @@ main {
     box-sizing: border-box;
 }
 
-.price-filter button,
-.angebot-erstellen-btn {
+.price-filter button {
     width: 100%;
     padding: 0.75rem;
     border-radius: 5px;
@@ -109,9 +114,45 @@ main {
     color: white;
 }
 
-.price-filter button:hover,
-.angebot-erstellen-btn:hover {
+.price-filter button:hover {
     background-color: #0056b3;
+}
+
+.erstellen-bereich {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.angebot-erstellen-btn {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background-color: #2ecc71;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.angebot-erstellen-btn:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(39, 174, 96, 0.25);
+}
+
+.angebot-erstellen-btn:focus {
+    outline: 3px solid rgba(46, 204, 113, 0.35);
+    outline-offset: 3px;
 }
 
 /* Angebote Grid */

@@ -56,45 +56,49 @@ try {
 <body>
 <?php require __DIR__ . '/partials/header.php'; ?>
 <div class="angebote-container">
-    <aside class="filter-bereich">
-        <h2>Filter</h2>
-
-        <div class="sort-buttons">
-            <?php
-            // Preserve other GET parameters when changing sort order
-            $queryParams = $_GET;
-            $queryParams['sort'] = 'neueste';
-            unset($queryParams['preisfilter']); // Avoid re-applying price filter on sort click
-            $neuesteUrl = '?' . http_build_query($queryParams);
-            $queryParams['sort'] = 'beliebteste';
-            $beliebtesteUrl = '?' . http_build_query($queryParams);
-            ?>
-            <a href="<?= $neuesteUrl ?>" class="btn-sort <?= $activeSort === 'neueste' ? 'active' : '' ?>">Neueste</a>
-            <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
-        </div>
-
-        <form id="filter-form" method="get">
-            <?php if ($activeSort): ?>
-                <input type="hidden" name="sort" value="<?= htmlspecialchars($activeSort) ?>">
-            <?php endif; ?>
-            <div class="price-filter">
-                <div class="price-input-group">
-                    <label for="min-preis">Min. Preis:</label>
-                    <input type="number" id="min-preis" name="min-preis" placeholder="0"
-                           value="<?= htmlspecialchars($_GET['min-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                </div>
-                <div class="price-input-group">
-                    <label for="max-preis">Max. Preis:</label>
-                    <input type="number" id="max-preis" name="max-preis" placeholder="1000"
-                           value="<?= htmlspecialchars($_GET['max-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                </div>
-                <button type="submit" name="preisfilter" value="1">Preisspanne anwenden</button>
+    <div class="angebote-sidebar">
+        <aside class="filter-bereich">
+            <h2>Filter</h2>
+            <div class="sort-buttons">
+                <?php
+                $queryParams = $_GET;
+                $queryParams['sort'] = 'neueste';
+                unset($queryParams['preisfilter']);
+                $neuesteUrl = '?' . http_build_query($queryParams);
+                $queryParams['sort'] = 'beliebteste';
+                $beliebtesteUrl = '?' . http_build_query($queryParams);
+                ?>
+                <a href="<?= $neuesteUrl ?>" class="btn-sort <?= $activeSort === 'neueste' ? 'active' : '' ?>">Neueste</a>
+                <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
             </div>
-        </form>
-        <form method="get" style="margin-top: 1rem;">
-            <button type="submit" name="neuesAngebot" class="angebot-erstellen-btn">Angebot erstellen</button>
-        </form>
-    </aside>
+
+            <form id="filter-form" method="get">
+                <?php if ($activeSort): ?>
+                    <input type="hidden" name="sort" value="<?= htmlspecialchars($activeSort) ?>">
+                <?php endif; ?>
+                <div class="price-filter">
+                    <div class="price-input-group">
+                        <label for="min-preis">Min. Preis:</label>
+                        <input type="number" id="min-preis" name="min-preis" placeholder="0"
+                               value="<?= htmlspecialchars($_GET['min-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    </div>
+                    <div class="price-input-group">
+                        <label for="max-preis">Max. Preis:</label>
+                        <input type="number" id="max-preis" name="max-preis" placeholder="1000"
+                               value="<?= htmlspecialchars($_GET['max-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    </div>
+                    <button type="submit" name="preisfilter" value="1">Preisspanne anwenden</button>
+                </div>
+            </form>
+        </aside>
+        <div class="erstellen-bereich">
+            <form method="get">
+                <button type="submit" name="neuesAngebot" class="angebot-erstellen-btn" aria-label="Neues Angebot erstellen">
+                    <span aria-hidden="true">+</span>
+                </button>
+            </form>
+        </div>
+    </div>
 
     <main>
         <section class="section">
@@ -106,9 +110,9 @@ try {
                     foreach ($dataRows as $angebot):
                         require __DIR__ . '/partials/angebot-card.php';
                     endforeach;
-                else:
-                    echo '<p class="keine-angebote">Keine Angebote entsprechen Ihren Kriterien.</p>';
-                endif; ?>
+                    else:
+                        echo '<p class="keine-angebote">Keine Angebote entsprechen Ihren Kriterien.</p>';
+                    endif; ?>
             </div>
         </section>
     </main>
