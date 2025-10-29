@@ -262,3 +262,46 @@ main {
   background-color: #e6e8ea;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
+
+.neues-angebot-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.angebot-summary-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.angebot-summary-card h3 a {
+    text-decoration: none;
+    color: #14363b;
+}
+
+.angebot-summary-card h3 a:hover {
+    text-decoration: underline;
+}
+
+.angebot-summary-details {
+    display: flex;
+    gap: 1rem;
+}
+
+.detail-box {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.detail-box p {
+    margin: 0;
+}

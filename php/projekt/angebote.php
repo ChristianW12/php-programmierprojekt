@@ -91,8 +91,8 @@ try {
                 <button type="submit" name="preisfilter" value="1">Preisspanne anwenden</button>
             </div>
         </form>
-        <form method="get" style="margin-top: 1rem;">
-            <button type="submit" name="neuesAngebot" class="angebot-erstellen-btn">Angebot erstellen</button>
+        <form method="get" class="neues-angebot-form">
+            <button type="submit" name="neuesAngebot" class="angebot-erstellen-btn">+</button>
         </form>
     </aside>
 
