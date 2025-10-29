@@ -8,6 +8,16 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 ✅ Datenbank anlegen
 
+Neue Aufgaben
+
+- angebote.php Seite umschreiben
+  Es sollen die Angebote in kleinem Format angezeigt werden, durch Klicken auf ein Angebot soll dieses Angebot vergrößert werden, damit alle Einzelheiten angezeigt werden können.
+  Dort soll es möglich sein, dass der Ersteller das Angebot bearbeiten oder löschen kann und ein x-beliebiger Nutzer kann dann dort auf Bieten klicken.
+  Dort sollen dann auch alle Bilder angezeigt werden, die vom Ersteller hochgeladen wurden
+
+
+========================================
+
 - Account löschen/erstellen (Melina)
 - Funktionalität "Jetzt loslegen" (Alex)
 - Neues Angebot hinzufügen (Alex)
