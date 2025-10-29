@@ -8,13 +8,13 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 ✅ Datenbank anlegen
 
-- Login fertig machen (Christian)
-- Filterung: Wenn auf Profil Männchen geclicked wird, dann Überprüfung ob eingeloggt, sonst zu extra Profilseite (Luca)
+- Account löschen/erstellen (Melina)
 - Funktionalität "Jetzt loslegen" (Alex) -> Brauchen wir den Button?
-- Neues Angebot hinzufügen mit Plus Button fixed darunter (Alex)
-- Bug Profil Seite (Melina)
-- Profilseite erstellen mit Abmelden, Account löschen, Accountdaten (Melina)
-- Feature für Bilder einfügen beim Angebot erstellen
+- Neues Angebot hinzufügen (Alex)
+- Neues Angebot hinzufügen Button (Luca)
+- Jetzt Bieten (Luca)
+- Feature für Bilder (Christian)
+
 ## Obligatorische Features
 
 - Artikel als Hauptentität: Titel, Text (HTML/Markdown), Bild, Beginn- und Endzeitpunkt der Auktion
