@@ -3,6 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require __DIR__ . '/php-code/Db.php';
+require 'php/db-connection.php';
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -16,16 +17,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
     $user_mail = $_POST['email'] ?? '';
     $user_password = $_POST['password'] ?? '';
 
-    // Datenbankverbindung herstellen
-    $dsn = 'mysql:dbname=auktion;host=db;port=3306';
-
-    // Sichergehen das eine Datenbankvebindung hergestellt werden kann
-    try{
-        $db = new Db($dsn, 'root', '');
-    } catch (PDOException $e){
-        echo 'Verbindungsfehler: ' . $e->getMessage();
-        exit;
-    }
+    // DB Verbindung aufbauen
+    $db = mitDBverbinden;
 
     // Benutzer in der Datenbank suchen
     $stmt = $db->prepare("select* from users where mail = :mail");
@@ -38,6 +31,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
         // Cookies richtig setzen für weiteres verwenden
         $_SESSION['loggedin'] = true;
         $_SESSION['user_mail'] = $user_from_db['mail'];
+        $_SESSION['user_id'] = $user_from_db['user_id'];
 
         // Redirect to the offers page after successful login
         header('Location: angebote.php');
