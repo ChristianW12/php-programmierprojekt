@@ -15,7 +15,7 @@
     * Datenbank haben 
  */
 class Filter {
-    
+     
     private $dbconnection;
     private $data;
 

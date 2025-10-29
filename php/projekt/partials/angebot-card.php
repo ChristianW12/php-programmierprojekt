@@ -12,9 +12,12 @@ if (!isset($angebot)) {
 
 $titel = htmlspecialchars($angebot['title'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 $beschreibung = htmlspecialchars($angebot['beschreibung'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-$startpreis = isset($angebot['startpreis'])
-    ? number_format((float) $angebot['startpreis'], 2, ',', '.') . ' €'
+$startpreisWert = isset($angebot['startpreis']) ? (float) $angebot['startpreis'] : null;
+$startpreis = $startpreisWert !== null
+    ? number_format($startpreisWert, 2, ',', '.') . ' €'
     : 'Preis unbekannt';
+
+$angebotId = isset($angebot['offer_id']) ? (int) $angebot['offer_id'] : null;
 
 $startDatum = 'Startdatum offen';
 if (!empty($angebot['start'])) {
@@ -51,5 +54,13 @@ if (!empty($angebot['ende'])) {
             <dd><?= $endeDatum ?></dd>
         </div>
     </dl>
-    <button type="button" class="bieten-button">Jetzt bieten</button>
+    <form method="get" action="angebot-bieten.php">
+        <?php if ($angebotId !== null): ?>
+            <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebotId, ENT_QUOTES, 'UTF-8') ?>">
+        <?php endif; ?>
+        <?php if ($startpreisWert !== null): ?>
+            <input type="hidden" name="startpreis" value="<?= htmlspecialchars(number_format($startpreisWert, 2, '.', ''), ENT_QUOTES, 'UTF-8') ?>">
+        <?php endif; ?>
+        <button type="submit" class="bieten-button">Jetzt bieten</button>
+    </form>
 </article>
