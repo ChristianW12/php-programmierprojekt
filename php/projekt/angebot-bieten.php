@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/php-code/Bid.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -12,7 +13,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
 
     if($bidAmount !== null && $bidEmail !== null && $offerId !== null && $startpreis !== null && $bidAmount > $startpreis) {
         $bid = new Bid($offerId, $bidAmount, $bidEmail);
-
+        $res = $bid->saveBid();
+        if($res === true) {
+            header("Location: angebote.php");
+            exit;
+        } else {
+            echo "Fehler beim Speichern des Gebots.";
+        }
     } 
 }
 ?>
