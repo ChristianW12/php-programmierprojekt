@@ -11,7 +11,6 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - Account löschen/erstellen (Melina)
 - Funktionalität "Jetzt loslegen" (Alex)
 - Neues Angebot hinzufügen (Alex)
-- Neues Angebot hinzufügen Button (Luca)
 - Jetzt Bieten (Luca)
 - Feature für Bilder (Christian)
 

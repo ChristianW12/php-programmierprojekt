@@ -34,7 +34,8 @@
 }
 
 .form-group input[type="text"],
-.form-group input[type="email"] {
+.form-group input[type="email"],
+.form-group input[type="number"] {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid #ccc;
