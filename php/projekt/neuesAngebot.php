@@ -51,7 +51,7 @@ if(isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin']) ) {
 
             <div class="form-gruppe">
                 <label for="startpreis">Startpreis (€):</label>
-                <input type="number" id="startpreis" name="startpreis" step="0.01" min="0" required>
+                <input type="number" id="startpreis" name="startpreis" step="0.01" min="0" max="99999999.99" required>
             </div>
 
             <div class="form-gruppe">
