@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 20. Okt 2025 um 07:55
+-- Erstellungszeit: 30. Okt 2025 um 18:16
 -- Server-Version: 11.5.2-MariaDB-ubu2404
 -- PHP-Version: 8.3.26
 
@@ -30,8 +30,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `bids` (
   `bid_id` bigint(20) UNSIGNED NOT NULL,
   `offer_id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `mail` varchar(255) NOT NULL,
   `price` decimal(10,2) NOT NULL,
+  `highest_price` tinyint(1) NOT NULL DEFAULT 0,
   `bid_time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -47,9 +48,69 @@ CREATE TABLE `offers` (
   `title` varchar(100) NOT NULL,
   `beschreibung` text DEFAULT NULL,
   `startpreis` decimal(10,2) NOT NULL,
-  `start` datetime NOT NULL,
+  `aktueller_preis` decimal(10,2) DEFAULT NULL,
+  `hoechstpreis` decimal(10,2) DEFAULT NULL,
+  `start` datetime NOT NULL DEFAULT current_timestamp(),
   `ende` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `offers`
+--
+
+INSERT INTO `offers` (`offer_id`, `user_id`, `title`, `beschreibung`, `startpreis`, `aktueller_preis`, `hoechstpreis`, `start`, `ende`) VALUES
+(1, 1, 'Vintage Kamera', 'Analoge Kamera in gutem Zustand, inkl. Tasche.', 25.00, NULL, NULL, '2025-10-15 09:00:00', '2025-11-01 12:00:00'),
+(2, 2, 'Gaming Headset', 'Over-Ear, Noise-Cancelling, kaum genutzt.', 30.00, NULL, NULL, '2025-10-15 11:15:00', '2025-10-30 18:00:00'),
+(3, 3, 'Sammlerfigur', 'Limitierte Edition, OVP.', 50.00, NULL, NULL, '2025-10-16 10:20:00', '2025-11-05 20:00:00'),
+(4, 4, 'Mountainbike 26\"', 'Guter Zustand, Alurahmen.', 120.00, NULL, NULL, '2025-10-16 14:40:00', '2025-11-20 15:00:00'),
+(5, 5, 'Bücherpaket', '10 Romane gemischter Genres.', 15.00, NULL, NULL, '2025-10-17 09:10:00', '2025-10-31 21:00:00'),
+(6, 6, 'Kaffeemaschine', 'Vollautomat mit Entkalker.', 80.00, NULL, NULL, '2025-10-17 15:55:00', '2025-11-10 11:00:00'),
+(7, 7, 'Smartwatch Series X', 'Mit Ladegerät und Armband.', 45.00, NULL, NULL, '2025-10-18 08:45:00', '2025-10-29 20:00:00'),
+(8, 8, 'LEGO Technik Set', 'Vollständig, inkl. Anleitung.', 70.00, NULL, NULL, '2025-10-18 13:30:00', '2025-11-02 13:00:00'),
+(9, 9, 'Schallplatten Mix', '10 Vinyls, Rock & Jazz.', 40.00, NULL, NULL, '2025-10-19 09:20:00', '2025-11-15 19:00:00'),
+(10, 1, 'Bürostuhl ergonomisch', 'Rückenfreundlich, höhenverstellbar.', 35.00, NULL, NULL, '2025-10-19 16:00:00', '2025-10-28 17:00:00'),
+(11, 2, 'Grafikkarte Mittelklasse', 'Läuft einwandfrei, mit OVP.', 95.00, NULL, NULL, '2025-10-20 10:05:00', '2025-11-25 18:00:00'),
+(12, 3, 'Küchenmaschine', 'Viel Zubehör, sauber.', 60.00, NULL, NULL, '2025-10-20 14:50:00', '2025-11-12 12:00:00'),
+(13, 4, 'Sneaker Größe 42', 'Kaum getragen, sauber.', 55.00, NULL, NULL, '2025-10-21 09:00:00', '2025-10-30 14:00:00'),
+(14, 5, 'Monitor 24 Zoll', 'Full HD, IPS-Panel.', 75.00, NULL, NULL, '2025-10-21 18:30:00', '2025-11-05 11:45:00'),
+(15, 6, 'Telefonanlage', 'Basis + 4 Mobilteile.', 25.00, NULL, NULL, '2025-10-22 08:40:00', '2025-11-10 12:00:00'),
+(16, 7, 'E-Gitarre', 'Einsteiger-Modell, inkl. Tasche.', 85.00, NULL, NULL, '2025-10-22 13:10:00', '2025-11-16 15:00:00'),
+(17, 8, 'Staubsauger Roboter', 'Mit Ladestation, funktionsfähig.', 120.00, NULL, NULL, '2025-10-23 09:15:00', '2025-11-17 10:00:00'),
+(18, 9, 'Action-Cam 4K', 'Wasserdichtes Gehäuse inkl.', 65.00, NULL, NULL, '2025-10-23 15:45:00', '2025-11-18 12:30:00'),
+(19, 1, 'Kindersitz Auto', 'ECE geprüft, sauber.', 30.00, NULL, NULL, '2025-10-24 11:00:00', '2025-11-08 09:00:00'),
+(20, 2, 'Campingkocher', 'Gaskocher, leicht, robust.', 20.00, NULL, NULL, '2025-10-24 17:20:00', '2025-11-05 08:00:00'),
+(21, 3, 'Blu-ray Sammlung', '20 Filme, verschiedene Genres.', 40.00, NULL, NULL, '2025-10-25 08:55:00', '2025-11-21 18:00:00'),
+(22, 4, 'Mikrofon USB', 'Podcast/Streaming geeignet.', 35.00, NULL, NULL, '2025-10-25 14:05:00', '2025-11-22 19:00:00'),
+(23, 5, 'Schreibtischlampe LED', 'Dimmbar, warm/kalt.', 18.00, NULL, NULL, '2025-10-26 10:30:00', '2025-11-10 20:00:00'),
+(24, 6, 'Fahrradhelm L', 'Unfallfrei, verstellbar.', 22.00, NULL, NULL, '2025-10-26 16:10:00', '2025-11-12 10:00:00'),
+(25, 7, 'Externe SSD 1TB', 'NVMe im Gehäuse, schnell.', 75.00, NULL, NULL, '2025-10-27 09:00:00', '2025-11-25 11:00:00'),
+(26, 8, 'Nintendo Switch Lite', 'Mit Tasche, guter Zustand.', 120.00, NULL, NULL, '2025-10-27 15:00:00', '2025-11-26 12:00:00'),
+(27, 9, 'Drohne Einsteiger', 'Mit Kamera, Ersatzpropeller.', 90.00, NULL, NULL, '2025-10-28 11:15:00', '2025-11-27 13:00:00'),
+(28, 1, 'Winterjacke M', 'Warm, wasserabweisend.', 28.00, NULL, NULL, '2025-10-28 17:45:00', '2025-11-18 14:00:00'),
+(29, 2, 'Rucksack 30L', 'Laptopfach, regenfest.', 22.00, NULL, NULL, '2025-10-29 08:50:00', '2025-11-15 15:00:00'),
+(30, 3, 'PC-Gehäuse ATX', 'Mit 3 Lüftern, schwarz.', 45.00, NULL, NULL, '2025-10-29 12:20:00', '2025-11-20 16:00:00'),
+(31, 4, 'Keramikmesser Set', '3-teilig, sehr scharf.', 20.00, NULL, NULL, '2025-10-15 10:00:00', '2025-11-21 09:00:00'),
+(32, 5, 'Gaming Maus', 'RGB, viele Tasten.', 25.00, NULL, NULL, '2025-10-16 12:30:00', '2025-11-22 10:00:00'),
+(33, 6, 'Bluetooth Lautsprecher', 'Wasserfest, kräftiger Sound.', 30.00, NULL, NULL, '2025-10-17 11:40:00', '2025-11-23 11:00:00'),
+(34, 7, 'Skihelm M', 'Mit Visier, kaum genutzt.', 40.00, NULL, NULL, '2025-10-18 09:50:00', '2025-11-24 12:00:00'),
+(35, 8, 'LED-Beamer', 'Wohnzimmer-tauglich, HDMI.', 85.00, NULL, NULL, '2025-10-19 14:15:00', '2025-11-25 13:00:00'),
+(36, 9, 'Fitness Tracker', 'Herzfrequenz, GPS.', 28.00, NULL, NULL, '2025-10-20 13:00:00', '2025-11-26 14:00:00'),
+(37, 1, 'Küchenwaage', 'Digital, präzise.', 12.00, NULL, NULL, '2025-10-21 08:30:00', '2025-11-27 15:00:00'),
+(38, 2, 'Esstisch 160cm', 'Eiche Dekor, mit Gebrauchsspuren.', 60.00, NULL, NULL, '2025-10-22 10:50:00', '2025-12-01 16:00:00'),
+(39, 3, 'Kinderspiel Küche', 'Zubehör inkl.', 25.00, NULL, NULL, '2025-10-23 16:25:00', '2025-12-02 17:00:00'),
+(40, 4, 'Drehstuhl', 'Mesh-Rückenlehne.', 35.00, NULL, NULL, '2025-10-24 09:45:00', '2025-12-03 18:00:00'),
+(41, 5, 'Schreibtisch 120cm', 'Weiß, höhenverstellbar (manuell).', 55.00, NULL, NULL, '2025-10-25 11:10:00', '2025-12-04 19:00:00'),
+(42, 6, 'Fotodrucker', 'A6, inkl. 20 Blatt.', 45.00, NULL, NULL, '2025-10-26 15:35:00', '2025-12-05 20:00:00'),
+(43, 7, 'Tastatur mechanisch', 'Klicky Switches, DE-Layout.', 35.00, NULL, NULL, '2025-10-27 10:00:00', '2025-12-06 09:30:00'),
+(44, 8, 'Katzenkratzbaum', '170cm, stabil.', 40.00, NULL, NULL, '2025-10-28 13:50:00', '2025-12-07 10:30:00'),
+(45, 9, 'Luftreiniger', 'HEPA-Filter, leise.', 50.00, NULL, NULL, '2025-10-29 16:00:00', '2025-12-08 11:30:00'),
+(46, 1, 'Winterreifen Satz 16\"', 'Mit Felgen, Profil gut.', 120.00, NULL, NULL, '2025-10-15 17:00:00', '2025-12-09 12:30:00'),
+(47, 2, 'Raclette Grill', 'Für 8 Personen.', 25.00, NULL, NULL, '2025-10-16 18:00:00', '2025-12-10 13:30:00'),
+(48, 3, 'Holzregal', '3 Ebenen, stabil.', 20.00, NULL, NULL, '2025-10-17 19:00:00', '2025-12-11 14:30:00'),
+(49, 4, 'Smartphone Zubehör Set', 'Hülle, Panzerglas, Ladegerät.', 15.00, NULL, NULL, '2025-10-18 20:00:00', '2025-12-12 15:30:00'),
+(50, 5, 'Koffer 65L', 'Hartschale, leicht.', 35.00, NULL, NULL, '2025-10-19 21:00:00', '2025-12-13 16:30:00'),
+(51, 10, 'TestAngebot', 'Das ist nur ein Test Angebot', 25.00, NULL, NULL, '2025-10-30 18:08:51', '2025-11-05 19:08:00'),
+(52, 10, 'Test2', 'Das ist das zweite Test Angebot', 50.00, NULL, NULL, '2025-10-30 18:11:37', '2025-11-07 19:11:00');
 
 -- --------------------------------------------------------
 
@@ -81,6 +142,22 @@ CREATE TABLE `users` (
   `ort` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Daten für Tabelle `users`
+--
+
+INSERT INTO `users` (`user_id`, `name`, `mail`, `password`, `is_admin`, `plz`, `str`, `ort`) VALUES
+(1, 'max', 'max.mustermann@mail.de', 'q4Yp9X', 0, '70173', 'Königstr. 10', 'Stuttgart'),
+(2, 'anna', 'anna.klein@mail.de', 'H7Gz3wK', 0, '20095', 'Mönckebergstr. 2', 'Hamburg'),
+(3, 'lukas', 'lukas.schmidt@mail.de', 'Lk9dP3aB', 0, '50667', 'Domplatz 1', 'Köln'),
+(4, 'sarah', 'sarah.meier@mail.de', 'pR8mZ2', 0, '80331', 'Marienplatz 8', 'München'),
+(5, 'tobias', 'tobias.bauer@mail.de', 'X2tQ9fLk', 0, '04109', 'Augustusplatz 5', 'Leipzig'),
+(6, 'julia', 'julia.hoff@mail.de', 'n7Wk4Vb2', 0, '01067', 'Altmarkt 3', 'Dresden'),
+(7, 'daniel', 'daniel.weber@mail.de', 'Jm3dT8pQ', 0, '80336', 'Theresienstr. 4', 'München'),
+(8, 'laura', 'laura.berger@mail.de', 'Zp9rLm4', 0, '60311', 'Römerberg 9', 'Frankfurt'),
+(9, 'felix', 'felix.hart@mail.de', 'bT6qP2xM', 0, '28195', 'Marktplatz 7', 'Bremen'),
+(10, 'Christian', 'christian@mail.com', '$2y$12$mCLLlH8F9dYF7R2KIzJ0ou2DhReT.0CAuKwK5yL/hFnHfUgWfZp16', 1, '12345', 'Hauptstr. 8', 'Stuttgart');
+
 -- --------------------------------------------------------
 
 --
@@ -105,8 +182,7 @@ CREATE TABLE `user_comment` (
 --
 ALTER TABLE `bids`
   ADD PRIMARY KEY (`bid_id`),
-  ADD KEY `offer_id` (`offer_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `offer_id` (`offer_id`);
 
 --
 -- Indizes für die Tabelle `offers`
@@ -127,8 +203,7 @@ ALTER TABLE `offer_pic`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `mail` (`mail`),
-  ADD UNIQUE KEY `name` (`name`);
+  ADD UNIQUE KEY `mail` (`mail`);
 
 --
 -- Indizes für die Tabelle `user_comment`
@@ -146,13 +221,13 @@ ALTER TABLE `user_comment`
 -- AUTO_INCREMENT für Tabelle `bids`
 --
 ALTER TABLE `bids`
-  MODIFY `bid_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `bid_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT für Tabelle `offers`
 --
 ALTER TABLE `offers`
-  MODIFY `offer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `offer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT für Tabelle `offer_pic`
@@ -164,7 +239,7 @@ ALTER TABLE `offer_pic`
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT für Tabelle `user_comment`
@@ -180,8 +255,7 @@ ALTER TABLE `user_comment`
 -- Constraints der Tabelle `bids`
 --
 ALTER TABLE `bids`
-  ADD CONSTRAINT `bids_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offers` (`offer_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `bids_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `bids_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offers` (`offer_id`) ON DELETE CASCADE;
 
 --
 -- Constraints der Tabelle `offers`
