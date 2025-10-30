@@ -1,4 +1,4 @@
-.login-form {
+.register-form {
     margin-top: 2rem;
     display: flex;
     flex-direction: column;
@@ -8,14 +8,14 @@
     margin-right: auto;
     text-align: left;
 }
-.login-form div {
+.register-form div {
     display: flex;
     flex-direction: column;
 }
-.login-form label {
+.register-form label {
     margin-bottom: 0.5rem;
 }
-.login-form input {
+.register-form input {
     padding: 0.5rem;
     border: 1px solid var(--mint-dark);
     border-radius: 0.25rem;

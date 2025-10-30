@@ -27,7 +27,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
     $user_from_db = $stmt->fetch(Db::FETCH_ASSOC);
 
     // Passwort überprüfen
-    if($user_from_db && $user_password === $user_from_db['password'] ){
+    if($user_from_db && password_verify($user_password, $user_from_db['password']) ){
         // Cookies richtig setzen für weiteres verwenden
         $_SESSION['loggedin'] = true;
         $_SESSION['user_mail'] = $user_from_db['mail'];
@@ -51,35 +51,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Auktify | Login</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <style>
-        .login-form {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: left;
-        }
-        .login-form div {
-            display: flex;
-            flex-direction: column;
-        }
-        .login-form label {
-            margin-bottom: 0.5rem;
-        }
-        .login-form input {
-            padding: 0.5rem;
-            border: 1px solid var(--mint-dark);
-            border-radius: 0.25rem;
-        }
-        .error {
-            color: #d93025;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-    </style>
+    <link rel="stylesheet" href="styles/login.css">
 </head>
 <body>
 <?php require __DIR__ . '/partials/header.php'; ?>
@@ -105,6 +77,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
                     <button type="submit" class="primary-action" name="login_submit">Anmelden</button>
                 </div>
             </form>
+            <p>Neu hier? <a href="register.php">Konto erstellen</a></p>
         </div>
     </section>
 </main>

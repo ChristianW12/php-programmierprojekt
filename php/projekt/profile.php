@@ -50,6 +50,10 @@ $verlinkungHomepage = 'index.php';
                 <hr>
                 <h3><strong>Adresse</strong></h3>
                 <div class="form-group-display">
+                    <label>Straße</label>
+                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['str']); ?></div>
+                </div>
+                <div class="form-group-display">
                     <label>Ort</label>
                     <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['ort']); ?></div>
                 </div>
@@ -57,14 +61,11 @@ $verlinkungHomepage = 'index.php';
                     <label>Postleitzahl</label>
                     <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['plz']); ?></div>
                 </div>
-                <div class="form-group-display">
-                    <label>Straße</label>
-                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['str']); ?></div>
+                <div class="profile-actions">
+                    <a href="profile-edit.php" class="btn">Profil bearbeiten</a>
+                    <a href="logout.php" class="btn btn-danger">Abmelden</a>
+                    <a href="delete-account.php" class="btn btn-danger">Konto löschen</a>
                 </div>
-            </div>
-            <div class="profile-actions">
-                <a href="profile-edit.php" class="btn">Profil bearbeiten</a>
-                <a href="logout.php" class="btn btn-danger">Abmelden</a>
             </div>
         </section>
     </main>

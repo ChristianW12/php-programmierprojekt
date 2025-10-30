@@ -29,9 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Längenprüfungen, Pflichtfelder)
     $name = $_POST['name'];
     $mail = $_POST['mail'];
-    $ort = $_POST['ort'];
     $plz = $_POST['plz'];
     $strasse = $_POST['strasse'];
+    $ort = $_POST['ort'];
 
 
     // Prepared Statement für das Update; verhindert SQL-Injection
@@ -83,16 +83,16 @@ $verlinkungHomepage = 'index.php';
                     <hr>
                     <h3><strong>Adresse</strong></h3>
                     <div class="form-group">
+                        <label for="strasse">Straße</label>
+                        <input id="strasse" type="text" name="strasse" placeholder="Ihre Straße und Hausnummer" value="<?php echo htmlspecialchars($user_from_db['str']); ?>">
+                    </div>
+                    <div class="form-group">
                         <label for="ort">Ort</label>
                         <input id="ort" type="text" name="ort" placeholder="Ihr Wohnort" value="<?php echo htmlspecialchars($user_from_db['ort']); ?>">
                     </div>
                     <div class="form-group">
                         <label for="plz">Postleitzahl</label>
                         <input id="plz" type="text" name="plz" placeholder="Ihre Postleitzahl" value="<?php echo htmlspecialchars($user_from_db['plz']); ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="strasse">Straße</label>
-                        <input id="strasse" type="text" name="strasse" placeholder="Ihre Straße und Hausnummer" value="<?php echo htmlspecialchars($user_from_db['str']); ?>">
                     </div>
                     <div class="profile-actions">
                         <button type="submit" class="btn">Speichern</button>
