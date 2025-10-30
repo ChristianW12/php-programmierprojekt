@@ -40,6 +40,11 @@ try {
         }
     }
 
+    if(isset($_GET['q']) && !empty(trim($_GET['q']))) {
+        $suchbegriff = trim($_GET['q']);
+        $dataRows = $filter->nachSuche($suchbegriff);
+    }
+
 } catch (PDOException $e) {
     echo 'Verbindungsfehler: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
 }

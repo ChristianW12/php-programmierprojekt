@@ -57,18 +57,26 @@ class Filter {
         return $this->data;
     }
 
-    public function nachSuche($suchbegriff) {
-        if(empty($this->data)) {
-            $this->getData();
-        }
-        if(!empty($this->data)){
-            $this->data = array_filter($this->data, function($item) use ($suchbegriff) {
-                return stripos($item['title'], $suchbegriff) !== false || stripos($item['beschreibung'], $suchbegriff) !== false;
-            });
-        }
-        return $this->data;
-
+public function nachSuche($suchbegriff) {
+    if (empty($this->data)) {
+        $this->getData();
     }
+    if (!empty($this->data)) {
+        $suchbegriff = trim(strtolower($suchbegriff));
+        $this->data = array_filter($this->data, function($item) use ($suchbegriff) {
+            $title = strtolower($item['title'] ?? '');
+            $beschreibung = strtolower($item['beschreibung'] ?? '');
+            if (stripos($title, $suchbegriff) !== false || stripos($beschreibung, $suchbegriff) !== false) {
+                return true;
+            }
+            $distanceTitle = levenshtein($suchbegriff, $title);
+            $distanceBeschreibung = levenshtein($suchbegriff, $beschreibung);
+            $threshold = 2;
+            return ($distanceTitle <= $threshold || $distanceBeschreibung <= $threshold);
+        });
+    }
+    return $this->data;
+}
 
     public function nachBeliebteste() {
         $query = 'SELECT o.*, COUNT(b.bid_id) AS bid_count FROM offers o LEFT JOIN bids b ON o.offer_id = b.offer_id GROUP BY o.offer_id ORDER BY bid_count DESC';

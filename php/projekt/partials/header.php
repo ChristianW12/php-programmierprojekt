@@ -1,14 +1,11 @@
 <?php
-// Session starten, falls noch nicht geschehen
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Standard-Links definieren
 $verlinkungHomepage = $verlinkungHomepage ?? 'index.php';
 $verlinkungAngebot = $verlinkungAngebot ?? 'angebote.php';
 
-// Ziellink für das Benutzer-Icon basierend auf dem Login-Status festlegen
 $userIconLink = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true ? 'profile.php' : 'login.php';
 ?>
 <header class="site-header">
@@ -19,9 +16,16 @@ $userIconLink = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true ?
         <a href="<?= $verlinkungHomepage ?>#about">Über uns</a>
         <a href="<?= $verlinkungAngebot ?>">Angebote</a>
     </nav>
-    <form class="search" action="#">
+    <form class="search" action="angebote.php" method="get">
         <label class="sr-only" for="search">Suche</label>
-        <input id="search" type="search" name="q" placeholder="Suche" autocomplete="off">
+        <input 
+            id="search" 
+            type="search" 
+            name="q" 
+            placeholder="Suche" 
+            autocomplete="off"
+            value="<?= htmlspecialchars($_GET['q'] ?? '', ENT_QUOTES, 'UTF-8')?>"
+        >
         <button type="submit">Suchen</button>
     </form>
     <div class="user-actions">
@@ -29,4 +33,5 @@ $userIconLink = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true ?
             <span>👤</span>
         </a>
     </div>
+    <script src="scripts/app.js"></script>
 </header>
