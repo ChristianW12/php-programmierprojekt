@@ -11,19 +11,19 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 Neue Aufgaben
 
-- angebote.php Seite umschreiben
-  Es sollen die Angebote in kleinem Format angezeigt werden, durch Klicken auf ein Angebot soll dieses Angebot vergrößert werden, damit alle Einzelheiten angezeigt werden können.
-  Dort soll es möglich sein, dass der Ersteller das Angebot bearbeiten oder löschen kann und ein x-beliebiger Nutzer kann dann dort auf Bieten klicken.
-  Dort sollen dann auch alle Bilder angezeigt werden, die vom Ersteller hochgeladen wurden
-
+- neue Seite für Angebot detailiert ()
+- Bilder hochladen können bei Angebot erstellen (Christian)
+- Bilder bei detalierte Seite (Christian)
+- Cover Bild bei angebote.php anzeigen lassen ()
+- Beschreibung bei angebote.php Entfernen (Melina) 
+- angebot-card.php an neues Format anpassen => Start und Ende nebeneinander + Preis Feld so lang machen wie "Jetzt Bieten" (Melina)
+- Footer aktualisieren () GANZ AM ENDE ERST
+- User bearbeiten ihr Angebot (Luca)
+- Filter aktualisieren => Meine eigenene Angebote anzeigen lassen (Luca)
+- Tags zu angeboten hinzufügen + Filter um Tags/Kategorien erweitern ()
 
 ========================================
 
-- Funktionalität "Jetzt loslegen" (Alex)
-- Neues Angebot hinzufügen (Alex)
-- Jetzt Bieten (Luca)
-- Feature für Bilder (Christian)
-- Änderungen am Passwort vornehmen können, falls vergessen o.Ä.
 - Wenn falsche Daten eingegeben werden, dann Warnhinweis o.Ä. (Aktuell: fehlerhafte DB wird angezeigt)
 
 ## Obligatorische Features
