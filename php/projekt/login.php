@@ -40,8 +40,22 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
                 $_SESSION['loggedin'] = true;
                 $_SESSION['user_mail'] = $user_from_db['mail'];
                 $_SESSION['user_id'] = $user_from_db['user_id'];
-                header('Location: angebote.php');
-                exit();
+
+                // Switch zum zurückkommen auf die letzte besuchte Seite
+                switch ($_SESSION['last_site']) {
+                case 'profil':
+                    header("Location: profile.php");
+                    exit();
+                    break;
+                case 'angebot erstellen':
+                    header('Location: neuesAngebot.php');
+                    exit();
+                    break;
+                default:  
+                    header("Location: index.php");
+                    exit();
+                    break;
+                }
             } else {
                 $login_error = "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
             }
