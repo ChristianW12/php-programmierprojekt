@@ -15,8 +15,7 @@
     <link rel="stylesheet" href="styles/styles.css">
 
     <style>
-        /* Stellt sicher, dass der Seitenname die Arvo‑Schrift verwendet */
-        .site-title, .logo, .brand, #logo, h1 {
+        h1 {
             font-family: 'Arvo', serif;
         }
     </style>

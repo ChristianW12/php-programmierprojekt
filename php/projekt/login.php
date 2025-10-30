@@ -27,17 +27,38 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
     $user_from_db = $stmt->fetch(Db::FETCH_ASSOC);
 
     // Passwort überprüfen
-    if($user_from_db && password_verify($user_password, $user_from_db['password']) ){
-        // Cookies richtig setzen für weiteres verwenden
-        $_SESSION['loggedin'] = true;
-        $_SESSION['user_mail'] = $user_from_db['mail'];
-        $_SESSION['user_id'] = $user_from_db['user_id'];
-
-        // Redirect to the offers page after successful login
-        header('Location: angebote.php');
-        exit();
-
-    }else{
+    if($user_from_db) {
+        // Kontrolle, ob Passwort gehashed ist
+        if (password_needs_rehash($user_from_db['password'], PASSWORD_DEFAULT)) {
+            // wenn nicht gehashed, direkt vergleichen
+            if ($user_password === $user_from_db['password']) {
+                // Hash und Update des Passworts in der DB
+                $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
+                $update_stmt = $db->prepare("UPDATE users SET password = :password WHERE user_id = :user_id");
+                $update_stmt->execute([':password' => $hashed_password, ':user_id' => $user_from_db['user_id']]);
+                // Login erfolgreich
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user_mail'] = $user_from_db['mail'];
+                $_SESSION['user_id'] = $user_from_db['user_id'];
+                header('Location: angebote.php');
+                exit();
+            } else {
+                $login_error = "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
+            }
+        } else {
+            // wenn schon gehashed, normales Passwort-Verify
+            if (password_verify($user_password, $user_from_db['password'])) {
+                // Login successful
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user_mail'] = $user_from_db['mail'];
+                $_SESSION['user_id'] = $user_from_db['user_id'];
+                header('Location: angebote.php');
+                exit();
+            } else {
+                $login_error = "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
+            }
+        }
+    } else {
         $login_error = "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
     }
 }
