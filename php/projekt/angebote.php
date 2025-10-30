@@ -34,7 +34,7 @@ try {
             header("Location: neuesAngebot.php");
             exit;
         } else {
-            $_SESSION['last_site'] = 'angebote';
+            $_SESSION['last_site'] = 'angebot erstellen';
             header("Location: login.php");
             exit;
         }

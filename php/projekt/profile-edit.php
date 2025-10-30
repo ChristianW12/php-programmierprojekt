@@ -48,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Session-E-Mail aktualisieren, falls der Benutzer seine Mailadresse geändert hat.
     $_SESSION['user_mail'] = $mail;
 
-    header('Location: angebote.php');
+    // Zurückschicken auf die Profil Seite
+    header('Location: profile.php');
     exit;
 }
 
