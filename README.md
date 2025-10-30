@@ -7,6 +7,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 ## TODO
 
 ✅ Datenbank anlegen
+✅ Account löschen/erstellen (Melina)
 
 Neue Aufgaben
 
@@ -18,11 +19,12 @@ Neue Aufgaben
 
 ========================================
 
-- Account löschen/erstellen (Melina)
 - Funktionalität "Jetzt loslegen" (Alex)
 - Neues Angebot hinzufügen (Alex)
 - Jetzt Bieten (Luca)
 - Feature für Bilder (Christian)
+- Änderungen am Passwort vornehmen können, falls vergessen o.Ä.
+- Wenn falsche Daten eingegeben werden, dann Warnhinweis o.Ä. (Aktuell: fehlerhafte DB wird angezeigt)
 
 ## Obligatorische Features
 
