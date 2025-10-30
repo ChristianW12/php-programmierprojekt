@@ -90,8 +90,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
         $login_error = "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
     }
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="de">
