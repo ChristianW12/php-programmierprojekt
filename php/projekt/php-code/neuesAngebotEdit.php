@@ -32,7 +32,7 @@ class neuesAngebotEdit
 
             if (move_uploaded_file($file_input['tmp_name'], $ziel_pfad)) {
                 // Speichere den Bildpfad in der Datenbank
-                $stmt = $this->db->prepare('INSERT INTO offer_images (offer_id, image_path, is_cover) VALUES (?, ?, ?)');
+                $stmt = $this->db->prepare('INSERT INTO offer_pic (offer_id, path, is_cover) VALUES (?, ?, ?)');
                 $stmt->execute([$neue_angebot_id, $neuer_dateiname, (int)$is_cover]);
             }
         }
@@ -50,7 +50,7 @@ class neuesAngebotEdit
 
                     if (move_uploaded_file($tmp_name, $ziel_pfad)) {
                         // Speichere den Bildpfad in der Datenbank (is_cover = 0)
-                        $stmt = $this->db->prepare('INSERT INTO offer_images (offer_id, image_path, is_cover) VALUES (?, ?, ?)');
+                        $stmt = $this->db->prepare('INSERT INTO offer_pic (offer_id, path, is_cover) VALUES (?, ?, ?)');
                         $stmt->execute([$neue_angebot_id, $neuer_dateiname, 0]);
                     }
                 }

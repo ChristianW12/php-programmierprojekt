@@ -22,6 +22,11 @@ $angebot = $stmt_angebot->fetch(PDO::FETCH_ASSOC);
 
 if (!$angebot) {
     $error_message = "Das angeforderte Angebot konnte nicht gefunden werden.";
+} else {
+    // 3. Bilder zum Angebot aus der Datenbank abfragen (Tabelle `offer_pic`)
+    $stmt_images = $db->prepare('SELECT * FROM offer_pic WHERE offer_id = :id ORDER BY is_cover DESC');
+    $stmt_images->execute([':id' => $angebot_id]);
+    $images = $stmt_images->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Helper-Funktion zum Formatieren von Daten
@@ -59,42 +64,56 @@ function formatPrice($price) {
         <?php if (isset($error_message)): ?>
             <p><?php echo $error_message; ?></p>
         <?php elseif ($angebot): ?>
-            <div class="angebot-details">
-                <h1><?php echo htmlspecialchars($angebot['title']); ?></h1>
+            <div class="detail-wrapper">
+                <div class="detail-content">
+                    <div class="angebot-details">
+                        <h1><?php echo htmlspecialchars($angebot['title']); ?></h1>
 
-                <p class="beschreibung">
-                    <?php echo nl2br(htmlspecialchars($angebot['beschreibung'])); ?>
-                </p>
+                        <p class="beschreibung">
+                            <?php echo nl2br(htmlspecialchars($angebot['beschreibung'])); ?>
+                        </p>
 
-                <dl class="angebot-meta">
-                    <div class="meta-item">
-                        <dt>Startpreis</dt>
-                        <dd><?php echo formatPrice($angebot['startpreis']); ?></dd>
+                        <dl class="angebot-meta">
+                            <div class="meta-item">
+                                <dt>Startpreis</dt>
+                                <dd><?php echo formatPrice($angebot['startpreis']); ?></dd>
+                            </div>
+                            <div class="meta-item">
+                                <dt>Auktionsstart</dt>
+                                <dd><?php echo formatDate($angebot['start']); ?></dd>
+                            </div>
+                            <div class="meta-item">
+                                <dt>Auktionsende</dt>
+                                <dd><?php echo formatDate($angebot['ende']); ?></dd>
+                            </div>
+                        </dl>
+                        
+                        <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $angebot['user_id']): ?>
+                            <div class="owner-actions">
+                                <a href="#" class="button">Angebot bearbeiten</a>
+                                <a href="#" class="button button-danger">Angebot löschen</a>
+                            </div>
+                        <?php else: ?>
+                            <div class="bidding-action">
+                                <form method="get" action="angebot-bieten.php">
+                                    <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebot['offer_id'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <button type="submit" class="bieten-button">Jetzt bieten</button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                    <div class="meta-item">
-                        <dt>Auktionsstart</dt>
-                        <dd><?php echo formatDate($angebot['start']); ?></dd>
+                </div>
+
+                <?php if (!empty($images)): ?>
+                    <div class="detail-images">
+                        <h3>Bilder</h3>
+                        <?php foreach ($images as $image): ?>
+                            <img src="bilder/<?php echo htmlspecialchars($image['path']); ?>" alt="Bild für <?php echo htmlspecialchars($angebot['title']); ?>">
+                        <?php endforeach; ?>
                     </div>
-                    <div class="meta-item">
-                        <dt>Auktionsende</dt>
-                        <dd><?php echo formatDate($angebot['ende']); ?></dd>
-                    </div>
-                                </dl>
-                
-                                                <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $angebot['user_id']): ?>
-                                                    <div class="owner-actions">
-                                                        <a href="#" class="button">Angebot bearbeiten</a>
-                                                        <a href="#" class="button button-danger">Angebot löschen</a>
-                                                    </div>
-                                                <?php else: ?>
-                                                    <div class="bidding-action">
-                                                        <form method="get" action="angebot-bieten.php">
-                                                            <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebot['offer_id'], ENT_QUOTES, 'UTF-8') ?>">
-                                                            <button type="submit" class="bieten-button">Jetzt bieten</button>
-                                                        </form>
-                                                    </div>
-                                                <?php endif; ?>                                
-                            </div>        <?php endif; ?>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </main>
 
