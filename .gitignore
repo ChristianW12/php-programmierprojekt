@@ -11,6 +11,8 @@
 /data/*
 !/data/**/.gitkeep
 
+/php/projekt/bilder
+
 !/php/**/.gitkeep
 !/php/phpinfo.php
 
