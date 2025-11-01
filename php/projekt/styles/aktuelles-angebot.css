@@ -1,0 +1,65 @@
+.angebot-detail-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: 550px; /* Feste Höhe für den Hauptcontainer */
+    overflow-y: auto; /* Scrollbar hinzufügen, falls Inhalt überläuft */
+}
+.angebot-details h1 {
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+.angebot-details .beschreibung {
+    line-height: 1.6;
+    margin: 1.5rem 0;
+}
+.angebot-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.meta-item {
+    background-color: #fff;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+.bidding-action {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+.meta-item dt {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+.meta-item dd {
+    margin-left: 0;
+    font-size: 1.1rem;
+}
+.owner-actions {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+.owner-actions .button {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+.owner-actions .button-danger {
+    background-color: #dc3545;
+}

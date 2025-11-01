@@ -38,8 +38,9 @@ if (!empty($angebot['ende'])) {
 }
 ?>
 <article class="angebot-card">
-    <h3 class="angebot-title"><?= $titel ?></h3>
-    <p class="angebot-description"><?= $beschreibung ?></p>
+    <h3 class="angebot-title">
+        <a href="aktuelles-angebot.php?id=<?= $angebotId ?>"><?= $titel ?></a>
+    </h3>
     <dl class="angebot-meta">
         <div>
             <dt>Startpreis</dt>

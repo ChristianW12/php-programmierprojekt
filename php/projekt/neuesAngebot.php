@@ -9,10 +9,25 @@ require_once 'php-code/neuesAngebotEdit.php';
 
 $db = mitDBverbinden();
 
-if(isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin']) ) {
+if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     $angebotNeu = new neuesAngebotEdit($db);
-    $angebotNeu->angebotErstellen($_SESSION['user_id'], $_POST['titel'], $_POST['beschreibung'], (float)$_POST['startpreis'], $_POST['enddatum'], $db);
-    $lastInsertId = Db::lastInsertId();
+    // 1. Angebot erstellen und die neue ID in einer Variable speichern
+    $neue_angebot_id = $angebotNeu->angebotErstellen($_SESSION['user_id'], $_POST['titel'], $_POST['beschreibung'], (float)$_POST['startpreis'], $_POST['enddatum'], $db);
+
+    // --- BILD-VERARBEITUNG ---
+
+    // 2. Upload-Verzeichnis definieren und ggf. erstellen
+    $upload_dir = __DIR__ . '/bilder/';
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+
+    // 3. Cover-Bild und weitere Bilder über die Methoden der Klasse verarbeiten
+    $angebotNeu->bildVerarbeiten($_FILES['cover_bild'], $neue_angebot_id, $upload_dir, true);
+    $angebotNeu->bilderVerarbeiten($_FILES['angebot_bilder'], $neue_angebot_id, $upload_dir);
+
+
+    // 4. Weiterleitung nach erfolgreicher Erstellung
     header('Location: angebote.php');
     exit;
 
@@ -46,9 +61,13 @@ if(isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin']) ) {
             </div>
 
             <div class="form-gruppe">
-                <label for="bilder">Bilder hochladen:</label>
-                <input type="files" id="cover_bild" name="cover_bild" placeholder="Cover Bild einfügen"></br>
-                <input type="files" id="bilder[]" name="angebot_bild" placeholder="Weitere Bilder einfügen">
+                <label for="cover_bild">Cover-Bild:</label>
+                <input type="file" id="cover_bild" name="cover_bild" accept="image/*">
+            </div>
+
+            <div class="form-gruppe">
+                <label for="angebot_bilder">Weitere Bilder:</label>
+                <input type="file" id="angebot_bilder" name="angebot_bilder[]" accept="image/*" multiple>
             </div>
 
             <div class="form-gruppe">
