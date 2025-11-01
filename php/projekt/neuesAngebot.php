@@ -12,6 +12,7 @@ $db = mitDBverbinden();
 if(isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin']) ) {
     $angebotNeu = new neuesAngebotEdit($db);
     $angebotNeu->angebotErstellen($_SESSION['user_id'], $_POST['titel'], $_POST['beschreibung'], (float)$_POST['startpreis'], $_POST['enddatum'], $db);
+    $lastInsertId = Db::lastInsertId();
     header('Location: angebote.php');
     exit;
 
@@ -38,10 +39,16 @@ if(isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin']) ) {
         <h1>Neues Angebot erstellen</h1>
         <hr>
         </br>
-        <form action="neuesAngebot.php" method="post" class="angebot-formular">
+        <form action="neuesAngebot.php" method="post" class="angebot-formular" enctype="multipart/form-data">
             <div class="form-gruppe">
                 <label for="titel">Titel des Angebots:</label>
                 <input type="text" id="titel" name="titel" placeholder="z.B. Samsung A52" required>
+            </div>
+
+            <div class="form-gruppe">
+                <label for="bilder">Bilder hochladen:</label>
+                <input type="files" id="cover_bild" name="cover_bild" placeholder="Cover Bild einfügen"></br>
+                <input type="files" id="bilder[]" name="angebot_bild" placeholder="Weitere Bilder einfügen">
             </div>
 
             <div class="form-gruppe">
