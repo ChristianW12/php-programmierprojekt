@@ -40,6 +40,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
                 $_SESSION['loggedin'] = true;
                 $_SESSION['user_mail'] = $user_from_db['mail'];
                 $_SESSION['user_id'] = $user_from_db['user_id'];
+                $_SESSION['is_admin'] = $user_from_db['is_admin'];
 
                 // Switch zum zurückkommen auf die letzte besuchte Seite
                 switch ($_SESSION['last_site']) {
@@ -66,6 +67,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
                 $_SESSION['loggedin'] = true;
                 $_SESSION['user_mail'] = $user_from_db['mail'];
                 $_SESSION['user_id'] = $user_from_db['user_id'];
+                $_SESSION['is_admin'] = $user_from_db['is_admin'];
 
                 // Switch zum zurückkommen auf die letzte besuchte Seite
                 switch ($_SESSION['last_site']) {

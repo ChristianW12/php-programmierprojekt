@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 30. Okt 2025 um 18:16
+-- Erstellungszeit: 01. Nov 2025 um 13:13
 -- Server-Version: 11.5.2-MariaDB-ubu2404
 -- PHP-Version: 8.3.26
 
@@ -108,9 +108,7 @@ INSERT INTO `offers` (`offer_id`, `user_id`, `title`, `beschreibung`, `startprei
 (47, 2, 'Raclette Grill', 'Für 8 Personen.', 25.00, NULL, NULL, '2025-10-16 18:00:00', '2025-12-10 13:30:00'),
 (48, 3, 'Holzregal', '3 Ebenen, stabil.', 20.00, NULL, NULL, '2025-10-17 19:00:00', '2025-12-11 14:30:00'),
 (49, 4, 'Smartphone Zubehör Set', 'Hülle, Panzerglas, Ladegerät.', 15.00, NULL, NULL, '2025-10-18 20:00:00', '2025-12-12 15:30:00'),
-(50, 5, 'Koffer 65L', 'Hartschale, leicht.', 35.00, NULL, NULL, '2025-10-19 21:00:00', '2025-12-13 16:30:00'),
-(51, 10, 'TestAngebot', 'Das ist nur ein Test Angebot', 25.00, NULL, NULL, '2025-10-30 18:08:51', '2025-11-05 19:08:00'),
-(52, 10, 'Test2', 'Das ist das zweite Test Angebot', 50.00, NULL, NULL, '2025-10-30 18:11:37', '2025-11-07 19:11:00');
+(50, 5, 'Koffer 65L', 'Hartschale, leicht.', 35.00, NULL, NULL, '2025-10-19 21:00:00', '2025-12-13 16:30:00');
 
 -- --------------------------------------------------------
 
@@ -196,14 +194,15 @@ ALTER TABLE `offers`
 --
 ALTER TABLE `offer_pic`
   ADD PRIMARY KEY (`pic_id`),
-  ADD UNIQUE KEY `uq_offer_cover` (`offer_id`,`is_cover`);
+  ADD KEY `offer_pic_ibfk_1` (`offer_id`);
 
 --
 -- Indizes für die Tabelle `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `mail` (`mail`);
+  ADD UNIQUE KEY `mail` (`mail`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indizes für die Tabelle `user_comment`
@@ -227,13 +226,13 @@ ALTER TABLE `bids`
 -- AUTO_INCREMENT für Tabelle `offers`
 --
 ALTER TABLE `offers`
-  MODIFY `offer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `offer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT für Tabelle `offer_pic`
 --
 ALTER TABLE `offer_pic`
-  MODIFY `pic_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `pic_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
