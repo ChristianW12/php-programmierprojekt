@@ -42,15 +42,15 @@ if (!empty($angebot['ende'])) {
         <a href="aktuelles-angebot.php?id=<?= $angebotId ?>"><?= $titel ?></a>
     </h3>
     <dl class="angebot-meta">
-        <div>
+        <div class="meta-item price-item">
             <dt>Startpreis</dt>
             <dd><?= $startpreis ?></dd>
         </div>
-        <div>
+        <div class="meta-item date-item">
             <dt>Start</dt>
             <dd><?= $startDatum ?></dd>
         </div>
-        <div>
+        <div class="meta-item date-item">
             <dt>Ende</dt>
             <dd><?= $endeDatum ?></dd>
         </div>
