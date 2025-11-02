@@ -6,24 +6,20 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 ## TODO
 
-✅ Datenbank anlegen
-✅ Account löschen/erstellen (Melina)
-
-Neue Aufgaben
-
 - neue Seite für Angebot detailiert ()
 - Bilder hochladen können bei Angebot erstellen (Christian)
 - Bilder bei detalierte Seite (Christian)
 - Cover Bild bei angebote.php anzeigen lassen ()
 - Beschreibung bei angebote.php Entfernen (Melina) 
 - angebot-card.php an neues Format anpassen => Start und Ende nebeneinander + Preis Feld so lang machen wie "Jetzt Bieten" (Melina)
-- Footer aktualisieren () GANZ AM ENDE ERST
 - User bearbeiten ihr Angebot (Luca)
 - Filter aktualisieren => Meine eigenene Angebote anzeigen lassen (Luca)
 - Tags zu angeboten hinzufügen + Filter um Tags/Kategorien erweitern ()
 
-========================================
+___________________
 
+- Angebote als Favouriten festlegen können
+- Footer aktualisieren 
 - Wenn falsche Daten eingegeben werden, dann Warnhinweis o.Ä. (Aktuell: fehlerhafte DB wird angezeigt)
 
 ## Obligatorische Features
@@ -46,8 +42,34 @@ Neue Aufgaben
 
 ## Voraussetzungen
 
-- wip
+Für den Start der Anwendung wird Docker und Docker Compose benötigt.  
+Alle notwendigen Komponenten (Webserver, PHP, MySQL, phpMyAdmin) sind bereits im Repository enthalten – es muss nichts zusätzlich installiert oder konfiguriert werden.
 
 ## Installationsanleitung
 
-- wip
+1. **Repository klonen**  
+   Klone das Projekt auf deinen Rechner und öffne es anschließend im Terminal:  
+   ```bash
+   git clone https://github.com/<benutzername>/<repo-name>.git
+   cd <repo-name>
+
+2. **Container starten**  
+   Stelle sicher, dass Docker auf deinem System läuft.
+   Starte dann das Projekt mit:
+   ```bash
+   docker compose up -d
+
+3. **Anwendung im Browser öffnen**  
+   Die Webanwendung ist anschließend unter: http://localhost:8080  
+   Die Datenbankoberfläche (phpMyAdmin) ist erreichbar unter: http://localhost:8081  
+
+4. **Datenbank importieren**  
+   Im phpMyAdmin-Interface kann über den Reiter „Importieren“ die mitgelieferte .sql-Datei hoch geladen werden, um die Beispieldaten in die Datenbank zu laden.
+
+5. **Anwendung testen**  
+   Prüfe, ob die Webanwendung korrekt läuft und die Datenbank verbunden ist.
+
+6. **Docker stoppen**  
+   Nach Beendigung der Arbeit, können du alle laufenden Container wieder gestoppt werden:
+   ```bash
+   docker compose down
