@@ -79,6 +79,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
                     header('Location: neuesAngebot.php');
                     exit();
                     break;
+                case 'angebot-bieten':
+                    header('Location: ' . $_SESSION['URL']);
+                    exit();
+                    break;
                 default:  
                     header("Location: index.php");
                     exit();

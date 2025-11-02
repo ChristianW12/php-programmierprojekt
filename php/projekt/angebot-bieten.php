@@ -4,8 +4,18 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Angebot ID und Startpreis aus der URL holen und Variable Standard-Mail initialisieren
 $offerId = isset($_GET['offer_id']) ? (int) $_GET['offer_id'] : null;
 $startpreis = isset($_GET['startpreis']) && is_numeric($_GET['startpreis']) ? (float) $_GET['startpreis'] : null;
+$standardMail = '';
+
+// Speichern der letzten besuchten Seite in der Session
+$_SESSION['last_site'] = 'angebot-bieten';
+$_SESSION['URL'] = $_SERVER['REQUEST_URI'];
+
+if (isset($_SESSION['loggedin']) && isset($_SESSION['user_mail'])) {
+    $standardMail = $_SESSION['user_mail'];
+}
 
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
     $bidAmount = isset($_POST['bid_amount']) ? (float) $_POST['bid_amount'] : null;
@@ -53,7 +63,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
                 </div>
                 <div class="form-group">
                     <label for="bid-email">E-Mail-Adresse</label>
-                    <input type="email" id="bid-email" name="bid_email" placeholder="name@example.com" required>
+                    <input type="email" id="bid-email" name="bid_email" placeholder="name@example.com" value="<?= $standardMail ?>" required>
                 </div>
                 <div class="profile-actions">
                     <button type="submit" name="submitOffer" class="btn">Gebot absenden</button>
