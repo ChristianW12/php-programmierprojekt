@@ -6,21 +6,22 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 ## TODO
 
-- neue Seite für Angebot detailiert ()
-- Bilder hochladen können bei Angebot erstellen (Christian)
-- Bilder bei detalierte Seite (Christian)
-- Cover Bild bei angebote.php anzeigen lassen ()
-- Beschreibung bei angebote.php Entfernen (Melina) 
-- angebot-card.php an neues Format anpassen => Start und Ende nebeneinander + Preis Feld so lang machen wie "Jetzt Bieten" (Melina)
-- User bearbeiten ihr Angebot (Luca)
-- Filter aktualisieren => Meine eigenene Angebote anzeigen lassen (Luca)
-- Tags zu angeboten hinzufügen + Filter um Tags/Kategorien erweitern ()
-
-___________________
-
+- Angebot Ändern überarbeiten (Luca) 
+- Jetzt Bieten Button und Angebot bearbeiten Button von angebote.php entfernen (Luca)
+- Kategorien beim Angebot erstellen (Alex)
 - Angebote als Favouriten festlegen können
-- Footer aktualisieren 
-- Wenn falsche Daten eingegeben werden, dann Warnhinweis o.Ä. (Aktuell: fehlerhafte DB wird angezeigt)
+- Footer aktualisieren (Christian) 
+- Wenn falsche Daten eingegeben werden, dann Warnhinweis o.Ä. (Aktuell: fehlerhafte DB wird angezeigt) (Melina)
+- Angebot Card anpassen anklickbar (Luca)
+- Logik von Bieten vollständig machen (Christian) 
+- Angebot löschen (Melina)
+
+===
+===
+
+mögliche weiter Features
+
+- User Kommentare
 
 ## Obligatorische Features
 
@@ -50,7 +51,7 @@ Alle notwendigen Komponenten (Webserver, PHP, MySQL, phpMyAdmin) sind bereits im
 1. **Repository klonen**  
    Klone das Projekt auf deinen Rechner und öffne es anschließend im Terminal:  
    ```bash
-   git clone https://github.com/ChristianW12/php-programmierprojekt./git
+   git clone https://github.com/ChristianW12/php-programmierprojekt/.git
    cd <repo-name>
 
 2. **Container starten**  
