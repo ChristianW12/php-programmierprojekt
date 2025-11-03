@@ -40,7 +40,7 @@ ___________________
 - Benutzerverwaltung & Kommentare: Bewertungen, Feedback, Dashboard
 - Filterung: Seitenleiste um nach gewünschten Anforderungen zu sortieren
 
-## Voraussetzungen
+## Voraussetzungen<LeftMouse>
 
 Für den Start der Anwendung wird Docker und Docker Compose benötigt.  
 Alle notwendigen Komponenten (Webserver, PHP, MySQL, phpMyAdmin) sind bereits im Repository enthalten – es muss nichts zusätzlich installiert oder konfiguriert werden.
@@ -50,7 +50,7 @@ Alle notwendigen Komponenten (Webserver, PHP, MySQL, phpMyAdmin) sind bereits im
 1. **Repository klonen**  
    Klone das Projekt auf deinen Rechner und öffne es anschließend im Terminal:  
    ```bash
-   git clone https://github.com/<benutzername>/<repo-name>.git
+   git clone https://github.com/ChristianW12/php-programmierprojekt./git
    cd <repo-name>
 
 2. **Container starten**  
