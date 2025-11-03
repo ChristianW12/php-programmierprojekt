@@ -54,6 +54,9 @@ if (!empty($angebot['ende'])) {
         $endeDatum = htmlspecialchars($angebot['ende'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }
+
+$angebotBesitzerId = isset($angebot['user_id']) ? (int) $angebot['user_id'] : null;
+$istEigenerAnbieter = isset($_SESSION['user_id']) && (int) $_SESSION['user_id'] === $angebotBesitzerId;
 ?>
 <style>
     /* Stil für das Cover-Bild in der Angebotskarte */
@@ -86,6 +89,14 @@ if (!empty($angebot['ende'])) {
             <dd><?= $endeDatum ?></dd>
         </div>
     </dl>
+    <?php if ($istEigenerAnbieter): ?>
+        <form method="get" action="angebot-ändern.php">
+            <?php if ($angebotId !== null): ?>
+                <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebotId, ENT_QUOTES, 'UTF-8') ?>">
+            <?php endif; ?>
+            <button type="submit" class="edit-button">Angebot ändern</button>
+        </form>
+    <?php endif; ?>
     <form method="get" action="angebot-bieten.php">
         <?php if ($angebotId !== null): ?>
             <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebotId, ENT_QUOTES, 'UTF-8') ?>">
