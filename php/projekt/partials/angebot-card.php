@@ -68,8 +68,7 @@ if (!empty($angebot['ende'])) {
         <a href="aktuelles-angebot.php?id=<?= $angebotId ?>"><?= $titel ?></a>
     </h3>
     <?php if ($coverImage && !empty($coverImage['path'])):
-        // Zeigt das Bild nur an, wenn ein Pfad in der Datenbank gefunden wurde.
-        // Der Pfad wird aus Sicherheitsgründen mit htmlspecialchars behandelt.
+        // Zeigt das Bild nur an, wenn ein Pfad in der Datenbank gefunden wurde
     ?>
         <img src="bilder/<?php echo htmlspecialchars($coverImage['path']); ?>" alt="Cover-Bild für <?php echo $titel; ?>" class="angebot-image">
     <?php endif; ?>
