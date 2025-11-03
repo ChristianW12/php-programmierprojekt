@@ -9,17 +9,16 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - Angebot Ändern überarbeiten (Luca) 
 - Jetzt Bieten Button und Angebot bearbeiten Button von angebote.php entfernen (Luca)
 - Kategorien beim Angebot erstellen (Alex)
-- Angebote als Favouriten festlegen können
+- Angebote als Favouriten festlegen können (Melina)
 - Footer aktualisieren (Christian) 
 - Wenn falsche Daten eingegeben werden, dann Warnhinweis o.Ä. (Aktuell: fehlerhafte DB wird angezeigt) (Melina)
 - Angebot Card anpassen anklickbar (Luca)
 - Logik von Bieten vollständig machen (Christian) 
 - Angebot löschen (Melina)
 
-===
-===
+_______________
 
-mögliche weiter Features
+mögliche weiter Features:
 
 - User Kommentare
 
@@ -65,12 +64,12 @@ Alle notwendigen Komponenten (Webserver, PHP, MySQL, phpMyAdmin) sind bereits im
    Die Datenbankoberfläche (phpMyAdmin) ist erreichbar unter: http://localhost:8081  
 
 4. **Datenbank importieren**  
-   Im phpMyAdmin-Interface kann über den Reiter „Importieren“ die mitgelieferte .sql-Datei hoch geladen werden, um die Beispieldaten in die Datenbank zu laden.
+   Im phpMyAdmin-Interface kann über den Reiter „Importieren“ die mitgelieferte .sql-Datei unter [SQL-Befehle](sql-befehle/create-befehle) hoch geladen werden, um die Beispieldaten in die Datenbank zu laden.
 
 5. **Anwendung testen**  
    Prüfe, ob die Webanwendung korrekt läuft und die Datenbank verbunden ist.
 
 6. **Docker stoppen**  
-   Nach Beendigung der Arbeit, können du alle laufenden Container wieder gestoppt werden:
+   Nach Beendigung der Arbeit, können alle laufenden Container wieder gestoppt werden:
    ```bash
    docker compose down
