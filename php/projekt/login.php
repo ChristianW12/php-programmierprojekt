@@ -83,6 +83,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
                     header('Location: ' . $_SESSION['URL']);
                     exit();
                     break;
+                case 'meine angebote':
+                    header('Location: angebote.php?sort=meineAngebote');
+                    exit();
+                    break;
                 default:  
                     header("Location: index.php");
                     exit();

@@ -7,24 +7,27 @@ require __DIR__ . '/php-code/Filter.php';
 
 $dsn = 'mysql:dbname=auktion;host=db;port=3306';
 $dataRows = [];
-
-// Get active sort option from URL, default to 'neueste'
 $activeSort = $_GET['sort'] ?? 'neueste';
 
 try {
     $db = new Db($dsn, 'root', '');
     $filter = new Filter($db);
 
-    // Handle filter application
     if (isset($_GET['preisfilter'])) {
         $minPreis = !empty($_GET['min-preis']) ? floatval($_GET['min-preis']) : 0;
         $maxPreis = !empty($_GET['max-preis']) ? floatval($_GET['max-preis']) : PHP_INT_MAX;
         $dataRows = $filter->nachPreisspanne($minPreis, $maxPreis);
     } else {
-        // Apply sorting
         if ($activeSort === 'beliebteste') {
             $dataRows = $filter->nachBeliebteste();
-        } else { // Default to 'neueste'
+        }elseif($activeSort === 'meineAngebote'){
+            if(!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+                header("Location: login.php");
+                $_SESSION['last_site'] = 'meine angebote';
+                exit;
+            }
+            $dataRows = $filter->nachMeineAngebote($_SESSION['user_id']);
+        } else {
             $dataRows = $filter->nachNeuste();
         }
     }
@@ -66,16 +69,24 @@ try {
 
         <div class="sort-buttons">
             <?php
-            // Preserve other GET parameters when changing sort order
             $queryParams = $_GET;
+
+            // "Neueste"
             $queryParams['sort'] = 'neueste';
-            unset($queryParams['preisfilter']); // Avoid re-applying price filter on sort click
+            unset($queryParams['preisfilter']); // wie gehabt
             $neuesteUrl = '?' . http_build_query($queryParams);
+
+            // "Beliebteste"
             $queryParams['sort'] = 'beliebteste';
             $beliebtesteUrl = '?' . http_build_query($queryParams);
+
+            // "Meine"
+            $queryParams['sort'] = 'meineAngebote';
+            $meineUrl = '?' . http_build_query($queryParams);
             ?>
             <a href="<?= $neuesteUrl ?>" class="btn-sort <?= $activeSort === 'neueste' ? 'active' : '' ?>">Neueste</a>
             <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
+            <a href="<?= $meineUrl ?>" class="btn-sort <?= $activeSort === 'meineAngebote' ? 'active' : '' ?>">Meine Angebote</a>
         </div>
 
         <form id="filter-form" method="get">

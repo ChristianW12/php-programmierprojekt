@@ -79,6 +79,9 @@ public function nachSuche($suchbegriff) {
 }
 
     public function nachBeliebteste() {
+        if (empty($this->data)) {
+            $this->getData();
+        }
         $query = 'SELECT o.*, COUNT(b.bid_id) AS bid_count FROM offers o LEFT JOIN bids b ON o.offer_id = b.offer_id GROUP BY o.offer_id ORDER BY bid_count DESC';
         $result = $this->dbconnection->query($query);
 
@@ -88,5 +91,14 @@ public function nachSuche($suchbegriff) {
             return $this->data;
         }
         return [];
+    }
+
+    public function nachMeineAngebote($userId) {
+        if (empty($this->data)) {
+            $this->getData();
+        }
+        return array_values(array_filter($this->data, function($row) use ($userId) {
+            return (int)$row['user_id'] === (int)$userId;
+        }));
     }
 }
