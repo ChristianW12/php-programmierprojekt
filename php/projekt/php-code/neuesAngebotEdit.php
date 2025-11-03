@@ -8,15 +8,16 @@ class neuesAngebotEdit
         $this->db = $db;
     }
 
-    public function angebotErstellen($user_id, $titel, $beschreibung, $startpreis, $ende, $db)
+    public function angebotErstellen($user_id, $titel, $beschreibung, $kategorie, $startpreis, $ende, $db)
     {
-        $query = 'INSERT INTO offers (user_id, title, beschreibung, startpreis, ende) VALUES(?,?,?,?,?)';
+        $query = 'INSERT INTO offers (user_id, title, beschreibung, startpreis, ende, kategorie) VALUES(?,?,?,?,?,?)';
         $stmt = $db->prepare($query);
         $stmt->bindParam(1, $user_id);
         $stmt->bindParam(2, $titel, PDO::PARAM_STR);
         $stmt->bindParam(3, $beschreibung, PDO::PARAM_STR);
         $stmt->bindParam(4, $startpreis, PDO::PARAM_STR);
         $stmt->bindParam(5, $ende, PDO::PARAM_STR);
+        $stmt->bindParam(6, $kategorie, PDO::PARAM_STR);
         $stmt->execute();
         return $this->db->lastInsertId();
     }

@@ -12,7 +12,9 @@ $db = mitDBverbinden();
 if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     $angebotNeu = new neuesAngebotEdit($db);
     // 1. Angebot erstellen und die neue ID in einer Variable speichern
-    $neue_angebot_id = $angebotNeu->angebotErstellen($_SESSION['user_id'], $_POST['titel'], $_POST['beschreibung'], (float)$_POST['startpreis'], $_POST['enddatum'], $db);
+    $kategorie = !empty($_POST['kategorie']) ? $_POST['kategorie'] : null; // Kategorie ist optional, daher Inhalt prüfen und ggf. auf Null setzen
+
+    $neue_angebot_id = $angebotNeu->angebotErstellen($_SESSION['user_id'], $_POST['titel'], $_POST['beschreibung'], $kategorie, (float)$_POST['startpreis'], $_POST['enddatum'], $db);
 
     // --- BILD-VERARBEITUNG ---
 
@@ -73,6 +75,27 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
             <div class="form-gruppe">
                 <label for="beschreibung">Beschreibung:</label>
                 <textarea id="beschreibung" name="beschreibung" rows="5" placeholder="Beschreibe dein Produkt..." required></textarea>
+            </div>
+
+            <div class="form-gruppe">
+                <label for="kategorie">Kategorie (optional):</label>
+                <select id="kategorie" name="kategorie">
+                    <option value="">-- Keine Kategorie --</option>
+                    <option value="Elektronik">Elektronik</option>
+                    <option value="Computer & Zubehör">Computer & Zubehör</option>
+                    <option value="Haushalt & Küche">Haushalt & Küche</option>
+                    <option value="Möbel & Wohnen">Möbel & Wohnen</option>
+                    <option value="Kleidung & Accessoires">Kleidung & Accessoires</option>
+                    <option value="Filme & Musik">Filme & Musik</option>
+                    <option value="Bücher & Comics">Bücher & Comics</option>
+                    <option value="Sport & Freizeit">Sport & Freizeit</option>
+                    <option value="Spielzeug & Modelle">Spielzeug & Modelle</option>
+                    <option value="Sammeln & Antiquitäten">Sammeln & Antiquitäten</option>
+                    <option value="Fahrzeuge & Zubehör">Fahrzeuge & Zubehör</option>
+                    <option value="Musik & Instrumente">Musik & Instrumente</option>
+                    <option value="Tierbedarf">Tierbedarf</option>
+                    <option value="Reisen & Gepäck">Reisen & Gepäck</option>
+                </select>
             </div>
 
             <div class="form-gruppe">
