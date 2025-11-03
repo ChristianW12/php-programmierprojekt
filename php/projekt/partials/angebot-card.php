@@ -10,6 +10,24 @@ if (!isset($angebot)) {
     return;
 }
 
+// --- Anfang: Bildabfrage für Cover-Bild ---
+// Stellt eine Verbindung zur Datenbank her. `require_once` verhindert, dass die Datei mehrfach geladen wird.
+require_once __DIR__ . '/../php-code/db-connection.php';
+$db = mitDBverbinden();
+
+$coverImage = null;
+$angebotId = isset($angebot['offer_id']) ? (int) $angebot['offer_id'] : null;
+
+if ($angebotId) {
+    // Bereitet die SQL-Abfrage vor, um das Cover-Bild zu finden (is_cover = 1).
+    $stmt_image = $db->prepare('SELECT path FROM offer_pic WHERE offer_id = :id AND is_cover = 1');
+    // Führt die Abfrage sicher mit der Angebots-ID aus.
+    $stmt_image->execute(['id' => $angebotId]);
+    // Holt das Ergebnis. fetch() wird verwendet, da wir nur ein Bild erwarten.
+    $coverImage = $stmt_image->fetch(PDO::FETCH_ASSOC);
+}
+// --- Ende: Bildabfrage ---
+
 $titel = htmlspecialchars($angebot['title'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 $beschreibung = htmlspecialchars($angebot['beschreibung'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 $startpreisWert = isset($angebot['startpreis']) ? (float) $angebot['startpreis'] : null;
@@ -37,10 +55,24 @@ if (!empty($angebot['ende'])) {
     }
 }
 ?>
+<style>
+    /* Stil für das Cover-Bild in der Angebotskarte */
+    .angebot-card .angebot-image {
+        width: 100%; 
+        height: 200px;
+        object-fit: cover; 
+    }
+</style>
 <article class="angebot-card">
     <h3 class="angebot-title">
         <a href="aktuelles-angebot.php?id=<?= $angebotId ?>"><?= $titel ?></a>
     </h3>
+    <?php if ($coverImage && !empty($coverImage['path'])):
+        // Zeigt das Bild nur an, wenn ein Pfad in der Datenbank gefunden wurde.
+        // Der Pfad wird aus Sicherheitsgründen mit htmlspecialchars behandelt.
+    ?>
+        <img src="bilder/<?php echo htmlspecialchars($coverImage['path']); ?>" alt="Cover-Bild für <?php echo $titel; ?>" class="angebot-image">
+    <?php endif; ?>
     <dl class="angebot-meta">
         <div class="meta-item price-item">
             <dt>Startpreis</dt>
