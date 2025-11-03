@@ -50,8 +50,8 @@ Alle notwendigen Komponenten (Webserver, PHP, MySQL, phpMyAdmin) sind bereits im
 1. **Repository klonen**  
    Klone das Projekt auf deinen Rechner und öffne es anschließend im Terminal:  
    ```bash
-   git clone https://github.com/ChristianW12/php-programmierprojekt/.git
-   cd <php-programmierprojekt>
+   git clone https://github.com/ChristianW12/php-programmierprojekt./git
+   cd <repo-name>
 
 2. **Container starten**  
    Stelle sicher, dass Docker auf deinem System läuft.
