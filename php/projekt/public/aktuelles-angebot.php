@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require 'src/db-connection.php';
+require __DIR__ . '/../src/db-connection.php';
 
 // 1. Angebots-ID aus der URL holen und validieren
 $angebot_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -57,7 +57,7 @@ function formatPrice($price) {
     <link rel="stylesheet" href="styles/aktuelles-angebot.css">
 </head>
 <body>
-<?php require __DIR__ . '/partials/header.php'; ?>
+<?php require __DIR__ . '/../partials/header.php'; ?>
 
 <main>
     <div class="angebot-detail-container">
@@ -117,6 +117,6 @@ function formatPrice($price) {
     </div>
 </main>
 
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php require __DIR__ . '/../partials/footer.php'; ?>
 </body>
 </html>
