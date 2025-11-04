@@ -12,7 +12,7 @@ services:
       WEBMAIL_PORT: "${WEBMAIL_PORT:-8025}"
       PHPMYADMIN_PORT: "${PHPMYADMIN_PORT:-8081}"
     volumes:
-      - ./build/index.php:/application/index.php
+
       - ./php:/application/php
     networks:
       - dhbw
@@ -28,7 +28,7 @@ services:
       - "${HTTPS_PORT:-8443}:443"
     volumes:
       - ./build/nginx:/etc/nginx/conf.d
-      - ./build/index.php:/application/index.php:ro
+
       - ./php:/application/php
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]

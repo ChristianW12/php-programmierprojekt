@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/src/Bid.php';
+require __DIR__ . '/../src/Bid.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
     <link rel="stylesheet" href="styles/profile.css">
 </head>
 <body>
-<?php require __DIR__ . '/partials/header.php'; ?>
+<?php require __DIR__ . '/../partials/header.php'; ?>
 <main>
     <section class="section">
         <div class="section-text center profile-container">
@@ -72,7 +72,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
         </div>
     </section>
 </main>
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php require __DIR__ . '/../partials/footer.php'; ?>
 <script src="scripts/app.js"></script>
 </body>
 </html>

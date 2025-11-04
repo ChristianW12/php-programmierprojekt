@@ -2,8 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require __DIR__ . '/src/Db.php';
-require 'src/db-connection.php';
+require __DIR__ . '/../src/Db.php';
+require __DIR__ . '/../src/db-connection.php';
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -111,7 +111,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
     <link rel="stylesheet" href="styles/login.css">
 </head>
 <body>
-<?php require __DIR__ . '/partials/header.php'; ?>
+<?php require __DIR__ . '/../partials/header.php'; ?>
 <main>
     <section class="section">
         <div class="section-text center">
@@ -138,7 +138,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
         </div>
     </section>
 </main>
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php require __DIR__ . '/../partials/footer.php'; ?>
 <script src="scripts/app.js"></script>
 </body>
 </html>

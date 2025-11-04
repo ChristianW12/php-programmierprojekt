@@ -3,9 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require 'src/db-connection.php';
-require_once 'src/Db.php';
-require_once 'src/neuesAngebotEdit.php';
+require __DIR__ . '/../src/db-connection.php';
+require_once __DIR__ . '/../src/Db.php';
+require_once __DIR__ . '/../src/neuesAngebotEdit.php';
 
 $db = mitDBverbinden();
 
@@ -50,7 +50,7 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     <link rel="stylesheet" href="styles/neuesAngebot.css">
 </head>
 <body>
-<?php require __DIR__ . '/partials/header.php'; ?>
+<?php require __DIR__ . '/../partials/header.php'; ?>
 <main>
     <section class="angebot-erstellen">
         <h1>Neues Angebot erstellen</h1>
@@ -114,6 +114,6 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
         </form>
     </section>
 </main>
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php require __DIR__ . '/../partials/footer.php'; ?>
 </body>
 </html>

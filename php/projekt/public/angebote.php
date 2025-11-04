@@ -2,8 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require __DIR__ . '/src/Db.php';
-require __DIR__ . '/src/Filter.php';
+require __DIR__ . '/../src/Db.php';
+require __DIR__ . '/../src/Filter.php';
 
 $dsn = 'mysql:dbname=auktion;host=db;port=3306';
 $dataRows = [];
@@ -62,7 +62,7 @@ try {
     <link rel="stylesheet" href="styles/angebote.css">
 </head>
 <body>
-<?php require __DIR__ . '/partials/header.php'; ?>
+<?php require __DIR__ . '/../partials/header.php'; ?>
 <div class="angebote-container">
     <aside class="filter-bereich">
         <h2>Filter</h2>
@@ -144,7 +144,7 @@ try {
             <div class="angebote-grid">
                 <?php if (!empty($dataRows)):
                     foreach ($dataRows as $angebot):
-                        require __DIR__ . '/partials/angebot-card.php';
+                        require __DIR__ . '/../partials/angebot-card.php';
                     endforeach;
                 else:
                     echo '<p class="keine-angebote">Keine Angebote entsprechen Ihren Kriterien.</p>';
@@ -153,7 +153,7 @@ try {
         </section>
     </main>
 </div>
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php require __DIR__ . '/../partials/footer.php'; ?>
 <script src="scripts/app.js"></script>
 </body>
 </html>
