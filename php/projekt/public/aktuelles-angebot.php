@@ -45,6 +45,11 @@ function formatPrice($price) {
     return number_format((float)$price, 2, ',', '.') . ' €';
 }
 
+$startpreisWert = isset($angebot['startpreis']) ? (float) $angebot['startpreis'] : null;
+$startpreis = $startpreisWert !== null
+    ? number_format($startpreisWert, 2, ',', '.') . ' €'
+    : 'Preis unbekannt';
+
 ?>
 <!doctype html>
 <html lang="de">
@@ -97,6 +102,7 @@ function formatPrice($price) {
                             <div class="bidding-action">
                                 <form method="get" action="angebot-bieten.php">
                                     <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebot['offer_id'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <input type="hidden" name="startpreis" value="<?= htmlspecialchars(number_format($startpreisWert, 2, '.', ''), ENT_QUOTES, 'UTF-8') ?>">
                                     <button type="submit" class="bieten-button">Jetzt bieten</button>
                                 </form>
                             </div>

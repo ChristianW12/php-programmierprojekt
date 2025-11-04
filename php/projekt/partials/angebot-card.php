@@ -101,9 +101,5 @@ $istEigenerAnbieter = isset($_SESSION['user_id']) && (int) $_SESSION['user_id'] 
         <?php if ($angebotId !== null): ?>
             <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebotId, ENT_QUOTES, 'UTF-8') ?>">
         <?php endif; ?>
-        <?php if ($startpreisWert !== null): ?>
-            <input type="hidden" name="startpreis" value="<?= htmlspecialchars(number_format($startpreisWert, 2, '.', ''), ENT_QUOTES, 'UTF-8') ?>">
-        <?php endif; ?>
-        <button type="submit" class="bieten-button">Jetzt bieten</button>
     </form>
 </article>

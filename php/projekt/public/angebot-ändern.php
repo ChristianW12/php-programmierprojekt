@@ -18,7 +18,7 @@ $angebotEndDatum = '';
     <link rel="stylesheet" href="styles/profile.css">
 </head>
 <body>
-    <?php require __DIR__ . '/partials/header.php'; ?>
+    <?php require __DIR__ . '/../partials/header.php'; ?>
     <main>
         <section class="section">
             <div class="section-text center profile-container">
@@ -26,7 +26,6 @@ $angebotEndDatum = '';
                 <hr>
                 <form action="angebot-ändern.php" method="post">
                     <input type="hidden" name="offer_id" value="">
-                    <h3><strong>Angebotsdetails</strong></h3>
                     <div class="form-group">
                         <label for="title">Titel</label>
                         <input id="title" type="text" name="title" placeholder="Titel des Angebots" value="<?php echo htmlspecialchars($angebotTitel, ENT_QUOTES, 'UTF-8'); ?>">
@@ -53,7 +52,7 @@ $angebotEndDatum = '';
             </div>
         </section>
     </main>
-    <?php require __DIR__ . '/partials/footer.php'; ?>
+    <?php require __DIR__ . '/../partials/footer.php'; ?>
     <script src="scripts/app.js"></script>
 </body>
 </html>
