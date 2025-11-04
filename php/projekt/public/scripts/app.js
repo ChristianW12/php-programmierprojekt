@@ -5,4 +5,5 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
         input.value = '';
     },500);
+  
 });
