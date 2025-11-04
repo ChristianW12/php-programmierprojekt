@@ -25,7 +25,7 @@
             $row = $res->fetch();
             if($row->passwd == $_REQUEST['password']) {
                 $_SESSION['user'] = $row->login;
-        }
+            }
         }
 
         if(empty($_SESSION['user'])) {
