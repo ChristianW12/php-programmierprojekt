@@ -6,16 +6,16 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 ## TODO
 
-- Angebot Ändern überarbeiten (Luca) 
-- Jetzt Bieten Button und Angebot bearbeiten Button von angebote.php entfernen (Luca)
+- ✅ Angebot Ändern überarbeiten (Luca)
+- ✅ Jetzt Bieten Button und Angebot bearbeiten Button von angebote.php entfernen (Luca)
 - Kategorien beim Angebot erstellen (Alex) -> Fehlt noch: Kategorien bei Angeboten anzeigen lassen & Dropdown mit erstellter Funktion belegen
 - Angebote als Favouriten festlegen können (Melina) -> wip: DB erweitern, PHP-Logik, Filteroption ergänzen
-- Footer aktualisieren (Christian) 
-- Angebot Card anpassen anklickbar (Luca)
-- Logik von Bieten vollständig machen (Christian) 
+- Footer aktualisieren (Christian)
+- ✅ Angebot Card anpassen anklickbar (Luca)
+- Logik von Bieten vollständig machen (Christian)
 - ✅ Angebot löschen (Melina)
 
-_______________
+---
 
 mögliche weiter Features:
 
@@ -47,20 +47,26 @@ Alle notwendigen Komponenten (Webserver, PHP, MySQL, phpMyAdmin) sind bereits im
 ## Installationsanleitung
 
 1. **Repository klonen**  
-   Klone das Projekt auf deinen Rechner und öffne es anschließend im Terminal:  
+   Klone das Projekt auf deinen Rechner und öffne es anschließend im Terminal:
+
    ```bash
    git clone https://github.com/ChristianW12/php-programmierprojekt.git
    cd <repo-name>
 
+   ```
+
 2. **Container starten**  
    Stelle sicher, dass Docker auf deinem System läuft.
    Starte dann das Projekt mit:
+
    ```bash
    docker compose up -d
 
+   ```
+
 3. **Anwendung im Browser öffnen**  
    Die Webanwendung ist anschließend unter: http://localhost:8080  
-   Die Datenbankoberfläche (phpMyAdmin) ist erreichbar unter: http://localhost:8081  
+   Die Datenbankoberfläche (phpMyAdmin) ist erreichbar unter: http://localhost:8081
 
 4. **Datenbank importieren**  
    Im phpMyAdmin-Interface kann über den Reiter „Importieren“ die mitgelieferte .sql-Datei unter [SQL-Befehle](sql-befehle/create-befehle) hoch geladen werden, um die Beispieldaten in die Datenbank zu laden.
@@ -72,3 +78,4 @@ Alle notwendigen Komponenten (Webserver, PHP, MySQL, phpMyAdmin) sind bereits im
    Nach Beendigung der Arbeit, können alle laufenden Container wieder gestoppt werden:
    ```bash
    docker compose down
+   ```

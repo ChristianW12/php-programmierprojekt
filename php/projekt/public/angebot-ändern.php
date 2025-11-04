@@ -2,11 +2,49 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ . '/../src/Angebot.php';
 
 $angebotTitel = '';
 $angebotBeschreibung = '';
 $angebotPreis = '';
 $angebotEndDatum = '';
+$angebotKategorie = '';
+
+$angebotId = $_GET['id'] ?? ($_POST['offer_id'] ?? null);
+
+try{
+    $angebot = new Angebot((int)$angebotId);
+    $angebotDaten = $angebot->getOfferWithId();
+    if ($angebotDaten) {
+        $angebotTitel = $angebotDaten['title'] ?? '';
+        $angebotBeschreibung = $angebotDaten['beschreibung'] ?? '';
+        $angebotPreis = $angebotDaten['startpreis'] ?? '';
+        $angebotEndDatum = str_replace(' ', 'T', $angebotDaten['ende'] ?? '');
+        $angebotKategorie = $angebotDaten['kategorie'] ?? '';
+    }
+} catch (Exception $e) {
+    error_log("Fehler beim Laden des Angebots: " . $e->getMessage());
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['offer_id']) && !empty($_POST['offer_id'])) {
+    $offerId = (int)$_POST['offer_id'];
+    $title = $_POST['title'] ?? '';
+    $beschreibung = $_POST['beschreibung'] ?? '';
+    $preis = (float)($_POST['preis'] ?? 0);
+    $ende = $_POST['ende'] ?? '';
+
+    try {
+        $res = $angebot->updateOffer($offerId, $title, $beschreibung, $preis, $ende);
+        if ($res) {
+            header("Location: angebote.php");
+            exit();
+        } else {
+            echo "Fehler beim Aktualisieren des Angebots.";
+        }
+    } catch (Exception $e) {
+        error_log("Fehler beim Aktualisieren des Angebots: " . $e->getMessage());
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -25,7 +63,8 @@ $angebotEndDatum = '';
                 <h1><strong>Angebot bearbeiten</strong></h1>
                 <hr>
                 <form action="angebot-ändern.php" method="post">
-                    <input type="hidden" name="offer_id" value="">
+                    <input type="hidden" name="offer_id"
+                        value="<?php echo htmlspecialchars($angebotId, ENT_QUOTES, 'UTF-8'); ?>">
                     <div class="form-group">
                         <label for="title">Titel</label>
                         <input id="title" type="text" name="title" placeholder="Titel des Angebots" value="<?php echo htmlspecialchars($angebotTitel, ENT_QUOTES, 'UTF-8'); ?>">
