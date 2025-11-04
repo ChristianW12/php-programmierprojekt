@@ -8,7 +8,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 - Angebot Ändern überarbeiten (Luca) 
 - Jetzt Bieten Button und Angebot bearbeiten Button von angebote.php entfernen (Luca)
-- Kategorien beim Angebot erstellen (Alex)
+- Kategorien beim Angebot erstellen (Alex) -> Fehlt noch: Kategorien bei Angeboten anzeigen lassen & Dropdown mit erstellter Funktion belegen
 - Angebote als Favouriten festlegen können (Melina)
 - Footer aktualisieren (Christian) 
 - Wenn falsche Daten eingegeben werden, dann Warnhinweis o.Ä. (Aktuell: fehlerhafte DB wird angezeigt) (Melina)
