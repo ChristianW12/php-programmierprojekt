@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require 'src/db-connection.php';
+require __DIR__ . '/../src/db-connection.php';
 
 //Angebots-ID aus der URL holen und validieren
 $angebot_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -56,7 +56,7 @@ try {
     $images = $stmt_images->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($images as $image) {
-        $image_path = __DIR__ . '/bilder/' . $image['path'];
+        $image_path = __DIR__ . '/../bilder/' . $image['path'];
         if (file_exists($image_path)) {
             unlink($image_path);
         }

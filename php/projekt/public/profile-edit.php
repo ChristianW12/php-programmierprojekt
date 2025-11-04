@@ -11,8 +11,8 @@ if(!isset($_SESSION['loggedin']) ){
     exit;
 }
 
-require 'src/db-connection.php';
-require_once 'src/Db.php';
+require __DIR__ . '/../src/db-connection.php';
+require_once __DIR__ . '/../src/Db.php';
 
 $db = mitDBverbinden();
 
@@ -65,7 +65,7 @@ $verlinkungHomepage = 'index.php';
     <link rel="stylesheet" href="styles/profile.css">
 </head>
 <body>
-    <?php require __DIR__ . '/partials/header.php'; ?>
+    <?php require __DIR__ . '/../partials/header.php'; ?>
     <main>
         <section class="section">
             <div class="section-text center profile-container">
@@ -103,7 +103,7 @@ $verlinkungHomepage = 'index.php';
             </div>
         </section>
     </main>
-    <?php require __DIR__ . '/partials/footer.php'; ?>
+    <?php require __DIR__ . '/../partials/footer.php'; ?>
     <script src="scripts/app.js"></script>
 </body>
 </html>

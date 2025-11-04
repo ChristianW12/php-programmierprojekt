@@ -19,7 +19,7 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     // --- BILD-VERARBEITUNG ---
 
     // 2. Upload-Verzeichnis definieren und ggf. erstellen
-    $upload_dir = __DIR__ . '/bilder/';
+    $upload_dir = __DIR__ . '/../bilder/';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0777, true);
     }

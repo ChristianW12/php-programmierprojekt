@@ -71,7 +71,6 @@ $istEigenerAnbieter = isset($_SESSION['user_id']) && (int) $_SESSION['user_id'] 
         <a href="aktuelles-angebot.php?id=<?= $angebotId ?>"><?= $titel ?></a>
     </h3>
     <?php if ($coverImage && !empty($coverImage['path'])):
-        // Zeigt das Bild nur an, wenn ein Pfad in der Datenbank gefunden wurde
     ?>
         <img src="bilder/<?php echo htmlspecialchars($coverImage['path']); ?>" alt="Cover-Bild für <?php echo $titel; ?>" class="angebot-image">
     <?php endif; ?>
@@ -89,17 +88,4 @@ $istEigenerAnbieter = isset($_SESSION['user_id']) && (int) $_SESSION['user_id'] 
             <dd><?= $endeDatum ?></dd>
         </div>
     </dl>
-    <?php if ($istEigenerAnbieter): ?>
-        <form method="get" action="angebot-ändern.php">
-            <?php if ($angebotId !== null): ?>
-                <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebotId, ENT_QUOTES, 'UTF-8') ?>">
-            <?php endif; ?>
-            <button type="submit" class="edit-button">Angebot ändern</button>
-        </form>
-    <?php endif; ?>
-    <form method="get" action="angebot-bieten.php">
-        <?php if ($angebotId !== null): ?>
-            <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebotId, ENT_QUOTES, 'UTF-8') ?>">
-        <?php endif; ?>
-    </form>
 </article>
