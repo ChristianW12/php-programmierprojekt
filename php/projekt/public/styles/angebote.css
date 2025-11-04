@@ -185,6 +185,12 @@ main {
     gap: 1rem;
 }
 
+.angebot-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
 .angebot-card {
     background-color: #ffffff;
     border-radius: 12px;
@@ -193,6 +199,22 @@ main {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.angebot-card-link:hover .angebot-card,
+.angebot-card-link:focus .angebot-card {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(31, 41, 55, 0.12);
+}
+
+.angebot-card-link:focus {
+    outline: none;
+}
+
+.angebot-card-link:focus-visible .angebot-card {
+    outline: 3px solid rgba(155, 186, 191, 0.7);
+    outline-offset: 2px;
 }
 
 .angebot-title {

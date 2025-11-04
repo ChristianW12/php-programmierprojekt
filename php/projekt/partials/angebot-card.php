@@ -57,6 +57,7 @@ if (!empty($angebot['ende'])) {
 
 $angebotBesitzerId = isset($angebot['user_id']) ? (int) $angebot['user_id'] : null;
 $istEigenerAnbieter = isset($_SESSION['user_id']) && (int) $_SESSION['user_id'] === $angebotBesitzerId;
+$detailUrl = $angebotId ? 'aktuelles-angebot.php?id=' . $angebotId : '#';
 ?>
 <style>
     /* Stil für das Cover-Bild in der Angebotskarte */
@@ -66,26 +67,26 @@ $istEigenerAnbieter = isset($_SESSION['user_id']) && (int) $_SESSION['user_id'] 
         object-fit: cover; 
     }
 </style>
-<article class="angebot-card">
-    <h3 class="angebot-title">
-        <a href="aktuelles-angebot.php?id=<?= $angebotId ?>"><?= $titel ?></a>
-    </h3>
-    <?php if ($coverImage && !empty($coverImage['path'])):
-    ?>
-        <img src="bilder/<?php echo htmlspecialchars($coverImage['path']); ?>" alt="Cover-Bild für <?php echo $titel; ?>" class="angebot-image">
-    <?php endif; ?>
-    <dl class="angebot-meta">
-        <div class="meta-item price-item">
-            <dt>Startpreis</dt>
-            <dd><?= $startpreis ?></dd>
-        </div>
-        <div class="meta-item date-item">
-            <dt>Start</dt>
-            <dd><?= $startDatum ?></dd>
-        </div>
-        <div class="meta-item date-item">
-            <dt>Ende</dt>
-            <dd><?= $endeDatum ?></dd>
-        </div>
-    </dl>
-</article>
+<a class="angebot-card-link" href="<?= htmlspecialchars($detailUrl, ENT_QUOTES, 'UTF-8') ?>">
+    <article class="angebot-card">
+        <h3 class="angebot-title"><?= $titel ?></h3>
+        <?php if ($coverImage && !empty($coverImage['path'])):
+        ?>
+            <img src="bilder/<?php echo htmlspecialchars($coverImage['path']); ?>" alt="Cover-Bild für <?php echo $titel; ?>" class="angebot-image">
+        <?php endif; ?>
+        <dl class="angebot-meta">
+            <div class="meta-item price-item">
+                <dt>Startpreis</dt>
+                <dd><?= $startpreis ?></dd>
+            </div>
+            <div class="meta-item date-item">
+                <dt>Start</dt>
+                <dd><?= $startDatum ?></dd>
+            </div>
+            <div class="meta-item date-item">
+                <dt>Ende</dt>
+                <dd><?= $endeDatum ?></dd>
+            </div>
+        </dl>
+    </article>
+</a>
