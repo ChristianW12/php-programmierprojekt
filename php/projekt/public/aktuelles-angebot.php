@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require 'php-code/db-connection.php';
+require 'src/db-connection.php';
 
 // 1. Angebots-ID aus der URL holen und validieren
 $angebot_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);

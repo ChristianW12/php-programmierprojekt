@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/php-code/Bid.php';
+require __DIR__ . '/src/Bid.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

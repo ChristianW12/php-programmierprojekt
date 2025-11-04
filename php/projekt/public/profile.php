@@ -9,8 +9,8 @@ if(!isset($_SESSION['loggedin']) ){
 }
 
 // Dateien für DB-Verbindung und DB-Hilfsfunktionen einbinden
-require 'php-code/db-connection.php';
-require_once 'php-code/Db.php';
+require 'src/db-connection.php';
+require_once 'src/Db.php';
 
 $db = mitDBverbinden();
 

@@ -2,8 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require __DIR__ . '/php-code/Db.php';
-require 'php-code/db-connection.php';
+require __DIR__ . '/src/Db.php';
+require 'src/db-connection.php';
 
 $registration_error = '';
 

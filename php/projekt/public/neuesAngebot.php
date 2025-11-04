@@ -3,9 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require 'php-code/db-connection.php';
-require_once 'php-code/Db.php';
-require_once 'php-code/neuesAngebotEdit.php';
+require 'src/db-connection.php';
+require_once 'src/Db.php';
+require_once 'src/neuesAngebotEdit.php';
 
 $db = mitDBverbinden();
 

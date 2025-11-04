@@ -12,7 +12,7 @@ if (!isset($angebot)) {
 
 // --- Anfang: Bildabfrage für Cover-Bild ---
 // Stellt eine Verbindung zur Datenbank her. `require_once` verhindert, dass die Datei mehrfach geladen wird.
-require_once __DIR__ . '/../php-code/db-connection.php';
+require_once __DIR__ . '/../src/db-connection.php';
 $db = mitDBverbinden();
 
 $coverImage = null;

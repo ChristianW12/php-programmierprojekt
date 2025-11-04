@@ -11,8 +11,8 @@ if(!isset($_SESSION['loggedin']) ){
     exit;
 }
 
-require 'php-code/db-connection.php';
-require_once 'php-code/Db.php';
+require 'src/db-connection.php';
+require_once 'src/Db.php';
 
 $db = mitDBverbinden();
 

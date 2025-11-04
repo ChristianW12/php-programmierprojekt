@@ -8,8 +8,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 
-require __DIR__ . '/php-code/Db.php';
-require 'php-code/db-connection.php';
+require __DIR__ . '/src/Db.php';
+require 'src/db-connection.php';
 
 $delete_error = '';
 
