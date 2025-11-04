@@ -101,4 +101,16 @@ public function nachSuche($suchbegriff) {
             return (int)$row['user_id'] === (int)$userId;
         }));
     }
+
+    public function nachKategorie(String $kategorie, $db)
+    {
+        // nur gültige Kategorie anzeigen
+        $query = "SELECT * FROM offers WHERE kategorie = :kategorie ORDER BY start DESC"; //:kategorie als Platzhalter (Sicherer als . $kategorie)
+
+        $stmt = $db->prepare($query);
+        $stmt->bindValue(':kategorie', $kategorie, \PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

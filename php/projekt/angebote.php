@@ -83,10 +83,34 @@ try {
             // "Meine"
             $queryParams['sort'] = 'meineAngebote';
             $meineUrl = '?' . http_build_query($queryParams);
+
+            // "Kategorien"
+            $queryParams['sort'] = 'kategorien';
+            $kategorienUrl = '?' . http_build_query($queryParams);
+
             ?>
             <a href="<?= $neuesteUrl ?>" class="btn-sort <?= $activeSort === 'neueste' ? 'active' : '' ?>">Neueste</a>
             <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
             <a href="<?= $meineUrl ?>" class="btn-sort <?= $activeSort === 'meineAngebote' ? 'active' : '' ?>">Meine Angebote</a>
+
+            <select name="kategorie" id="kategorie" class="btn-sort">
+                <option value="">Kategorien</option>
+                <option value="Elektronik">Elektronik</option>
+                <option value="Computer & Zubehör">Computer & Zubehör</option>
+                <option value="Haushalt & Küche">Haushalt & Küche</option>
+                <option value="Möbel & Wohnen">Möbel & Wohnen</option>
+                <option value="Kleidung & Accessoires">Kleidung & Accessoires</option>
+                <option value="Filme & Musik">Filme & Musik</option>
+                <option value="Bücher & Comics">Bücher & Comics</option>
+                <option value="Sport & Freizeit">Sport & Freizeit</option>
+                <option value="Spielzeug & Modelle">Spielzeug & Modelle</option>
+                <option value="Sammeln & Antiquitäten">Sammeln & Antiquitäten</option>
+                <option value="Fahrzeuge & Zubehör">Fahrzeuge & Zubehör</option>
+                <option value="Musik & Instrumente">Musik & Instrumente</option>
+                <option value="Tierbedarf">Tierbedarf</option>
+                <option value="Reisen & Gepäck">Reisen & Gepäck</option>
+            </select>
+
         </div>
 
         <form id="filter-form" method="get">
