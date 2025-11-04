@@ -90,8 +90,8 @@ function formatPrice($price) {
                         <!-- Überprüfung ob der User der Ersteller ist oder ob er Admin ist, wenn eins zutrifft, darf er löschen oder bearbeiten--> 
                         <?php if ((isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) || (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $angebot['user_id'])): ?>
                             <div class="owner-actions">
-                                <a href="#" class="button">Angebot bearbeiten</a>
-                                <a href="#" class="button button-danger">Angebot löschen</a>
+                                <a href="angebot-ändern.php?id=<?php echo $angebot['offer_id']; ?>" class="button">Angebot bearbeiten</a>
+                                <a href="angebot-löschen.php?id=<?php echo $angebot['offer_id']; ?>" class="button button-danger" onclick="return confirm('Sind Sie sicher, dass Sie dieses Angebot wirklich löschen möchten?');">Angebot löschen</a>
                             </div>
                         <?php else: ?>
                             <div class="bidding-action">
