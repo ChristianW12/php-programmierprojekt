@@ -24,7 +24,7 @@ $homeHrefPrefix = '';
                     </p>
                 </div>
                 <figure class="image-placeholder has-image">
-                    <img src="../bilder/Vase.png" alt="Kunstvolle Vase aus einer Auktion">
+                    <img src="bilder/Vase.png" alt="Kunstvolle Vase aus einer Auktion">
                 </figure>
             </div>
         </section>
@@ -56,7 +56,7 @@ $homeHrefPrefix = '';
                     <!-- <button class="primary-action" type="button">Jetzt loslegen</button> -->
                 </div>
                 <figure class="image-placeholder has-image">
-                    <img src="../bilder/Transaktion.png" alt="Zwei Personen schließen eine Auktionstransaktion ab">
+                    <img src="bilder/Transaktion.png" alt="Zwei Personen schließen eine Auktionstransaktion ab">
                 </figure>
             </div>
         </section>
