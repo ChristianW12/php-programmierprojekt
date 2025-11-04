@@ -102,12 +102,12 @@ public function nachSuche($suchbegriff) {
         }));
     }
 
-    public function nachKategorie(String $kategorie, $db)
+    public function nachKategorie(String $kategorie)
     {
         // nur gültige Kategorie anzeigen
         $query = "SELECT * FROM offers WHERE kategorie = :kategorie ORDER BY start DESC"; //:kategorie als Platzhalter (Sicherer als . $kategorie)
 
-        $stmt = $db->prepare($query);
+        $stmt = $this->dbconnection->prepare($query);
         $stmt->bindValue(':kategorie', $kategorie, \PDO::PARAM_STR);
         $stmt->execute();
 

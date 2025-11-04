@@ -8,12 +8,15 @@ require __DIR__ . '/../src/Filter.php';
 $dsn = 'mysql:dbname=auktion;host=db;port=3306';
 $dataRows = [];
 $activeSort = $_GET['sort'] ?? 'neueste';
+$gewaehlteKategorie = $_GET['kategorie'] ?? '';
 
 try {
     $db = new Db($dsn, 'root', '');
     $filter = new Filter($db);
 
-    if (isset($_GET['preisfilter'])) {
+    if (!empty($gewaehlteKategorie)) {
+        $dataRows = $filter->nachKategorie($gewaehlteKategorie);
+    } elseif (isset($_GET['preisfilter'])) {
         $minPreis = !empty($_GET['min-preis']) ? floatval($_GET['min-preis']) : 0;
         $maxPreis = !empty($_GET['max-preis']) ? floatval($_GET['max-preis']) : PHP_INT_MAX;
         $dataRows = $filter->nachPreisspanne($minPreis, $maxPreis);
@@ -93,23 +96,28 @@ try {
             <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
             <a href="<?= $meineUrl ?>" class="btn-sort <?= $activeSort === 'meineAngebote' ? 'active' : '' ?>">Meine Angebote</a>
 
-            <select name="kategorie" id="kategorie" class="btn-sort">
-                <option value="">Kategorien</option>
-                <option value="Elektronik">Elektronik</option>
-                <option value="Computer & Zubehör">Computer & Zubehör</option>
-                <option value="Haushalt & Küche">Haushalt & Küche</option>
-                <option value="Möbel & Wohnen">Möbel & Wohnen</option>
-                <option value="Kleidung & Accessoires">Kleidung & Accessoires</option>
-                <option value="Filme & Musik">Filme & Musik</option>
-                <option value="Bücher & Comics">Bücher & Comics</option>
-                <option value="Sport & Freizeit">Sport & Freizeit</option>
-                <option value="Spielzeug & Modelle">Spielzeug & Modelle</option>
-                <option value="Sammeln & Antiquitäten">Sammeln & Antiquitäten</option>
-                <option value="Fahrzeuge & Zubehör">Fahrzeuge & Zubehör</option>
-                <option value="Musik & Instrumente">Musik & Instrumente</option>
-                <option value="Tierbedarf">Tierbedarf</option>
-                <option value="Reisen & Gepäck">Reisen & Gepäck</option>
-            </select>
+            <form method="get" style="margin:0;">
+                <!-- aktuell gewählte Sortierung beibehalten: -->
+                <input type="hidden" name="sort" value="<?= htmlspecialchars($activeSort) ?>">
+                <select id="kategorie" name="kategorie" class="btn-sort" onchange="this.form.submit()">
+                    <option value="">Kategorien</option>
+                    <option value="Elektronik" <?= ($gewaehlteKategorie === 'Elektronik') ? 'selected' : '' ?>>Elektronik</option>
+                    <option value="Computer & Zubehör" <?= ($gewaehlteKategorie === 'Computer & Zubehör') ? 'selected' : '' ?>>Computer & Zubehör</option>
+                    <option value="Haushalt & Küche" <?= ($gewaehlteKategorie === 'Haushalt & Küche') ? 'selected' : '' ?>>Haushalt & Küche</option>
+                    <option value="Möbel & Wohnen" <?= ($gewaehlteKategorie === 'Möbel & Wohnen') ? 'selected' : '' ?>>Möbel & Wohnen</option>
+                    <option value="Kleidung & Accessoires" <?= ($gewaehlteKategorie === 'Kleidung & Accessoires') ? 'selected' : '' ?>>Kleidung & Accessoires</option>
+                    <option value="Filme & Musik" <?= ($gewaehlteKategorie === 'Filme & Musik') ? 'selected' : '' ?>>Filme & Musik</option>
+                    <option value="Bücher & Comics" <?= ($gewaehlteKategorie === 'Bücher & Comics') ? 'selected' : '' ?>>Bücher & Comics</option>
+                    <option value="Sport & Freizeit" <?= ($gewaehlteKategorie === 'Sport & Freizeit') ? 'selected' : '' ?>>Sport & Freizeit</option>
+                    <option value="Spielzeug & Modelle" <?= ($gewaehlteKategorie === 'Spielzeug & Modelle') ? 'selected' : '' ?>>Spielzeug & Modelle</option>
+                    <option value="Sammeln & Antiquitäten" <?= ($gewaehlteKategorie === 'Sammeln & Antiquitäten') ? 'selected' : '' ?>>Sammeln & Antiquitäten</option>
+                    <option value="Fahrzeuge & Zubehör" <?= ($gewaehlteKategorie === 'Fahrzeuge & Zubehör') ? 'selected' : '' ?>>Fahrzeuge & Zubehör</option>
+                    <option value="Musik & Instrumente" <?= ($gewaehlteKategorie === 'Musik & Instrumente') ? 'selected' : '' ?>>Musik & Instrumente</option>
+                    <option value="Tierbedarf" <?= ($gewaehlteKategorie === 'Tierbedarf') ? 'selected' : '' ?>>Tierbedarf</option>
+                    <option value="Reisen & Gepäck" <?= ($gewaehlteKategorie === 'Reisen & Gepäck') ? 'selected' : '' ?>>Reisen & Gepäck</option>
+                    <option value="Sonstiges" <?= ($gewaehlteKategorie === 'Sonstiges') ? 'selected' : '' ?>>Sonstiges</option>
+                </select>
+            </form>
 
         </div>
 

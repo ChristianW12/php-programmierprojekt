@@ -78,8 +78,8 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
             </div>
 
             <div class="form-gruppe">
-                <label for="kategorie">Kategorie (optional):</label>
-                <select id="kategorie" name="kategorie">
+                <label for="kategorie">Kategorie:</label>
+                <select id="kategorie" name="kategorie" required>
                     <option value="">-- Keine Kategorie --</option>
                     <option value="Elektronik">Elektronik</option>
                     <option value="Computer & Zubehör">Computer & Zubehör</option>
@@ -95,6 +95,7 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
                     <option value="Musik & Instrumente">Musik & Instrumente</option>
                     <option value="Tierbedarf">Tierbedarf</option>
                     <option value="Reisen & Gepäck">Reisen & Gepäck</option>
+                    <option value="Sonstiges">Sonstiges</option>
                 </select>
             </div>
 
@@ -105,7 +106,9 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
 
             <div class="form-gruppe">
                 <label for="enddatum">Enddatum:</label>
-                <input type="datetime-local" id="enddatum" name="enddatum" required  min="<?php echo date('Y-m-d\TH:i', strtotime('+1 hour')); ?>">
+                <input type="datetime-local" id="enddatum" name="enddatum" required
+                       min="<?php echo date('Y-m-d\TH:i', strtotime('+1 hour')); ?>"
+                       max="<?php echo date('Y-m-d\TH:i', strtotime('+1 year')); ?>">
             </div>
 
             <div class="form-actions">

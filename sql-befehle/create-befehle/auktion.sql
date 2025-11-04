@@ -52,8 +52,8 @@ CREATE TABLE `offers` (
   `hoechstpreis` decimal(10,2) DEFAULT NULL,
   `start` datetime NOT NULL DEFAULT current_timestamp(),
   `ende` datetime NOT NULL,
-  `kategorie` varchar(50)
-     CHECK (kategorie IS NULL OR kategorie IN (
+  `kategorie` varchar(50) NOT NULL
+     CHECK (kategorie IN (
                     'Elektronik',
                     'Computer & Zubehör',
                     'Haushalt & Küche',
@@ -67,7 +67,8 @@ CREATE TABLE `offers` (
                     'Fahrzeuge & Zubehör',
                     'Musik & Instrumente',
                     'Tierbedarf',
-                    'Reisen & Gepäck'))
+                    'Reisen & Gepäck',
+                    'Sonstiges'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -76,7 +77,7 @@ CREATE TABLE `offers` (
 
 INSERT INTO `offers` (`offer_id`, `user_id`, `title`, `beschreibung`, `startpreis`, `aktueller_preis`, `hoechstpreis`, `start`, `ende`, `kategorie`) VALUES
 (1, 1, 'Vintage Kamera', 'Analoge Kamera in gutem Zustand, inkl. Tasche.', 25.00, NULL, NULL, '2025-10-15 09:00:00', '2025-11-01 12:00:00', 'Elektronik'),
-(2, 2, 'Gaming Headset', 'Over-Ear, Noise-Cancelling, kaum genutzt.', 30.00, NULL, NULL, '2025-10-15 11:15:00', '2025-10-30 18:00:00', 'Elektronik'),
+(2, 2, 'Gaming Headset', 'Over-Ear, Noise-Cancelling, kaum genutzt.', 30.00, NULL, NULL, '2025-10-15 11:15:00', '2025-10-30 18:00:00', 'Computer & Zubehör'),
 (3, 3, 'Sammlerfigur', 'Limitierte Edition, OVP.', 50.00, NULL, NULL, '2025-10-16 10:20:00', '2025-11-05 20:00:00', 'Sammeln & Antiquitäten'),
 (4, 4, 'Mountainbike 26\"', 'Guter Zustand, Alurahmen.', 120.00, NULL, NULL, '2025-10-16 14:40:00', '2025-11-20 15:00:00', 'Sport & Freizeit'),
 (5, 5, 'Bücherpaket', '10 Romane gemischter Genres.', 15.00, NULL, NULL, '2025-10-17 09:10:00', '2025-10-31 21:00:00', 'Bücher & Comics'),
@@ -96,21 +97,21 @@ INSERT INTO `offers` (`offer_id`, `user_id`, `title`, `beschreibung`, `startprei
 (19, 1, 'Kindersitz Auto', 'ECE geprüft, sauber.', 30.00, NULL, NULL, '2025-10-24 11:00:00', '2025-11-08 09:00:00', 'Fahrzeuge & Zubehör'),
 (20, 2, 'Campingkocher', 'Gaskocher, leicht, robust.', 20.00, NULL, NULL, '2025-10-24 17:20:00', '2025-11-05 08:00:00', 'Sport & Freizeit'),
 (21, 3, 'Blu-ray Sammlung', '20 Filme, verschiedene Genres.', 40.00, NULL, NULL, '2025-10-25 08:55:00', '2025-11-21 18:00:00', 'Filme & Musik'),
-(22, 4, 'Mikrofon USB', 'Podcast/Streaming geeignet.', 35.00, NULL, NULL, '2025-10-25 14:05:00', '2025-11-22 19:00:00', 'Elektronik'),
-(23, 5, 'Schreibtischlampe LED', 'Dimmbar, warm/kalt.', 18.00, NULL, NULL, '2025-10-26 10:30:00', '2025-11-10 20:00:00', 'Haushalt & Küche'),
+(22, 4, 'Mikrofon USB', 'Podcast/Streaming geeignet.', 35.00, NULL, NULL, '2025-10-25 14:05:00', '2025-11-22 19:00:00', 'Musik & Instrumente'),
+(23, 5, 'Schreibtischlampe LED', 'Dimmbar, warm/kalt.', 18.00, NULL, NULL, '2025-10-26 10:30:00', '2025-11-10 20:00:00', 'Möbel & Wohnen'),
 (24, 6, 'Fahrradhelm L', 'Unfallfrei, verstellbar.', 22.00, NULL, NULL, '2025-10-26 16:10:00', '2025-11-12 10:00:00', 'Sport & Freizeit'),
 (25, 7, 'Externe SSD 1TB', 'NVMe im Gehäuse, schnell.', 75.00, NULL, NULL, '2025-10-27 09:00:00', '2025-11-25 11:00:00', 'Computer & Zubehör'),
-(26, 8, 'Nintendo Switch Lite', 'Mit Tasche, guter Zustand.', 120.00, NULL, NULL, '2025-10-27 15:00:00', '2025-11-26 12:00:00', 'Elektronik'),
+(26, 8, 'Nintendo Switch Lite', 'Mit Tasche, guter Zustand.', 120.00, NULL, NULL, '2025-10-27 15:00:00', '2025-11-26 12:00:00', 'Spielzeug & Modelle'),
 (27, 9, 'Drohne Einsteiger', 'Mit Kamera, Ersatzpropeller.', 90.00, NULL, NULL, '2025-10-28 11:15:00', '2025-11-27 13:00:00', 'Elektronik'),
 (28, 1, 'Winterjacke M', 'Warm, wasserabweisend.', 28.00, NULL, NULL, '2025-10-28 17:45:00', '2025-11-18 14:00:00', 'Kleidung & Accessoires'),
-(29, 2, 'Rucksack 30L', 'Laptopfach, regenfest.', 22.00, NULL, NULL, '2025-10-29 08:50:00', '2025-11-15 15:00:00', 'Sport & Freizeit'),
+(29, 2, 'Rucksack 30L', 'Laptopfach, regenfest.', 22.00, NULL, NULL, '2025-10-29 08:50:00', '2025-11-15 15:00:00', 'Reisen & Gepäck'),
 (30, 3, 'PC-Gehäuse ATX', 'Mit 3 Lüftern, schwarz.', 45.00, NULL, NULL, '2025-10-29 12:20:00', '2025-11-20 16:00:00', 'Computer & Zubehör'),
 (31, 4, 'Keramikmesser Set', '3-teilig, sehr scharf.', 20.00, NULL, NULL, '2025-10-15 10:00:00', '2025-11-21 09:00:00', 'Haushalt & Küche'),
 (32, 5, 'Gaming Maus', 'RGB, viele Tasten.', 25.00, NULL, NULL, '2025-10-16 12:30:00', '2025-11-22 10:00:00', 'Computer & Zubehör'),
 (33, 6, 'Bluetooth Lautsprecher', 'Wasserfest, kräftiger Sound.', 30.00, NULL, NULL, '2025-10-17 11:40:00', '2025-11-23 11:00:00', 'Elektronik'),
 (34, 7, 'Skihelm M', 'Mit Visier, kaum genutzt.', 40.00, NULL, NULL, '2025-10-18 09:50:00', '2025-11-24 12:00:00', 'Sport & Freizeit'),
 (35, 8, 'LED-Beamer', 'Wohnzimmer-tauglich, HDMI.', 85.00, NULL, NULL, '2025-10-19 14:15:00', '2025-11-25 13:00:00', 'Elektronik'),
-(36, 9, 'Fitness Tracker', 'Herzfrequenz, GPS.', 28.00, NULL, NULL, '2025-10-20 13:00:00', '2025-11-26 14:00:00', 'Elektronik'),
+(36, 9, 'Fitness Tracker', 'Herzfrequenz, GPS.', 28.00, NULL, NULL, '2025-10-20 13:00:00', '2025-11-26 14:00:00', 'Sport & Freizeit'),
 (37, 1, 'Küchenwaage', 'Digital, präzise.', 12.00, NULL, NULL, '2025-10-21 08:30:00', '2025-11-27 15:00:00', 'Haushalt & Küche'),
 (38, 2, 'Esstisch 160cm', 'Eiche Dekor, mit Gebrauchsspuren.', 60.00, NULL, NULL, '2025-10-22 10:50:00', '2025-12-01 16:00:00', 'Möbel & Wohnen'),
 (39, 3, 'Kinderspiel Küche', 'Zubehör inkl.', 25.00, NULL, NULL, '2025-10-23 16:25:00', '2025-12-02 17:00:00', 'Spielzeug & Modelle'),
