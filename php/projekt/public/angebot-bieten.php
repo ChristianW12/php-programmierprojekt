@@ -4,6 +4,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Titel für die H1-Überschrift initialisieren und eine Variable für Erfolgs-Styling.
+$pageTitle = 'Gebot abgeben';
+$isSuccess = false;
+
 // Angebot ID und Startpreis aus der URL holen und Variable Standard-Mail initialisieren
 $offerId = isset($_GET['offer_id']) ? (int) $_GET['offer_id'] : null;
 $startpreis = isset($_GET['startpreis']) && is_numeric($_GET['startpreis']) ? (float) $_GET['startpreis'] : null;
@@ -21,16 +25,20 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
     $bidAmount = isset($_POST['bid_amount']) ? (float) $_POST['bid_amount'] : null;
     $bidEmail = isset($_POST['bid_email']) ? filter_var($_POST['bid_email'], FILTER_VALIDATE_EMAIL) : null;
 
-    if($bidAmount !== null && $bidEmail !== null && $offerId !== null && $startpreis !== null && $bidAmount > $startpreis) {
+    // Frontend-Validierung
+    if($bidAmount !== null && $bidEmail !== null && $offerId !== null) {
         $bid = new Bid($offerId, $bidAmount, $bidEmail);
-        $res = $bid->saveBid();
-        if($res === true) {
-            header("Location: angebote.php");
-            exit;
-        } else {
-            echo "Fehler beim Speichern des Gebots.";
-        }
-    } 
+        $result = $bid->saveBid(); // saveBid gibt jetzt ein Array zurück
+
+        // Die Nachricht aus dem Ergebnis in der Seitentitel-Variable speichern.
+        $pageTitle = htmlspecialchars($result['message']);
+        $isSuccess = $result['success'];
+
+    } else {
+        // Fall, wenn die Formular-Daten schon im Frontend ungültig sind.
+        $pageTitle = 'Eingabe ungültig. Bitte prüfen Sie Ihr Gebot.';
+        $isSuccess = false;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -47,7 +55,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
 <main>
     <section class="section">
         <div class="section-text center profile-container">
-            <h1><strong>Gebot abgeben</strong></h1>
+            <h1 class="<?= $isSuccess ? 'success-message' : 'error-message' ?>"><strong><?= $pageTitle ?></strong></h1>
             <hr>
             <form method="post" class="bid-form">
             <div class="form-group">
@@ -56,14 +64,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
                         type="number" 
                         id="bid-amount" 
                         name="bid_amount" 
-                        min="<?= $startpreis ? $startpreis + 1 : 1 ?>"
+                        min="<?= $startpreis ? htmlspecialchars($startpreis + 1) : 1 ?>"
                         step="1" 
-                        placeholder="z.B. <?= $startpreis ? $startpreis + 1.99 : 1 ?>"
+                        placeholder="z.B. <?= $startpreis ? htmlspecialchars($startpreis + 1.99) : 1 ?>"
                         required>
                 </div>
                 <div class="form-group">
                     <label for="bid-email">E-Mail-Adresse</label>
-                    <input type="email" id="bid-email" name="bid_email" placeholder="name@example.com" value="<?= $standardMail ?>" required>
+                    <input type="email" id="bid-email" name="bid_email" placeholder="name@example.com" value="<?= htmlspecialchars($standardMail) ?>" required>
                 </div>
                 <div class="profile-actions">
                     <button type="submit" name="submitOffer" class="btn">Gebot absenden</button>
