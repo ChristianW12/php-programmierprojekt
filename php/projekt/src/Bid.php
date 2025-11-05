@@ -27,83 +27,94 @@ class Bid {
     }
 
     public function saveBid(): array {
-        // Eine Transaktion wird gestartet, um die Datenintegrität zu sichern.
         $this->dbconnection->beginTransaction();
-
         try {
-            // --- KORREKTUR: Alle benötigten Daten werden zu Beginn gelesen, um Fehler zu vermeiden. ---
-            $stmt = $this->dbconnection->prepare(
-                'SELECT u.mail AS creator_mail, o.hoechstpreis, o.startpreis 
+            // 1. Notwendige Daten holen (inkl. Sperre der Angebotszeile gegen Race Conditions)
+            $offerStmt = $this->dbconnection->prepare(
+                'SELECT u.mail AS creator_mail, o.startpreis 
                  FROM offers o JOIN users u ON o.user_id = u.user_id 
-                 WHERE o.offer_id = ?'
+                 WHERE o.offer_id = ? FOR UPDATE'
             );
-            $stmt->execute([$this->offerId]);
-            $offerData = $stmt->fetch(PDO::FETCH_ASSOC);
+            $offerStmt->execute([$this->offerId]);
+            $offerData = $offerStmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$offerData) {
-                throw new Exception("Angebot wurde nicht gefunden.");
-            }
+            if (!$offerData) { throw new Exception("Angebot wurde nicht gefunden."); }
 
-            // Die gelesenen Daten werden Variablen zugewiesen.
-            $creatorMail = $offerData['creator_mail'];
-            $aktuellerHoechstpreis = $offerData['hoechstpreis']; // Kann null sein.
-            $aktuellerStartpreis = $offerData['startpreis'];
+            // Das aktuelle höchste Maximalgebot aus der `bids` Tabelle holen
+            $highestBidStmt = $this->dbconnection->prepare(
+                'SELECT price FROM bids WHERE offer_id = ? AND highest_price = 1'
+            );
+            $highestBidStmt->execute([$this->offerId]);
+            $current_highest_max_bid = $highestBidStmt->fetchColumn();
 
-            // --- DEINE LOGIK, ÜBERARBEITET UND KORRIGIERT ---
-
-            // Abfrage, ob der Bieter der Ersteller des Angebots ist.
-            if ($this->bidderEmail === $creatorMail) {
+            // 2. Validierung
+            if ($this->bidderEmail === $offerData['creator_mail']) {
                 throw new Exception("Sie können nicht auf Ihr eigenes Angebot bieten.");
             }
+            if ($this->bidderPrice < $offerData['startpreis']) {
+                throw new Exception("Ihr Gebot muss mindestens so hoch wie der Startpreis sein.");
+            }
+            
+            $new_max_bid = $this->bidderPrice;
 
-            // Fall 1: Es gab noch kein Gebot (hoechstpreis in offers ist NULL).
-            if ($aktuellerHoechstpreis === null) {
-                if ($this->bidderPrice < $aktuellerStartpreis) {
-                    throw new Exception("Ihr Gebot muss mindestens so hoch wie der Startpreis sein.");
-                }
+            // --- Proxy-Bidding Logik ---
 
-                // Der Preis in `offers` wird auf das Gebot gesetzt.
-                $updateStmt = $this->dbconnection->prepare('UPDATE offers SET hoechstpreis = ? WHERE offer_id = ?');
-                $updateStmt->execute([$this->bidderPrice, $this->offerId]);
-                
-                // Das Gebot wird als erstes und höchstes in die `bids`-Tabelle eingetragen.
-                $insertStmt = $this->dbconnection->prepare('INSERT INTO bids (offer_id, mail, price, highest_price) VALUES (?, ?, ?, 1)');
-                $insertStmt->execute([$this->offerId, $this->bidderEmail, $this->bidderPrice]);
+            // Fall A: Dies ist das erste Gebot für den Artikel.
+            if ($current_highest_max_bid === false) {
+                $new_current_price = (float)$offerData['startpreis'];
+                $this->insertBid(1); // Das neue Gebot als höchstes einfügen.
+                $this->updateOfferPrice($new_current_price); // Der sichtbare Preis ist der Startpreis.
 
-            // Fall 2: Es gibt bereits Gebote.
-            } else {
-                // Das neue Gebot muss höher sein als das aktuelle Höchstgebot.
-                if ($this->bidderPrice > $aktuellerHoechstpreis) {
-                    // Der Preis in `offers` wird auf das neue Gebot aktualisiert.
-                    $updateStmt = $this->dbconnection->prepare('UPDATE offers SET hoechstpreis = ? WHERE offer_id = ?');
-                    $updateStmt->execute([$this->bidderPrice, $this->offerId]);
-
-                    // Alle anderen Gebote für dieses Angebot werden als "nicht höchstes" markiert.
-                    $resetStmt = $this->dbconnection->prepare('UPDATE bids SET highest_price = 0 WHERE offer_id = ?');
-                    $resetStmt->execute([$this->offerId]);
-
-                    // Das neue Gebot wird als höchstes eingetragen.
-                    $insertStmt = $this->dbconnection->prepare('INSERT INTO bids (offer_id, mail, price, highest_price) VALUES (?, ?, ?, 1)');
-                    $insertStmt->execute([$this->offerId, $this->bidderEmail, $this->bidderPrice]);
-                } else {
-                    // Das Gebot ist nicht hoch genug. Es wird als nicht-höchstes Gebot gespeichert.
-                    $insertStmt = $this->dbconnection->prepare('INSERT INTO bids (offer_id, mail, price, highest_price) VALUES (?, ?, ?, 0)');
-                    $insertStmt->execute([$this->offerId, $this->bidderEmail, $this->bidderPrice]);
-                    
-                    // Transaktion bestätigen und spezielle Nachricht zurückgeben.
-                    $this->dbconnection->commit();
-                    return ['success' => true, 'message' => 'Gebot gespeichert, Sie sind aber nicht Höchstbietender.'];
-                }
+                $this->dbconnection->commit();
+                return ['success' => true, 'message' => 'Glückwunsch, Sie sind Höchstbietender!'];
             }
 
-            // Wenn alles erfolgreich war, wird die Transaktion bestätigt.
-            $this->dbconnection->commit();
-            return ['success' => true, 'message' => 'Glückwunsch, Sie sind Höchstbietender!'];
+            // Fall B: Es gibt bereits Gebote.
+            $current_highest_max_bid = (float)$current_highest_max_bid;
+
+            // Wenn das neue Maximalgebot NICHT HÖHER ist als das bisherige.
+            if ($new_max_bid <= $current_highest_max_bid) {
+                // Der sichtbare Preis steigt auf das Gebot des unterlegenen Bieters.
+                $new_current_price = $new_max_bid;
+                $this->insertBid(0); // Das neue Gebot als NICHT höchstes einfügen.
+                $this->updateOfferPrice($new_current_price);
+
+                $this->dbconnection->commit();
+                return ['success' => true, 'message' => 'Ihr Gebot wurde angenommen, aber ein anderer Bieter hat ein höheres Maximalgebot.'];
+            
+            // Wenn das neue Maximalgebot HÖHER ist als das bisherige.
+            } else {
+                // Der neue sichtbare Preis ist das alte Höchstgebot + 1€.
+                $new_current_price = $current_highest_max_bid + 1.00;
+                
+                $this->resetHighestBids(); // Alle alten Gebote als "nicht höchstes" markieren.
+                $this->insertBid(1); // Das neue Gebot als HÖCHSTES einfügen.
+                $this->updateOfferPrice($new_current_price); // Den sichtbaren Preis aktualisieren.
+
+                $this->dbconnection->commit();
+                return ['success' => true, 'message' => 'Glückwunsch, Sie sind neuer Höchstbietender!'];
+            }
 
         } catch (Exception $e) {
-            // Bei einem Fehler werden alle Änderungen zurückgerollt.
             $this->dbconnection->rollBack();
             return ['success' => false, 'message' => $e->getMessage()];
         }
+    }
+
+    // Hilfsmethoden zur Verbesserung der Lesbarkeit von saveBid()
+
+    private function insertBid(int $isHighest): void {
+        $stmt = $this->dbconnection->prepare('INSERT INTO bids (offer_id, mail, price, highest_price) VALUES (?, ?, ?, ?)');
+        $stmt->execute([$this->offerId, $this->bidderEmail, $this->bidderPrice, $isHighest]);
+    }
+
+    private function updateOfferPrice(float $price): void {
+        $stmt = $this->dbconnection->prepare('UPDATE offers SET hoechstpreis = ? WHERE offer_id = ?');
+        $stmt->execute([$price, $this->offerId]);
+    }
+
+    private function resetHighestBids(): void {
+        $stmt = $this->dbconnection->prepare('UPDATE bids SET highest_price = 0 WHERE offer_id = ?');
+        $stmt->execute([$this->offerId]);
     }
 }
