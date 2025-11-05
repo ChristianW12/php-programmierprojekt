@@ -7,7 +7,6 @@ if (session_status() === PHP_SESSION_NONE) {
 // Angebot ID und Startpreis aus der URL holen und Variable Standard-Mail initialisieren
 $offerId = isset($_GET['offer_id']) ? (int) $_GET['offer_id'] : null;
 $startpreis = isset($_GET['startpreis']) && is_numeric($_GET['startpreis']) ? (float) $_GET['startpreis'] : null;
-echo "startpreis: $startpreis";
 $standardMail = '';
 
 // Speichern der letzten besuchten Seite in der Session
@@ -51,7 +50,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
             <h1><strong>Gebot abgeben</strong></h1>
             <hr>
             <form method="post" class="bid-form">
-                <div class="form-group">
+            <div class="form-group">
                     <label for="bid-amount">Gebotsbetrag</label>
                     <input 
                         type="number" 
