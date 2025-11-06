@@ -30,6 +30,13 @@ try {
                 exit;
             }
             $dataRows = $filter->nachMeineAngebote($_SESSION['user_id']);
+        } elseif ($activeSort === 'favoriten') {
+            if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+                header("Location: login.php");
+                $_SESSION['last_site'] = 'favoriten';
+                exit;
+            }
+            $dataRows = $filter->nachFavoriten($_SESSION['user_id']);
         } else {
             $dataRows = $filter->nachNeuste();
         }
@@ -87,6 +94,10 @@ try {
             $queryParams['sort'] = 'meineAngebote';
             $meineUrl = '?' . http_build_query($queryParams);
 
+            // "Favoriten"
+            $queryParams['sort'] = 'favoriten';
+            $favoritenUrl = '?' . http_build_query($queryParams);
+
             // "Kategorien"
             $queryParams['sort'] = 'kategorien';
             $kategorienUrl = '?' . http_build_query($queryParams);
@@ -95,6 +106,7 @@ try {
             <a href="<?= $neuesteUrl ?>" class="btn-sort <?= $activeSort === 'neueste' ? 'active' : '' ?>">Neueste</a>
             <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
             <a href="<?= $meineUrl ?>" class="btn-sort <?= $activeSort === 'meineAngebote' ? 'active' : '' ?>">Meine Angebote</a>
+            <a href="<?= $favoritenUrl ?>" class="btn-sort <?= $activeSort === 'favoriten' ? 'active' : '' ?>">Favoriten</a>
 
             <form method="get" style="margin:0;">
                 <!-- aktuell gewählte Sortierung beibehalten: -->

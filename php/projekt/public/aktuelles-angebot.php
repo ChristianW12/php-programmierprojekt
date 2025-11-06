@@ -100,10 +100,14 @@ $startpreis = $startpreisWert !== null
                             </div>
                         <?php else: ?>
                             <div class="bidding-action">
-                                <form method="get" action="angebot-bieten.php">
+                                <form method="get" action="angebot-bieten.php" style="display: inline-block;">
                                     <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebot['offer_id'], ENT_QUOTES, 'UTF-8') ?>">
                                     <input type="hidden" name="startpreis" value="<?= htmlspecialchars(number_format($startpreisWert, 2, '.', ''), ENT_QUOTES, 'UTF-8') ?>">
                                     <button type="submit" class="bieten-button">Jetzt bieten</button>
+                                </form>
+                                <form method="post" action="favorit_hinzufuegen.php" style="display: inline-block;">
+                                    <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebot['offer_id'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <button type="submit" class="favourite-button">Zu Favoriten</button>
                                 </form>
                             </div>
                         <?php endif; ?>

@@ -102,6 +102,15 @@ public function nachSuche($suchbegriff) {
         }));
     }
 
+    public function nachFavoriten($userId)
+    {
+        $query = 'SELECT o.* FROM offers o JOIN favourites f ON o.offer_id = f.offer_id WHERE f.user_id = :userId';
+        $stmt = $this->dbconnection->prepare($query);
+        $stmt->execute([':userId' => $userId]);
+        $this->data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->data;
+    }
+
     public function nachKategorie(String $kategorie)
     {
         // nur gültige Kategorie anzeigen
