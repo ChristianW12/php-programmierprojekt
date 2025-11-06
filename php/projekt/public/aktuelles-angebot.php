@@ -107,7 +107,7 @@ $startpreis = $startpreisWert !== null
                                 </form>
                                 <form method="post" action="favorit_hinzufuegen.php" style="display: inline-block;">
                                     <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebot['offer_id'], ENT_QUOTES, 'UTF-8') ?>">
-                                    <button type="submit" class="favourite-button">Zu Favoriten</button>
+                                    <button type="submit" class="favourite-button" style="background-color: #ffc107; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 1em;">⭐ Zu Favoriten</button>
                                 </form>
                             </div>
                         <?php endif; ?>
@@ -124,6 +124,9 @@ $startpreis = $startpreisWert !== null
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+        <div style="margin-bottom: 20px; padding: 10px;">
+            <a href="angebote.php" class="back-link" style="text-decoration: none; color: #898989; font-weight: bold;">← Zurück zur Übersicht</a>
+        </div>
     </div>
 </main>
 

@@ -107,8 +107,9 @@ try {
             <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
             <a href="<?= $meineUrl ?>" class="btn-sort <?= $activeSort === 'meineAngebote' ? 'active' : '' ?>">Meine Angebote</a>
             <a href="<?= $favoritenUrl ?>" class="btn-sort <?= $activeSort === 'favoriten' ? 'active' : '' ?>">Favoriten</a>
+        </div>
 
-            <form method="get" style="margin:0;">
+        <form method="get" style="margin:0;">
                 <!-- aktuell gewählte Sortierung beibehalten: -->
                 <input type="hidden" name="sort" value="<?= htmlspecialchars($activeSort) ?>">
                 <select id="kategorie" name="kategorie" class="btn-sort" onchange="this.form.submit()">
@@ -131,8 +132,6 @@ try {
                 </select>
             </form>
 
-        </div>
-
         <form id="filter-form" method="get">
             <?php if ($activeSort): ?>
                 <input type="hidden" name="sort" value="<?= htmlspecialchars($activeSort) ?>">
@@ -154,6 +153,9 @@ try {
         <form method="get" class="neues-angebot-form">
             <button type="submit" name="neuesAngebot" class="angebot-erstellen-btn">+</button>
         </form>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="angebote.php" class="reset-link">Filter zurücksetzen</a>
+        </div>
     </aside>
 
     <main>
