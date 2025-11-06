@@ -9,11 +9,14 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - ✅ Angebot Ändern überarbeiten (Luca)
 - ✅ Jetzt Bieten Button und Angebot bearbeiten Button von angebote.php entfernen (Luca)
 - Kategorien beim Angebot erstellen (Alex) -> Fehlt noch: Kategorien bei Angeboten anzeigen lassen & Dropdown mit erstellter Funktion belegen
-- Angebote als Favouriten festlegen können (Melina) -> wip: DB erweitern, PHP-Logik, Filteroption ergänzen
+- ✅ Angebote als Favouriten festlegen können (Melina)
 - Footer aktualisieren (Christian)
 - ✅ Angebot Card anpassen anklickbar (Luca)
 - Logik von Bieten vollständig machen (Christian)
 - ✅ Angebot löschen (Melina)
+---
+- Filters verbessern: Ideen zum Design sammeln, Plus-Icon wie im Design nach unten rechts moven?
+- Angebote aus Favoriten entfernen können (Melina)
 
 ---
 
