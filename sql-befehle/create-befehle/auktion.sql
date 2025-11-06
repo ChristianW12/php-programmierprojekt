@@ -46,7 +46,6 @@ INSERT INTO `bids` (`bid_id`, `offer_id`, `mail`, `price`, `highest_price`, `bid
 (6, 45, 'TestDerDritte@mail.com', 80.00, 1, '2025-11-05 10:43:52'),
 (7, 45, 'TestDerVierte@mail.de', 75.00, 0, '2025-11-05 10:44:23');
 
-
 -- --------------------------------------------------------
 
 --
@@ -120,6 +119,7 @@ INSERT INTO `offers` (`offer_id`, `user_id`, `title`, `beschreibung`, `startprei
 (48, 3, 'Holzregal', '3 Ebenen, stabil.', 20.00, NULL, '2025-10-17 19:00:00', '2025-12-11 14:30:00', 'Möbel & Wohnen'),
 (49, 4, 'Smartphone Zubehör Set', 'Hülle, Panzerglas, Ladegerät.', 15.00, NULL, '2025-10-18 20:00:00', '2025-12-12 15:30:00', 'Elektronik'),
 (50, 5, 'Koffer 65L', 'Hartschale, leicht.', 35.00, NULL, '2025-10-19 21:00:00', '2025-12-13 16:30:00', 'Reisen & Gepäck');
+
 -- --------------------------------------------------------
 
 --
