@@ -122,42 +122,32 @@ main {
     background-color: #0056b3;
 }
 
-.erstellen-bereich {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.angebot-erstellen-btn {
-    width: 5rem;
-    height: 5rem;
+/* Floating Plus Button für Angebote */
+.add-offer-fab {
+    position: fixed;
+    bottom: 2.75rem;
+    right: 2rem;
+    width: 76px;
+    height: 76px;
+    background-color: #c8c8c8;
+    color: white;
     border-radius: 50%;
-    background-color: #2ecc71;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    font-size: 2rem;
-    line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    font-size: 36px;
+    padding-bottom: 4px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    z-index: 1000;
 }
 
-.angebot-erstellen-btn:hover {
-    background-color: #27ae60;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(39, 174, 96, 0.25);
+.add-offer-fab:hover {
+    background-color: #9bbabf;
+    transform: scale(1.05);
 }
 
-.angebot-erstellen-btn:focus {
-    outline: 3px solid rgba(46, 204, 113, 0.35);
-    outline-offset: 3px;
-}
 
 /* Angebote Grid */
 .angebote-container .section {

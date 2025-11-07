@@ -152,9 +152,6 @@ try {
                 <button type="submit" name="preisfilter" value="1">Preisspanne anwenden</button>
             </div>
         </form>
-        <form method="get" class="neues-angebot-form">
-            <button type="submit" name="neuesAngebot" class="angebot-erstellen-btn">+</button>
-        </form>
         <div style="text-align: center; margin-top: 20px;">
             <a href="angebote.php" class="reset-link">Filter zurücksetzen</a>
         </div>
@@ -177,6 +174,7 @@ try {
         </section>
     </main>
 </div>
+<a href="neuesAngebot.php" class="add-offer-fab">+</a>
 <?php require __DIR__ . '/../partials/footer.php'; ?>
 <script src="scripts/app.js"></script>
 </body>
