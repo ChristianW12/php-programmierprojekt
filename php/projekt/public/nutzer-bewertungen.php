@@ -136,7 +136,7 @@ if ($bewertungen) {
                     <option value="1">★☆☆☆☆ (1)</option>
                 </select>
                 <label for="comment">Rezension (optional):</label>
-                <textarea name="comment" id="comment" rows="3" placeholder="Eine sehr posiitive Erfahrung..."></textarea>
+                <textarea name="comment" id="comment" rows="3" placeholder="Eine sehr positive Erfahrung..."></textarea>
                 <button type="submit" name="bewertungAbsenden">Bewertung abgeben</button>
             </form>
         </section>
