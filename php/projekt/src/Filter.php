@@ -24,7 +24,7 @@ class Filter {
         $this->data = [];
     }
     public function getData() {
-        $query = 'SELECT offer_id, user_id, title, beschreibung, startpreis, start, ende FROM offers';
+        $query = 'SELECT offer_id, user_id, title, beschreibung, startpreis, start, ende FROM offers WHERE ende > NOW() ORDER BY start DESC';
         $result = $this->dbconnection->query($query);
 
         if($result !== false && $result->rowCount() > 0){
@@ -94,12 +94,19 @@ public function nachSuche($suchbegriff) {
     }
 
     public function nachMeineAngebote($userId) {
-        if (empty($this->data)) {
-            $this->getData();
-        }
-        return array_values(array_filter($this->data, function($row) use ($userId) {
-            return (int)$row['user_id'] === (int)$userId;
-        }));
+        $query = 'SELECT offer_id, user_id, title, beschreibung, startpreis, start, ende 
+                  FROM offers 
+                  WHERE user_id = :userId';
+
+        $stmt = $this->dbconnection->prepare($query);
+
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $angebote = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $angebote;
     }
 
     public function nachFavoriten($userId)
