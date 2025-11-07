@@ -77,48 +77,53 @@ try {
     <aside class="filter-bereich">
         <h2>Filter</h2>
 
-        <div class="sort-buttons">
-            <?php
-            $queryParams = $_GET;
+        <div class="filter-section">
+            <h3 class="filter-title">Sortierung</h3>
+            <div class="sort-buttons">
+                <?php
+                $queryParams = $_GET;
 
-            //Kategorien-Filter immer entfernen
-            unset($queryParams['kategorie']);
+                //Kategorien-Filter immer entfernen
+                unset($queryParams['kategorie']);
 
-            // "Neueste"
-            $queryParams['sort'] = 'neueste';
-            unset($queryParams['preisfilter']); // wie gehabt
-            $neuesteUrl = '?' . http_build_query($queryParams);
+                // "Neueste"
+                $queryParams['sort'] = 'neueste';
+                unset($queryParams['preisfilter']); // wie gehabt
+                $neuesteUrl = '?' . http_build_query($queryParams);
 
-            // "Beliebteste"
-            $queryParams['sort'] = 'beliebteste';
-            $beliebtesteUrl = '?' . http_build_query($queryParams);
+                // "Beliebteste"
+                $queryParams['sort'] = 'beliebteste';
+                $beliebtesteUrl = '?' . http_build_query($queryParams);
 
-            // "Meine"
-            $queryParams['sort'] = 'meineAngebote';
-            $meineUrl = '?' . http_build_query($queryParams);
+                // "Meine"
+                $queryParams['sort'] = 'meineAngebote';
+                $meineUrl = '?' . http_build_query($queryParams);
 
-            // "Favoriten"
-            $queryParams['sort'] = 'favoriten';
-            $favoritenUrl = '?' . http_build_query($queryParams);
+                // "Favoriten"
+                $queryParams['sort'] = 'favoriten';
+                $favoritenUrl = '?' . http_build_query($queryParams);
 
-            // "Kategorien"
-            $queryParams = $_GET;
-            unset($queryParams['kategorie']);
+                // "Kategorien"
+                $queryParams = $_GET;
+                unset($queryParams['kategorie']);
 
-            ?>
-            <a href="<?= $neuesteUrl ?>" class="btn-sort <?= $activeSort === 'neueste' ? 'active' : '' ?>">Neueste</a>
-            <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
-            <a href="<?= $meineUrl ?>" class="btn-sort <?= $activeSort === 'meineAngebote' ? 'active' : '' ?>">Meine Angebote</a>
-            <a href="<?= $favoritenUrl ?>" class="btn-sort <?= $activeSort === 'favoriten' ? 'active' : '' ?>">Favoriten</a>
+                ?>
+                <a href="<?= $neuesteUrl ?>" class="btn-sort <?= $activeSort === 'neueste' ? 'active' : '' ?>">Neueste</a>
+                <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
+                <a href="<?= $meineUrl ?>" class="btn-sort <?= $activeSort === 'meineAngebote' ? 'active' : '' ?>">Meine Angebote</a>
+                <a href="<?= $favoritenUrl ?>" class="btn-sort <?= $activeSort === 'favoriten' ? 'active' : '' ?>">Favoriten</a>
+            </div>
         </div>
 
-        <form method="get" style="margin:0;">
-            <input type="hidden" name="sort" value="neueste">
+        <div class="filter-section">
+            <h3 class="filter-title">Kategorie</h3>
+            <form method="get" style="margin:0;">
+                <input type="hidden" name="sort" value="neueste">
                 <select id="kategorie" name="kategorie" class="btn-sort" onchange="this.form.submit()">
-                    <option value="">Kategorien</option>
+                    <option value="">Auswählen</option>
                     <option value="Elektronik" <?= (($_GET['kategorie'] ?? '') === 'Elektronik') ? 'selected' : '' ?>>Elektronik</option>
                     <option value="Computer & Zubehör" <?= (($_GET['kategorie'] ?? '') === 'Computer & Zubehör') ? 'selected' : '' ?>>Computer & Zubehör</option>
-                    <option value="Haushalt & Küche" <?= (($_GET['kategorie'] ?? '') === 'Haushalt & Küche') ? 'selected' : '' ?>>Haushalt & Küche</option>
+                    <option value="Haushalt & Küche" <?= (($_GET['kategorie'] ?? '') === 'Haushalt & Küche') ? 'selected' : '' ?>>Haushalt & Küche</n>
                     <option value="Möbel & Wohnen" <?= (($_GET['kategorie'] ?? '') === 'Möbel & Wohnen') ? 'selected' : '' ?>>Möbel & Wohnen</option>
                     <option value="Kleidung & Accessoires" <?= (($_GET['kategorie'] ?? '') === 'Kleidung & Accessoires') ? 'selected' : '' ?>>Kleidung & Accessoires</option>
                     <option value="Filme & Musik" <?= (($_GET['kategorie'] ?? '') === 'Filme & Musik') ? 'selected' : '' ?>>Filme & Musik</option>
@@ -133,25 +138,30 @@ try {
                     <option value="Sonstiges" <?= (($_GET['kategorie'] ?? '') === 'Sonstiges') ? 'selected' : '' ?>>Sonstiges</option>
                 </select>
             </form>
+        </div>
 
-        <form id="filter-form" method="get">
-            <?php if ($activeSort): ?>
-                <input type="hidden" name="sort" value="<?= htmlspecialchars($activeSort) ?>">
-            <?php endif; ?>
-            <div class="price-filter">
-                <div class="price-input-group">
-                    <label for="min-preis">Min. Preis:</label>
-                    <input type="number" id="min-preis" name="min-preis" placeholder="0"
-                           value="<?= htmlspecialchars($_GET['min-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+        <div class="filter-section">
+            <h3 class="filter-title">Preisspanne</h3>
+            <form id="filter-form" method="get">
+                <?php if ($activeSort): ?>
+                    <input type="hidden" name="sort" value="<?= htmlspecialchars($activeSort) ?>">
+                <?php endif; ?>
+                <div class="price-filter">
+                    <div class="price-input-group">
+                        <label for="min-preis">Min. Preis:</label>
+                        <input type="number" id="min-preis" name="min-preis" placeholder="0"
+                               value="<?= htmlspecialchars($_GET['min-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    </div>
+                    <div class="price-input-group">
+                        <label for="max-preis">Max. Preis:</label>
+                        <input type="number" id="max-preis" name="max-preis" placeholder="1000"
+                               value="<?= htmlspecialchars($_GET['max-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    </div>
+                    <button type="submit" name="preisfilter" value="1">Preisspanne anwenden</button>
                 </div>
-                <div class="price-input-group">
-                    <label for="max-preis">Max. Preis:</label>
-                    <input type="number" id="max-preis" name="max-preis" placeholder="1000"
-                           value="<?= htmlspecialchars($_GET['max-preis'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                </div>
-                <button type="submit" name="preisfilter" value="1">Preisspanne anwenden</button>
-            </div>
-        </form>
+            </form>
+        </div>
+
         <div style="text-align: center; margin-top: 20px;">
             <a href="angebote.php" class="reset-link">Filter zurücksetzen</a>
         </div>

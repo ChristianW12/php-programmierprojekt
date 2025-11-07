@@ -41,6 +41,25 @@ main {
     padding-bottom: 1rem;
 }
 
+.filter-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.filter-section:last-of-type {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.filter-title {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #343a40;
+}
+
 /* Form elements */
 #filter-form, .sort-buttons {
     display: flex;
@@ -52,7 +71,6 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
 }
 
 .btn-sort {
@@ -75,9 +93,37 @@ main {
 
 .btn-sort.active,
 .btn-sort.active:hover {
-    background-color: #9bbabf; /* Footer color */
+    background-color: #9bbabf;
     color: white;
     border-color: #9bbabf;
+}
+
+select.btn-sort {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 0.7em center;
+    background-size: 0.65em auto;
+    padding-right: 2.5em;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+select.btn-sort:hover {
+    background-color: #e9ecef;
+    border-color: #a0a0a0;
+}
+
+select.btn-sort:focus {
+    outline: none;
+    border-color: #9bbabf;
+    box-shadow: 0 0 0 3px rgba(155, 186, 191, 0.5);
 }
 
 .price-filter {
@@ -122,21 +168,21 @@ main {
     background-color: #0056b3;
 }
 
-/* Floating Plus Button für Angebote */
+/* Floating Action Button for New Offer */
 .add-offer-fab {
     position: fixed;
-    bottom: 2.75rem;
+    bottom: 2.75rem; /* Noch etwas höher */
     right: 2rem;
-    width: 76px;
-    height: 76px;
-    background-color: #c8c8c8;
+    width: 72px;   /* Noch größer */
+    height: 72px;  /* Noch größer */
+    background-color: #adb5bd; /* Helleres Grau beibehalten */
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 36px;
-    padding-bottom: 4px;
+    font-size: 36px; /* Noch größeres Plus-Zeichen */
+    padding-bottom: 4px; /* Visuelle Korrektur für Zentrierung */
     text-decoration: none;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     transition: background-color 0.2s ease, transform 0.2s ease;
@@ -144,7 +190,7 @@ main {
 }
 
 .add-offer-fab:hover {
-    background-color: #9bbabf;
+    background-color: #99a3ac; /* Dunklerer Farbton für Hover */
     transform: scale(1.05);
 }
 
