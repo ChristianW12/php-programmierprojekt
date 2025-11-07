@@ -8,6 +8,8 @@ require __DIR__ . '/../src/db-connection.php';
 // 1. Angebots-ID aus der URL holen und validieren
 $angebot_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
+
+
 if (!$angebot_id) {
     header('Location: angebote.php');
     exit;
@@ -28,6 +30,9 @@ if (isset($_SESSION['user_id'])) {
         $is_favorit = true;
     }
 }
+
+// Zur Weiterleitung auf das Profil des Anbieters
+$anbieterProfilLink = 'nutzer-bewertungen.php?id=' . $angebot['user_id'];
 
 if (!$angebot) {
     $error_message = "Das angeforderte Angebot konnte nicht gefunden werden.";
@@ -81,7 +86,10 @@ $startpreis = $startpreisWert !== null
             <div class="detail-wrapper">
                 <div class="detail-content">
                     <div class="angebot-details">
-                        <h1><?php echo htmlspecialchars($angebot['title']); ?></h1>
+                        <div class="title-row">
+                            <h1><?php echo htmlspecialchars($angebot['title']); ?></h1>
+                            <a href="<?= $anbieterProfilLink ?>" class="icon-button" aria-label="Verkäuferprofil anzeigen">👤</a>
+                        </div>
 
                         <p class="beschreibung">
                             <?php echo nl2br(htmlspecialchars($angebot['beschreibung'])); ?>

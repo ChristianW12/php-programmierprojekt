@@ -91,6 +91,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
                     header('Location: angebote.php?sort=favoriten');
                     exit();
                     break;
+                case 'nutzer-bewerten':
+                    header('Location: ' . $_SESSION['URL_Bewertungen']);
+                    exit();
+                    break;
                 default:  
                     header("Location: index.php");
                     exit();
