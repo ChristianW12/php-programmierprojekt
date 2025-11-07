@@ -17,15 +17,24 @@ $db = mitDBverbinden();
 
 // 2. Angebotsdetails aus der `offers`-Tabelle abfragen
 $stmt_angebot = $db->prepare('SELECT * FROM offers WHERE offer_id = :id');
-$stmt_angebot->execute([':id' => $angebot_id]);
+$stmt_angebot->execute(['id' => $angebot_id]);
 $angebot = $stmt_angebot->fetch(PDO::FETCH_ASSOC);
+
+$is_favorit = false;
+if (isset($_SESSION['user_id'])) {
+    $stmt_check_fav = $db->prepare('SELECT 1 FROM favourites WHERE user_id = :user_id AND offer_id = :offer_id');
+    $stmt_check_fav->execute(['user_id' => $_SESSION['user_id'], 'offer_id' => $angebot_id]);
+    if ($stmt_check_fav->fetchColumn()) {
+        $is_favorit = true;
+    }
+}
 
 if (!$angebot) {
     $error_message = "Das angeforderte Angebot konnte nicht gefunden werden.";
 } else {
     // 3. Bilder zum Angebot aus der Datenbank abfragen (Tabelle `offer_pic`)
     $stmt_images = $db->prepare('SELECT * FROM offer_pic WHERE offer_id = :id ORDER BY is_cover DESC');
-    $stmt_images->execute([':id' => $angebot_id]);
+    $stmt_images->execute(['id' => $angebot_id]);
     $images = $stmt_images->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -105,10 +114,17 @@ $startpreis = $startpreisWert !== null
                                     <input type="hidden" name="startpreis" value="<?= htmlspecialchars(number_format($startpreisWert, 2, '.', ''), ENT_QUOTES, 'UTF-8') ?>">
                                     <button type="submit" class="bieten-button">Jetzt bieten</button>
                                 </form>
-                                <form method="post" action="favorit_hinzufuegen.php" style="display: inline-block;">
-                                    <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebot['offer_id'], ENT_QUOTES, 'UTF-8') ?>">
-                                    <button type="submit" class="favourite-button" style="background-color: #ffc107; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 1em;">⭐ Zu Favoriten</button>
-                                </form>
+                                <?php if ($is_favorit): ?>
+                                    <form method="post" action="favorit_toggle.php" style="display: inline-block;">
+                                        <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebot['offer_id'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <button type="submit" class="favourite-button-remove">★ Aus Favoriten</button>
+                                    </form>
+                                <?php else: ?>
+                                    <form method="post" action="favorit_toggle.php" style="display: inline-block;">
+                                        <input type="hidden" name="offer_id" value="<?= htmlspecialchars((string) $angebot['offer_id'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <button type="submit" class="favourite-button">⭐ Zu Favoriten</button>
+                                    </form>
+                                <?php endif; ?>
                             </div>
                         <?php endif; ?>
                     </div>

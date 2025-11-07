@@ -24,7 +24,7 @@ $verlinkungAngebot = $verlinkungAngebot ?? 'angebote.php';
     <div class="footer-contact">
         <strong>Kontakt</strong>
         <ul>
-            <li>Mail?</li>
+            <li>auktify@info.de</li>
             <li>Support</li>
         </ul>
     </div>
