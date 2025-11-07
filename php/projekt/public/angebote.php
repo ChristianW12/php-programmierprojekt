@@ -81,6 +81,9 @@ try {
             <?php
             $queryParams = $_GET;
 
+            //Kategorien-Filter immer entfernen
+            unset($queryParams['kategorie']);
+
             // "Neueste"
             $queryParams['sort'] = 'neueste';
             unset($queryParams['preisfilter']); // wie gehabt
@@ -99,8 +102,8 @@ try {
             $favoritenUrl = '?' . http_build_query($queryParams);
 
             // "Kategorien"
-            $queryParams['sort'] = 'kategorien';
-            $kategorienUrl = '?' . http_build_query($queryParams);
+            $queryParams = $_GET;
+            unset($queryParams['kategorie']);
 
             ?>
             <a href="<?= $neuesteUrl ?>" class="btn-sort <?= $activeSort === 'neueste' ? 'active' : '' ?>">Neueste</a>
@@ -110,25 +113,24 @@ try {
         </div>
 
         <form method="get" style="margin:0;">
-                <!-- aktuell gewählte Sortierung beibehalten: -->
-                <input type="hidden" name="sort" value="<?= htmlspecialchars($activeSort) ?>">
+            <input type="hidden" name="sort" value="neueste">
                 <select id="kategorie" name="kategorie" class="btn-sort" onchange="this.form.submit()">
                     <option value="">Kategorien</option>
-                    <option value="Elektronik" <?= ($gewaehlteKategorie === 'Elektronik') ? 'selected' : '' ?>>Elektronik</option>
-                    <option value="Computer & Zubehör" <?= ($gewaehlteKategorie === 'Computer & Zubehör') ? 'selected' : '' ?>>Computer & Zubehör</option>
-                    <option value="Haushalt & Küche" <?= ($gewaehlteKategorie === 'Haushalt & Küche') ? 'selected' : '' ?>>Haushalt & Küche</option>
-                    <option value="Möbel & Wohnen" <?= ($gewaehlteKategorie === 'Möbel & Wohnen') ? 'selected' : '' ?>>Möbel & Wohnen</option>
-                    <option value="Kleidung & Accessoires" <?= ($gewaehlteKategorie === 'Kleidung & Accessoires') ? 'selected' : '' ?>>Kleidung & Accessoires</option>
-                    <option value="Filme & Musik" <?= ($gewaehlteKategorie === 'Filme & Musik') ? 'selected' : '' ?>>Filme & Musik</option>
-                    <option value="Bücher & Comics" <?= ($gewaehlteKategorie === 'Bücher & Comics') ? 'selected' : '' ?>>Bücher & Comics</option>
-                    <option value="Sport & Freizeit" <?= ($gewaehlteKategorie === 'Sport & Freizeit') ? 'selected' : '' ?>>Sport & Freizeit</option>
-                    <option value="Spielzeug & Modelle" <?= ($gewaehlteKategorie === 'Spielzeug & Modelle') ? 'selected' : '' ?>>Spielzeug & Modelle</option>
-                    <option value="Sammeln & Antiquitäten" <?= ($gewaehlteKategorie === 'Sammeln & Antiquitäten') ? 'selected' : '' ?>>Sammeln & Antiquitäten</option>
-                    <option value="Fahrzeuge & Zubehör" <?= ($gewaehlteKategorie === 'Fahrzeuge & Zubehör') ? 'selected' : '' ?>>Fahrzeuge & Zubehör</option>
-                    <option value="Musik & Instrumente" <?= ($gewaehlteKategorie === 'Musik & Instrumente') ? 'selected' : '' ?>>Musik & Instrumente</option>
-                    <option value="Tierbedarf" <?= ($gewaehlteKategorie === 'Tierbedarf') ? 'selected' : '' ?>>Tierbedarf</option>
-                    <option value="Reisen & Gepäck" <?= ($gewaehlteKategorie === 'Reisen & Gepäck') ? 'selected' : '' ?>>Reisen & Gepäck</option>
-                    <option value="Sonstiges" <?= ($gewaehlteKategorie === 'Sonstiges') ? 'selected' : '' ?>>Sonstiges</option>
+                    <option value="Elektronik" <?= (($_GET['kategorie'] ?? '') === 'Elektronik') ? 'selected' : '' ?>>Elektronik</option>
+                    <option value="Computer & Zubehör" <?= (($_GET['kategorie'] ?? '') === 'Computer & Zubehör') ? 'selected' : '' ?>>Computer & Zubehör</option>
+                    <option value="Haushalt & Küche" <?= (($_GET['kategorie'] ?? '') === 'Haushalt & Küche') ? 'selected' : '' ?>>Haushalt & Küche</option>
+                    <option value="Möbel & Wohnen" <?= (($_GET['kategorie'] ?? '') === 'Möbel & Wohnen') ? 'selected' : '' ?>>Möbel & Wohnen</option>
+                    <option value="Kleidung & Accessoires" <?= (($_GET['kategorie'] ?? '') === 'Kleidung & Accessoires') ? 'selected' : '' ?>>Kleidung & Accessoires</option>
+                    <option value="Filme & Musik" <?= (($_GET['kategorie'] ?? '') === 'Filme & Musik') ? 'selected' : '' ?>>Filme & Musik</option>
+                    <option value="Bücher & Comics" <?= (($_GET['kategorie'] ?? '') === 'Bücher & Comics') ? 'selected' : '' ?>>Bücher & Comics</option>
+                    <option value="Sport & Freizeit" <?= (($_GET['kategorie'] ?? '') === 'Sport & Freizeit') ? 'selected' : '' ?>>Sport & Freizeit</option>
+                    <option value="Spielzeug & Modelle" <?= (($_GET['kategorie'] ?? '') === 'Spielzeug & Modelle') ? 'selected' : '' ?>>Spielzeug & Modelle</option>
+                    <option value="Sammeln & Antiquitäten" <?= (($_GET['kategorie'] ?? '') === 'Sammeln & Antiquitäten') ? 'selected' : '' ?>>Sammeln & Antiquitäten</option>
+                    <option value="Fahrzeuge & Zubehör" <?= (($_GET['kategorie'] ?? '') === 'Fahrzeuge & Zubehör') ? 'selected' : '' ?>>Fahrzeuge & Zubehör</option>
+                    <option value="Musik & Instrumente" <?= (($_GET['kategorie'] ?? '') === 'Musik & Instrumente') ? 'selected' : '' ?>>Musik & Instrumente</option>
+                    <option value="Tierbedarf" <?= (($_GET['kategorie'] ?? '') === 'Tierbedarf') ? 'selected' : '' ?>>Tierbedarf</option>
+                    <option value="Reisen & Gepäck" <?= (($_GET['kategorie'] ?? '') === 'Reisen & Gepäck') ? 'selected' : '' ?>>Reisen & Gepäck</option>
+                    <option value="Sonstiges" <?= (($_GET['kategorie'] ?? '') === 'Sonstiges') ? 'selected' : '' ?>>Sonstiges</option>
                 </select>
             </form>
 
