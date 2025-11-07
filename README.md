@@ -8,10 +8,11 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 - Footer aktualisieren (Christian)
 - Redirect nach Gebot (Luca)
-- Filter verbessern, Grüner Plus-Button rechts unten fixed, Filter zurücksetzen grauer Button, Kategorien schöner (Melina)
+- ✅ Grüner Plus-Button rechts unten fixed, Filter zurücksetzen grauer Button, Kategorien schöner (Melina)
+- Filter verbessern -> Mehrfach Filterung ermöglichen (Melina)
 - Anbieter bekommt bei abgegebenen Angeboten Nachricht, bekommt Benachrichtigungen wenn Auktion vorbei ist wer gewonnen hat
   --> Check erfolgt immer wenn auf Profil geclicked wird (Luca)
-- Angebote aus Favoriten entfernen können (Melina)
+- ✅ Angebote aus Favoriten entfernen können (Melina)
 - Kommentarfunktion (Alex)
 - Hilfe Seite (Christian)
 
@@ -19,7 +20,6 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 mögliche weiter Features:
 
-- User Kommentare
 
 ## Obligatorische Features
 
