@@ -258,6 +258,13 @@ main {
     font-size: 1rem;
 }
 
+.profile-container .redirect-message {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: var(--accent);
+    text-align: center;
+}
+
 .section-intro {
     position: relative;
     display: inline-flex;

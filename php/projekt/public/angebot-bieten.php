@@ -25,7 +25,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
     $bidAmount = isset($_POST['bid_amount']) ? (float) $_POST['bid_amount'] : null;
     $bidEmail = isset($_POST['bid_email']) ? filter_var($_POST['bid_email'], FILTER_VALIDATE_EMAIL) : null;
 
-    // Frontend-Validierung
     if($bidAmount !== null && $bidEmail !== null && $offerId !== null) {
         $bid = new Bid($offerId, $bidAmount, $bidEmail);
         $result = $bid->saveBid(); // saveBid gibt jetzt ein Array zurück
@@ -35,7 +34,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
         $isSuccess = $result['success'];
 
     } else {
-        // Fall, wenn die Formular-Daten schon im Frontend ungültig sind.
         $pageTitle = 'Eingabe ungültig. Bitte prüfen Sie Ihr Gebot.';
         $isSuccess = false;
     }
@@ -55,10 +53,26 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
 <main>
     <section class="section">
         <div class="section-text center profile-container">
-            <h1 class="<?= $isSuccess ? 'success-message' : 'error-message' ?>"><strong><?= $pageTitle ?></strong></h1>
+
+            <!-- Titel wird IMMER angezeigt -->
+            <h1 class="<?= $isSuccess ? 'success-message' : 'error-message' ?>">
+                <strong><?= $pageTitle ?></strong>
+            </h1>
+
+            <!-- Nur bei Erfolg: Hinweis + Redirect -->
+            <?php if ($isSuccess): ?>
+                <p class="redirect-message">Sie werden in <strong>2 Sekunden</strong> zu Ihren Angeboten weitergeleitet...</p>
+                <script>
+                    setTimeout(function() {
+                        window.location.href = 'angebote.php';
+                    }, 2000);
+                </script>
+            <?php endif; ?>
+
             <hr>
+
             <form method="post" class="bid-form">
-            <div class="form-group">
+                <div class="form-group">
                     <label for="bid-amount">Gebotsbetrag</label>
                     <input 
                         type="number" 
@@ -71,7 +85,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
                 </div>
                 <div class="form-group">
                     <label for="bid-email">E-Mail-Adresse</label>
-                    <input type="email" id="bid-email" name="bid_email" placeholder="name@example.com" value="<?= htmlspecialchars($standardMail) ?>" required>
+                    <input 
+                        type="email" 
+                        id="bid-email" 
+                        name="bid_email" 
+                        placeholder="name@example.com" 
+                        value="<?= htmlspecialchars($standardMail) ?>" 
+                        required>
                 </div>
                 <div class="profile-actions">
                     <button type="submit" name="submitOffer" class="btn">Gebot absenden</button>
@@ -80,6 +100,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
         </div>
     </section>
 </main>
+
 <?php require __DIR__ . '/../partials/footer.php'; ?>
 <script src="scripts/app.js"></script>
 </body>

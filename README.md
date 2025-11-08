@@ -7,7 +7,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 ## TODO
 
 - Footer aktualisieren (Christian)
-- Redirect nach Gebot (Luca)
+- ✅ Redirect nach Gebot (Luca)
 - ✅ Grüner Plus-Button rechts unten fixed, Filter zurücksetzen grauer Button, Kategorien schöner (Melina)
 - Filter verbessern -> Mehrfach Filterung ermöglichen (Melina)
 - Anbieter bekommt bei abgegebenen Angeboten Nachricht, bekommt Benachrichtigungen wenn Auktion vorbei ist wer gewonnen hat
@@ -19,7 +19,6 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 ---
 
 mögliche weiter Features:
-
 
 ## Obligatorische Features
 
