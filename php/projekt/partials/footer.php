@@ -25,7 +25,7 @@ $verlinkungHelp = $verlinkungHelp ?? 'help.php';
     <div class="footer-contact">
         <strong>Kontakt</strong>
         <ul>
-            <li>Mail?</li>
+            <li>auktify@info.de</li>
             <li>Support</li>
         </ul>
     </div>

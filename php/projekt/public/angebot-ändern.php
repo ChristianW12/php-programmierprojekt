@@ -67,21 +67,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['offer_id']) && !empty(
                         value="<?php echo htmlspecialchars($angebotId, ENT_QUOTES, 'UTF-8'); ?>">
                     <div class="form-group">
                         <label for="title">Titel</label>
-                        <input id="title" type="text" name="title" placeholder="Titel des Angebots" value="<?php echo htmlspecialchars($angebotTitel, ENT_QUOTES, 'UTF-8'); ?>">
+                        <input id="title" type="text" name="title" placeholder="Titel des Angebots" value="<?php echo htmlspecialchars($angebotTitel, ENT_QUOTES, 'UTF-8'); ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="beschreibung">Beschreibung</label>
-                        <textarea id="beschreibung" name="beschreibung" rows="5" placeholder="Beschreiben Sie Ihr Angebot ausführlich"><?php echo htmlspecialchars($angebotBeschreibung, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                        <textarea id="beschreibung" name="beschreibung" required rows="5" placeholder="Beschreiben Sie Ihr Angebot ausführlich"><?php echo htmlspecialchars($angebotBeschreibung, ENT_QUOTES, 'UTF-8'); ?></textarea>
                     </div>
                     <hr>
                     <h3><strong>Preis &amp; Laufzeit</strong></h3>
                     <div class="form-group">
                         <label for="preis">Preis</label>
-                        <input id="preis" type="number" step="0.01" name="preis" placeholder="Preis in Euro" value="<?php echo htmlspecialchars($angebotPreis, ENT_QUOTES, 'UTF-8'); ?>">
+                        <input id="preis" type="number" step="0.01" min="0" max="99999999.99" name="preis" placeholder="Preis in Euro" value="<?php echo htmlspecialchars($angebotPreis, ENT_QUOTES, 'UTF-8'); ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="ende">Ende</label>
-                        <input id="ende" type="datetime-local" name="ende" value="<?php echo htmlspecialchars($angebotEndDatum, ENT_QUOTES, 'UTF-8'); ?>">
+                        <input id="ende" type="datetime-local" name="ende" required
+                               value="<?php echo htmlspecialchars($angebotEndDatum, ENT_QUOTES, 'UTF-8'); ?>"
+                               min="<?php echo date('Y-m-d\TH:i', strtotime('+1 hour')); ?>"
+                               max="<?php echo date('Y-m-d\TH:i', strtotime('+1 year')); ?>">
                     </div>
                     <div class="profile-actions">
                         <button type="submit" class="btn">Änderungen speichern</button>

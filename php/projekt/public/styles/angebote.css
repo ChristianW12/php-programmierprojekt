@@ -41,6 +41,25 @@ main {
     padding-bottom: 1rem;
 }
 
+.filter-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.filter-section:last-of-type {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.filter-title {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #343a40;
+}
+
 /* Form elements */
 #filter-form, .sort-buttons {
     display: flex;
@@ -52,7 +71,6 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
 }
 
 .btn-sort {
@@ -75,9 +93,37 @@ main {
 
 .btn-sort.active,
 .btn-sort.active:hover {
-    background-color: #9bbabf; /* Footer color */
+    background-color: #9bbabf;
     color: white;
     border-color: #9bbabf;
+}
+
+select.btn-sort {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 0.7em center;
+    background-size: 0.65em auto;
+    padding-right: 2.5em;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+select.btn-sort:hover {
+    background-color: #e9ecef;
+    border-color: #a0a0a0;
+}
+
+select.btn-sort:focus {
+    outline: none;
+    border-color: #9bbabf;
+    box-shadow: 0 0 0 3px rgba(155, 186, 191, 0.5);
 }
 
 .price-filter {
@@ -122,42 +168,32 @@ main {
     background-color: #0056b3;
 }
 
-.erstellen-bereich {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.angebot-erstellen-btn {
-    width: 5rem;
-    height: 5rem;
+/* Floating Button */
+.add-offer-fab {
+    position: fixed;
+    bottom: 2.75rem;
+    right: 2rem;
+    width: 72px;
+    height: 72px;
+    background-color: #adb5bd;
+    color: white;
     border-radius: 50%;
-    background-color: #2ecc71;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    font-size: 2rem;
-    line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    font-size: 36px;
+    padding-bottom: 4px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    z-index: 1000;
 }
 
-.angebot-erstellen-btn:hover {
-    background-color: #27ae60;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(39, 174, 96, 0.25);
+.add-offer-fab:hover {
+    background-color: #99a3ac; /* Dunklerer Farbton für Hover */
+    transform: scale(1.05);
 }
 
-.angebot-erstellen-btn:focus {
-    outline: 3px solid rgba(46, 204, 113, 0.35);
-    outline-offset: 3px;
-}
 
 /* Angebote Grid */
 .angebote-container .section {
