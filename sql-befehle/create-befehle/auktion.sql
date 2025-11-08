@@ -195,6 +195,30 @@ CREATE TABLE `favourites` (
   `offer_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `messages`
+--
+
+CREATE TABLE `messages` (
+  `message_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `title` text NOT NULL,
+  `preview` text NOT NULL,
+  `time` datetime NOT NULL DEFAULT current_timestamp(),
+  `read` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `messages`
+--
+
+INSERT INTO `messages` (`message_id`, `user_id`, `title`, `preview`, `time`, `read`) VALUES
+(1, 1, 'Neues Gebot erhalten', 'Anna hat auf dein Angebot "Vintage Kamera" reagiert.', '2025-11-05 11:30:00', 0),
+(2, 1, 'Auktion endet bald', 'Deine Vase läuft heute um 18:00 Uhr ab.', '2025-11-05 09:00:00', 0),
+(3, 1, 'Gebot bestätigt', 'Wir haben dein Gebot für "Retro Konsole" gespeichert.', '2025-11-04 16:05:00', 1);
+
 --
 -- Indizes der exportierten Tabellen
 --
@@ -245,6 +269,13 @@ ALTER TABLE `favourites`
   ADD KEY `offer_id` (`offer_id`);
 
 --
+-- Indizes für die Tabelle `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`message_id`),
+  ADD KEY `messages_user_id` (`user_id`);
+
+--
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
@@ -285,6 +316,12 @@ ALTER TABLE `favourites`
   MODIFY `favourite_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT für Tabelle `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `message_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- Constraints der exportierten Tabellen
 --
 
@@ -319,6 +356,12 @@ ALTER TABLE `user_comment`
 ALTER TABLE `favourites`
   ADD CONSTRAINT `favourites_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `favourites_ibfk_2` FOREIGN KEY (`offer_id`) REFERENCES `offers` (`offer_id`) ON DELETE CASCADE;
+
+--
+-- Constraints der Tabelle `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
