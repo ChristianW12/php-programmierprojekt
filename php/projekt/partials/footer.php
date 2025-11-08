@@ -5,7 +5,7 @@ $verlinkungHomepage = $verlinkungHomepage ?? 'index.php';
 $verlinkungAngebot = $verlinkungAngebot ?? 'angebote.php';
 $verlinkungHelp = $verlinkungHelp ?? 'help.php';
 ?>
-<footer class="site-footer">
+<footer class="site-footer" id="footer">
     <div class="footer-brand">
         <span class="brand-name">Auktify</span>
         <address>
