@@ -1,0 +1,50 @@
+.help-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.accordion-item {
+    border-bottom: 1px solid var(--mint-light);
+}
+
+.accordion-item:last-child {
+    border-bottom: none;
+}
+
+.accordion-trigger {
+    padding: 1rem 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: normal;
+    color: var(--text);
+}
+
+.accordion-trigger::after {
+    content: '+';
+    font-size: 2rem;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+}
+
+.accordion-trigger.active::after {
+    transform: rotate(45deg);
+}
+
+.accordion-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    padding: 0 1rem;
+}
+
+.accordion-panel p,
+.accordion-panel ul {
+    margin-bottom: 1rem;
+}
