@@ -39,7 +39,7 @@ mögliche weiter Features:
 - Benutzerverwaltung & Kommentare: Bewertungen, Feedback, Dashboard
 - Filterung: Seitenleiste um nach gewünschten Anforderungen zu sortieren
 
-## Voraussetzungen<LeftMouse>
+## Voraussetzungen
 
 Für den Start der Anwendung wird Docker und Docker Compose benötigt.  
 Alle notwendigen Komponenten (Webserver, PHP, MySQL, phpMyAdmin) sind bereits im Repository enthalten – es muss nichts zusätzlich installiert oder konfiguriert werden.
