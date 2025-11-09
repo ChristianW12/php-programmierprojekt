@@ -4,6 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require __DIR__ . '/../src/Db.php';
 require __DIR__ . '/../src/Filter.php';
+require __DIR__ . '/../src/Messages.php';
 
 $dsn = 'mysql:dbname=auktion;host=db;port=3306';
 $dataRows = [];
@@ -13,6 +14,8 @@ $gewaehlteKategorie = $_GET['kategorie'] ?? '';
 try {
     $db = new Db($dsn, 'root', '');
     $filter = new Filter($db);
+    $messagesService = new Messages($db);
+    $messagesService->sendMessageWhenOfferOver();
 
     if (!empty($gewaehlteKategorie)) {
         $dataRows = $filter->nachKategorie($gewaehlteKategorie);

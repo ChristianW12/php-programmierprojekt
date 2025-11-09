@@ -64,21 +64,60 @@ class Messages {
         }
     }
 
-    // public function sendMessageWhenOfferOver($userId): bool {
-    //     $query = 'offer_id,title,ende FROM offers WHERE user_id = :userId AND ende > NOW()';
-    //     $stmt = $this->dbconnection->prepare($query);
-    //     $stmt->bindValue(':userId', $userId, \PDO::PARAM_INT);
-    //     $stmt->execute();
-    //     $offers = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-    //     $offers.foreach(function($offer) use ($userId) {
-    //         $insertQuery = 'INSERT INTO messages (user_id, title, preview, time, `read`)
-    //                         VALUES (:userId, :title, :preview, NOW(), 0)';
-    //         $insertStmt = $this->dbconnection->prepare($insertQuery);
-    //         $insertStmt->bindValue(':userId', $userId, \PDO::PARAM_INT);
-    //         $insertStmt->bindValue(':title', 'Angebot beendet', \PDO::PARAM_STR);
-    //         $insertStmt->bindValue(':preview', 'Ihr Angebot "' . $offer['title'] . '" ist beendet.', \PDO::PARAM_STR);
-    //         $insertStmt->execute();
-    //     });
-    // }
+    public function sendMessageWhenOfferOver(): bool {
+        $query = 'SELECT o.offer_id,
+                         o.user_id,
+                         o.title,
+                         b.mail   AS highest_bidder_email,
+                         b.price  AS highest_bid
+                  FROM offers o
+                  LEFT JOIN bids b ON b.offer_id = o.offer_id AND b.highest_price = 1
+                  WHERE o.isOver = 0 AND o.ende <= NOW()';
+        $stmt = $this->dbconnection->prepare($query);
+        $stmt->execute();
+        $endedOffers = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if (empty($endedOffers)) {
+            return true;
+        }
+        $insertMessageStmt = $this->dbconnection->prepare(
+            'INSERT INTO messages (user_id, title, preview, time, `read`)
+             VALUES (:userId, :title, :preview, NOW(), 0)'
+        );
+        $updateOfferStmt = $this->dbconnection->prepare(
+            'UPDATE offers SET isOver = 1 WHERE offer_id = :offerId'
+        );
+        $this->dbconnection->beginTransaction();
+        try {
+            foreach ($endedOffers as $offer) {
+                $offerTitle = $offer['title'] ?? 'Ihr Angebot';
+                if (!empty($offer['highest_bidder_email'])) {
+                    $price = number_format((float) ($offer['highest_bid'] ?? 0), 2, ',', '.');
+                    $preview = sprintf(
+                        'Ihr Angebot "%s" wurde beendet. Höchstbietender: %s mit %s €.',
+                        $offerTitle,
+                        $offer['highest_bidder_email'],
+                        $price
+                    );
+                } else {
+                    $preview = sprintf(
+                        'Ihr Angebot "%s" ist ohne Gebote beendet worden.',
+                        $offerTitle
+                    );
+                }
+                $insertMessageStmt->execute([
+                    ':userId' => (int) $offer['user_id'],
+                    ':title' => 'Auktion beendet: ' . $offerTitle,
+                    ':preview' => $preview,
+                ]);
+                $updateOfferStmt->execute([
+                    ':offerId' => (int) $offer['offer_id'],
+                ]);
+            }
+            $this->dbconnection->commit();
+            return true;
+        } catch (\Throwable $th) {
+            $this->dbconnection->rollBack();
+            return false;
+        }
+    }
 }
