@@ -133,3 +133,17 @@
     transition: color 0.2s;
 }
 
+.angebot-details .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;   /* gleiche Höhe */
+    gap: 1rem;
+}
+
+/* weil du vorher .angebot-details h1 gestylt hast */
+.angebot-details .title-row h1 {
+    margin-bottom: 0;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+    transform: translateY(3px);
+}
