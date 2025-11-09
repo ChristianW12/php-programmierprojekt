@@ -13,7 +13,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - Anbieter bekommt bei abgegebenen Angeboten Nachricht, bekommt Benachrichtigungen wenn Auktion vorbei ist wer gewonnen hat
   --> Check erfolgt immer wenn auf Profil geclicked wird (Luca)
 - ✅ Angebote aus Favoriten entfernen können (Melina)
-- Kommentarfunktion (Alex)
+- ✅ Kommentarfunktion (Alex) -> Potenziell noch "Scrolling" einfügen
 - Hilfe Seite (Christian)
 
 ---
