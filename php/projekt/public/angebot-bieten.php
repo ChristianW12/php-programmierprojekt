@@ -1,5 +1,7 @@
 <?php
-require __DIR__ . '/../src/Bid.php';
+require_once __DIR__ . '/../src/Bid.php';
+require_once __DIR__ . '/../src/Messages.php';
+require_once __DIR__ . '/../src/db-connection.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -27,11 +29,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
 
     if($bidAmount !== null && $bidEmail !== null && $offerId !== null) {
         $bid = new Bid($offerId, $bidAmount, $bidEmail);
-        $result = $bid->saveBid(); // saveBid gibt jetzt ein Array zurück
-
-        // Die Nachricht aus dem Ergebnis in der Seitentitel-Variable speichern.
+        $result = $bid->saveBid();
         $pageTitle = htmlspecialchars($result['message']);
         $isSuccess = $result['success'];
+        if($isSuccess) {
+            try {
+                $db = mitDBverbinden();
+                $messages = new Messages($db);
+                $req = $messages->sendMessageWhenBidding($bidEmail, $offerId);
+            } catch (\Throwable $th) {
+                echo "Fehler beim Senden der Nachricht: " . $th->getMessage();
+            }
+        }
 
     } else {
         $pageTitle = 'Eingabe ungültig. Bitte prüfen Sie Ihr Gebot.';

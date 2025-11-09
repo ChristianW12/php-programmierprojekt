@@ -25,12 +25,18 @@ try {
 
 try {
     $messagesService = new Messages($db);
+    // $messagesService->sendMessageWhenOfferOver((int) ($user_from_db['user_id'] ?? 0));   
+} catch (Exception $ex) {
+    error_log("Fehler bei der Datenbankverbindung: " . $ex->getMessage());
+    die("Datenbankverbindungsfehler.");
+}
+
+try {
     $userMessages = $messagesService->getMessagesForUser((int) ($user_from_db['user_id'] ?? 0));
     $unreadMessages = $messagesService->countUnreadMessages($userMessages);
 } catch (Exception $ex) {
     $userMessages = [];
     $unreadMessages = 0;
-    
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Read-All'])) {
