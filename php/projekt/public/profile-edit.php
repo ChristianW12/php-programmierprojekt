@@ -75,25 +75,25 @@ $verlinkungHomepage = 'index.php';
                     <h3><strong>Persönliche Informationen</strong></h3>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input id="name" type="text" name="name" placeholder="Ihr Name" value="<?php echo htmlspecialchars($user_from_db['name']); ?>">
+                        <input id="name" type="text" name="name" placeholder="Ihr Name" required value="<?php echo htmlspecialchars($user_from_db['name']); ?>">
                     </div>
                     <div class="form-group">
                         <label for="mail">E-Mail</label>
-                        <input id="mail" type="email" name="mail" placeholder="Ihre E-Mail-Adresse" value="<?php echo htmlspecialchars($user_from_db['mail']); ?>">
+                        <input id="mail" type="email" name="mail" placeholder="Ihre E-Mail-Adresse" required value="<?php echo htmlspecialchars($user_from_db['mail']); ?>">
                     </div>
                     <hr>
                     <h3><strong>Adresse</strong></h3>
                     <div class="form-group">
                         <label for="strasse">Straße</label>
-                        <input id="strasse" type="text" name="strasse" placeholder="Ihre Straße und Hausnummer" value="<?php echo htmlspecialchars($user_from_db['str']); ?>">
+                        <input id="strasse" type="text" name="strasse" placeholder="Ihre Straße und Hausnummer" required value="<?php echo htmlspecialchars($user_from_db['str']); ?>">
                     </div>
                     <div class="form-group">
                         <label for="ort">Ort</label>
-                        <input id="ort" type="text" name="ort" placeholder="Ihr Wohnort" value="<?php echo htmlspecialchars($user_from_db['ort']); ?>">
+                        <input id="ort" type="text" name="ort" placeholder="Ihr Wohnort" required value="<?php echo htmlspecialchars($user_from_db['ort']); ?>">
                     </div>
                     <div class="form-group">
                         <label for="plz">Postleitzahl</label>
-                        <input id="plz" type="text" name="plz" placeholder="Ihre Postleitzahl" value="<?php echo htmlspecialchars($user_from_db['plz']); ?>">
+                        <input id="plz" type="text" name="plz" placeholder="Ihre Postleitzahl" required value="<?php echo htmlspecialchars($user_from_db['plz']); ?>">
                     </div>
                     <div class="profile-actions">
                         <button type="submit" class="btn">Speichern</button>

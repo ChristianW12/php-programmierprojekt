@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Read-All'])) {
                     >
                         <span class="bell-icon" aria-hidden="true">🔔</span>
                         <?php if ($unreadMessages > 0): ?>
-                            <span class="message-badge"><?= $unreadMessages ?></span>
+                            <span class="message-badge"><?php echo $unreadMessages ?></span>
                         <?php endif; ?>
                     </button>
                     <div class="message-panel" data-message-panel>
@@ -100,12 +100,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Read-All'])) {
                                             $timestamp = htmlspecialchars($message['time'] ?? '', ENT_QUOTES, 'UTF-8');
                                         }
                                     ?>
-                                    <li class="message-item <?= $isUnread ? 'is-unread' : '' ?>">
+                                    <li class="message-item <?php echo $isUnread ? 'is-unread' : '' ?>">
                                         <div class="message-item__status" aria-hidden="true"></div>
                                         <div class="message-item__body">
-                                            <p class="message-title"><?= htmlspecialchars($message['title'] ?? ''); ?></p>
-                                            <p class="message-preview"><?= htmlspecialchars($message['preview'] ?? ''); ?></p>
-                                            <span class="message-time"><?= $timestamp; ?></span>
+                                            <p class="message-title"><?php echo htmlspecialchars($message['title'] ?? ''); ?></p>
+                                            <p class="message-preview"><?php echo htmlspecialchars($message['preview'] ?? ''); ?></p>
+                                            <span class="message-time"><?php echo $timestamp; ?></span>
                                         </div>
                                     </li>
                                 <?php endforeach; ?>

@@ -1,5 +1,5 @@
-<?php
-
+<?php //Refactored
+// Session initialisieren und benötigte Klassen laden
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -15,9 +15,10 @@ $db = mitDBverbinden();
 // VerkaeuferBewerten-Objekt erstellen
 $verkaeuferBewerten = new VerkaeuferBewerten($db);
 
-// Verkäufer anhand der ID aus der DB laden, falls dieser nicht existiert, zurück zur Startseite
+// Verkäufer anhand der ID aus der DB laden, wenn keine ID übergeben wurde, 0 hineingeben
 $verkaeufer_from_db = $verkaeuferBewerten->verkaeuferLaden($_GET['id'] ?? 0);
 
+// Wenn kein Verkäufer gefunden wurde, zurück zur Startseite
 if(!$verkaeufer_from_db){
     header('Location: index.php');
     exit;
@@ -52,15 +53,15 @@ $avgRating = $verkaeuferBewerten->durchschnittlichesRating($bewertungen);
 <main>
     <div class="verkaeufer-container">
 
-        <h1>Profil von <?php echo htmlspecialchars($verkaeufer_from_db['name']) ?></h1>
+        <h1>Profil von <?php echo htmlspecialchars($verkaeufer_from_db['name']) ?></h1>  <!-- Name des Verkäufers anzeigen -->
 
         <section class="info-block">
             <h2>Verkäufer-Informationen</h2>
             <label>Name</label>
-            <div class="info-field"> <?php echo htmlspecialchars($verkaeufer_from_db['name']) ?></div>
+            <div class="info-field"> <?php echo htmlspecialchars($verkaeufer_from_db['name']) ?></div> <!-- Name des Verkäufers anzeigen -->
 
             <label>E-Mail</label>
-            <div class="info-field"> <?php echo htmlspecialchars($verkaeufer_from_db['mail']) ?></div>
+            <div class="info-field"> <?php echo htmlspecialchars($verkaeufer_from_db['mail']) ?></div> <!-- E-Mail des Verkäufers anzeigen -->
         </section>
 
         <section class="rating-section">
@@ -68,17 +69,17 @@ $avgRating = $verkaeuferBewerten->durchschnittlichesRating($bewertungen);
             <div class="rating-summary">
                 <?php
                 if ($avgRating === null) {
-                    echo 'Keine Bewertungen vorhanden.';
+                    echo 'Keine Bewertungen vorhanden.'; //Wenn kein Durchschnittsrating vorhanden ist, Nachricht anzeigen
                 } ?>
                 <div class="stars">
                 <?php
                 if ($avgRating !== null) {
-                    echo str_repeat('★', (int)round($avgRating)) . str_repeat('☆', 5 - (int)round($avgRating));
+                    echo str_repeat('★', (int)round($avgRating)) . str_repeat('☆', 5 - (int)round($avgRating)); //Sterne basierend auf dem Durchschnittsrating anzeigen
                 } ?>
                 </div>
                 <?php
                 if ($avgRating !== null) {
-                    echo number_format($avgRating, 1, ',') . ' / 5 (' . count($bewertungen) . ')';
+                    echo number_format($avgRating, 1, ',') . ' / 5 (' . count($bewertungen) . ')'; //Durchschnittsrating und Anzahl der Bewertungen anzeigen
                 }
                 ?>
             </div>
@@ -87,11 +88,11 @@ $avgRating = $verkaeuferBewerten->durchschnittlichesRating($bewertungen);
                 <?php foreach ($bewertungen as $bew): ?>
                         <li>
                             <div class="rating-line">
-                                <?= str_repeat('★', $bew['rating']) . str_repeat('☆', 5 - $bew['rating']) ?>
-                                <span class="rating-date"><?php echo (new DateTime($bew['created_at']))->format('d.m.Y H:i') ?></span>
+                                <?= str_repeat('★', $bew['rating']) . str_repeat('☆', 5 - $bew['rating']) ?> <!-- Sterne basierend auf der Bewertung anzeigen -->
+                                <span class="rating-date"><?php echo (new DateTime($bew['created_at']))->format('d.m.Y H:i') ?></span> <!-- Datum der Bewertung anzeigen -->
                             </div>
-                            <div class="rating-author"> von <?php echo htmlspecialchars($bew['erstellt_von']) ?></div>
-                            <p><?php  echo nl2br(htmlspecialchars(wordwrap($bew['text'], 40, "\n", true))) //Bei zu langen Wörtern/Texten zeilenumbruch einfügen ?></p>
+                            <div class="rating-author"> von <?php echo htmlspecialchars($bew['erstellt_von']) ?></div> <!-- Name des Bewertenden anzeigen -->
+                            <p><?php  echo nl2br(htmlspecialchars(wordwrap($bew['text'], 40, "\n", true))) ?></p> <!-- Text der Bewertung anzeigen, wenn zu lange dann Zeilenumbruch -->
                         </li>
                 <?php endforeach; ?>
             </ul>

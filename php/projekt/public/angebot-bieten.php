@@ -72,11 +72,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
 
             <!-- Nur bei Erfolg: Hinweis + Redirect -->
             <?php if ($isSuccess): ?>
-                <p class="redirect-message">Sie werden in <strong>2 Sekunden</strong> zu Ihren Angeboten weitergeleitet...</p>
+                <p class="redirect-message">Sie werden in <strong>3 Sekunden</strong> zu Ihren Angeboten weitergeleitet...</p>
                 <script>
                     setTimeout(function() {
                         window.location.href = 'angebote.php';
-                    }, 2000);
+                    }, 3000);
                 </script>
             <?php endif; ?>
 
