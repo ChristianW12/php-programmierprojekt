@@ -1,4 +1,4 @@
-<?php
+<?php // Refactored
 // Session starten und Services laden
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

@@ -1,4 +1,4 @@
-<?php
+<?php // Refactored
 // Service für Benutzeraktionen laden
 require __DIR__ . '/../src/UserService.php';
 

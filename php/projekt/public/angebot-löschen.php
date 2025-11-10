@@ -1,4 +1,4 @@
-<?php
+<?php // Refactored
 // Session initialisieren und Angebotsservice laden
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
