@@ -1,22 +1,23 @@
 <?php
+// Session starten und Services laden
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require __DIR__ . '/../src/Db.php';
 require __DIR__ . '/../src/Filter.php';
 require __DIR__ . '/../src/Messages.php';
 
-$dsn = 'mysql:dbname=auktion;host=db;port=3306';
+// Standardwerte für Filter/Suche vorbereiten
 $dataRows = [];
 $activeSort = $_GET['sort'] ?? 'neueste';
 $gewaehlteKategorie = $_GET['kategorie'] ?? '';
 
 try {
-    $db = new Db($dsn, 'root', '');
-    $filter = new Filter($db);
-    $messagesService = new Messages($db);
+    // Filter- und Nachrichten-Service initialisieren
+    $filter = new Filter();
+    $messagesService = new Messages();
     $messagesService->sendMessageWhenOfferOver();
 
+    // Kategorie- oder Preisfilter anwenden
     if (!empty($gewaehlteKategorie)) {
         $dataRows = $filter->nachKategorie($gewaehlteKategorie);
     } elseif (isset($_GET['preisfilter'])) {
@@ -24,10 +25,11 @@ try {
         $maxPreis = !empty($_GET['max-preis']) ? floatval($_GET['max-preis']) : PHP_INT_MAX;
         $dataRows = $filter->nachPreisspanne($minPreis, $maxPreis);
     } else {
+        // Sortierung auswerten
         if ($activeSort === 'beliebteste') {
             $dataRows = $filter->nachBeliebteste();
-        }elseif($activeSort === 'meineAngebote'){
-            if(!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+        } elseif ($activeSort === 'meineAngebote') {
+            if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
                 header("Location: login.php");
                 $_SESSION['last_site'] = 'meine angebote';
                 exit;
@@ -45,8 +47,9 @@ try {
         }
     }
 
+    // Direktlink zum Erstellen eines Angebots behandeln
     if (isset($_GET['neuesAngebot'])) {
-        if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
+        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
             header("Location: neuesAngebot.php");
             exit;
         } else {
@@ -56,11 +59,11 @@ try {
         }
     }
 
-    if(isset($_GET['q']) && !empty(trim($_GET['q']))) {
+    // Freitextsuche anwenden
+    if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
         $suchbegriff = trim($_GET['q']);
         $dataRows = $filter->nachSuche($suchbegriff);
     }
-
 } catch (PDOException $e) {
     echo 'Verbindungsfehler: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
 }

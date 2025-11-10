@@ -1,7 +1,6 @@
 <?php
-require_once 'Db.php'; // Db-Klasse einbinden
+require_once 'Db.php';
  function mitDBverbinden() {
-    # code...
     $dsn = 'mysql:dbname=auktion;host=db;port=3306';
     try{
        return new Db($dsn, 'root', '');

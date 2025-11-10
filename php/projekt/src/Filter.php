@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/db-connection.php';
 
 /*
  * Beim Erstellen von einem Objekt dieser Klasse wird die Variable übergeben 
@@ -19,8 +20,8 @@ class Filter {
     private $dbconnection;
     private $data;
 
-    public function __construct($db) {
-        $this->dbconnection = $db;
+    public function __construct() {
+        $this->dbconnection = mitDBverbinden();
         $this->data = [];
     }
     public function getData() {

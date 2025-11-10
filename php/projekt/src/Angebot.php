@@ -55,5 +55,68 @@ class Angebot {
 
         return $stmt->execute();
     }
+
+    /**
+     * Löscht das Angebot inklusive zugehöriger Bids und Bilder nach Berechtigungsprüfung.
+     */
+    public function deleteOffer(int $currentUserId, bool $isAdmin = false, string $imageBasePath = ''): bool
+    {
+        $stmt = $this->dbconnection->prepare('SELECT user_id FROM offers WHERE offer_id = :offer_id');
+        $stmt->bindValue(':offer_id', $this->offerId, PDO::PARAM_INT);
+        $stmt->execute();
+        $offer = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$offer) {
+            throw new RuntimeException('Angebot wurde nicht gefunden.');
+        }
+
+        if (!$isAdmin && (int)$offer['user_id'] !== $currentUserId) {
+            throw new RuntimeException('Keine Berechtigung zum Löschen dieses Angebots.');
+        }
+
+        $imageBasePath = $imageBasePath !== ''
+            ? rtrim($imageBasePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR
+            : '';
+
+        try {
+            $this->dbconnection->beginTransaction();
+
+            // Alle Gebote zum Angebot entfernen
+            $stmtDeleteBids = $this->dbconnection->prepare('DELETE FROM bids WHERE offer_id = :offer_id');
+            $stmtDeleteBids->bindValue(':offer_id', $this->offerId, PDO::PARAM_INT);
+            $stmtDeleteBids->execute();
+
+            // Bildpfade laden, Dateien löschen und Einträge entfernen
+            $stmtImages = $this->dbconnection->prepare('SELECT path FROM offer_pic WHERE offer_id = :offer_id');
+            $stmtImages->bindValue(':offer_id', $this->offerId, PDO::PARAM_INT);
+            $stmtImages->execute();
+            $images = $stmtImages->fetchAll(PDO::FETCH_ASSOC) ?: [];
+
+            foreach ($images as $image) {
+                if ($imageBasePath === '') {
+                    break; // ohne Pfadangabe keine Dateien löschen
+                }
+                $imagePath = $imageBasePath . $image['path'];
+                if (is_file($imagePath)) {
+                    @unlink($imagePath);
+                }
+            }
+
+            $stmtDeletePics = $this->dbconnection->prepare('DELETE FROM offer_pic WHERE offer_id = :offer_id');
+            $stmtDeletePics->bindValue(':offer_id', $this->offerId, PDO::PARAM_INT);
+            $stmtDeletePics->execute();
+
+            // Angebot entfernen
+            $stmtDeleteOffer = $this->dbconnection->prepare('DELETE FROM offers WHERE offer_id = :offer_id');
+            $stmtDeleteOffer->bindValue(':offer_id', $this->offerId, PDO::PARAM_INT);
+            $stmtDeleteOffer->execute();
+
+            $this->dbconnection->commit();
+            return true;
+        } catch (\Throwable $th) {
+            $this->dbconnection->rollBack();
+            throw $th;
+        }
+    }
 }
    

@@ -1,34 +1,34 @@
 <?php
+// Service für Benutzeraktionen laden
+require __DIR__ . '/../src/UserService.php';
+
+// Session und Loginstatus prüfen
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: login.php');
     exit;
 }
 
-require __DIR__ . '/../src/Db.php';
-require __DIR__ . '/../src/db-connection.php';
-
+// Feedbackmeldung initialisieren
 $delete_error = '';
 
+// Formulareingabe verarbeiten
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_account_submit'])) {
     $password = $_POST['password'] ?? '';
-    $user_id = $_SESSION['user_id'];
+    $user_id = (int) $_SESSION['user_id'];
+    $userService = new UserService();
+    $imageBasePath = __DIR__ . '/../bilder';
 
-    $db = mitDBverbinden();
-    $stmt = $db->prepare("SELECT password FROM users WHERE user_id = :user_id");
-    $stmt->execute([':user_id' => $user_id]);
-    $user = $stmt->fetch(Db::FETCH_ASSOC);
-
-    if ($user && password_verify($password, $user['password'])) {
-        $stmt = $db->prepare("DELETE FROM users WHERE user_id = :user_id");
-        $stmt->execute([':user_id' => $user_id]);
-
-        session_destroy();
-        header('Location: login.php?account_deleted=true');
-        exit;
+    // Passwort prüfen und ggf. löschen
+    if ($userService->verifyPassword($user_id, $password)) {
+        if ($userService->deleteUser($user_id, $imageBasePath)) {
+            session_destroy();
+            header('Location: login.php?account_deleted=true');
+            exit;
+        }
+        $delete_error = 'Das Konto konnte nicht gelöscht werden. Bitte versuchen Sie es erneut.';
     } else {
         $delete_error = 'Das eingegebene Passwort ist falsch.';
     }
@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_account_submit
                 <h1>Konto löschen</h1>
                 <p>Bestätigen Sie die Löschung Ihres Kontos, indem Sie Ihr Passwort eingeben. Diese Aktion kann nicht rückgängig gemacht werden.</p>
                 <?php if (!empty($delete_error)): ?>
+                    <!-- Fehlermeldung ausgeben -->
                     <p class="error"><?php echo $delete_error; ?></p>
                 <?php endif; ?>
                 <form action="delete-account.php" method="post" class="delete-account-form">
