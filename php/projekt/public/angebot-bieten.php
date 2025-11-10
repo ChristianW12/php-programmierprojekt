@@ -1,4 +1,4 @@
-<?php
+<?php // Refactored
 require_once __DIR__ . '/../src/Bid.php';
 require_once __DIR__ . '/../src/Messages.php';
 if (session_status() === PHP_SESSION_NONE) {
