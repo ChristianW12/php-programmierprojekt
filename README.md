@@ -10,7 +10,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - ✅ Redirect nach Gebot (Luca)
 - ✅ Grüner Plus-Button rechts unten fixed, Filter zurücksetzen grauer Button, Kategorien schöner (Melina)
 - Filter verbessern -> Mehrfach Filterung ermöglichen (Melina)
-- Anbieter bekommt bei abgegebenen Angeboten Nachricht, bekommt Benachrichtigungen wenn Auktion vorbei ist wer gewonnen hat
+- ✅ Anbieter bekommt bei abgegebenen Angeboten Nachricht, bekommt Benachrichtigungen wenn Auktion vorbei ist wer gewonnen hat
   --> Check erfolgt immer wenn auf Profil geclicked wird (Luca)
 - ✅ Angebote aus Favoriten entfernen können (Melina)
 - ✅ Kommentarfunktion (Alex) -> Potenziell noch "Scrolling" einfügen
