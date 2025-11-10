@@ -1,65 +1,65 @@
 <?php
+// Session initialisieren und benötigte Klassen laden
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require __DIR__ . '/../src/db-connection.php';
+require __DIR__ . '/../src/Angebot.php';
+require __DIR__ . '/../src/Helper.php';
 
-// 1. Angebots-ID aus der URL holen und validieren
+// Angebots-ID einlesen und Basisvariablen vorbereiten
 $angebot_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$angebot = null;
+$images = [];
+$error_message = null;
 
-
-
+// Ungültige IDs sofort zurück zur Übersicht schicken
 if (!$angebot_id) {
     header('Location: angebote.php');
     exit;
 }
 
-$db = mitDBverbinden();
+// Angebotsdaten aus der Datenbank laden
+try {
+    $angebotService = new Angebot($angebot_id);
+    $angebot = $angebotService->getOfferWithId();
+} catch (\Throwable $th) {
+    error_log('Fehler beim Laden des Angebots: ' . $th->getMessage());
+}
 
-// 2. Angebotsdetails aus der `offers`-Tabelle abfragen
-$stmt_angebot = $db->prepare('SELECT * FROM offers WHERE offer_id = :id');
-$stmt_angebot->execute(['id' => $angebot_id]);
-$angebot = $stmt_angebot->fetch(PDO::FETCH_ASSOC);
+$angebotTitle = is_array($angebot) ? ($angebot['title'] ?? null) : null;
 
+// Favoritenstatus nur für eingeloggte Nutzer abfragen
 $is_favorit = false;
-if (isset($_SESSION['user_id'])) {
-    $stmt_check_fav = $db->prepare('SELECT 1 FROM favourites WHERE user_id = :user_id AND offer_id = :offer_id');
-    $stmt_check_fav->execute(['user_id' => $_SESSION['user_id'], 'offer_id' => $angebot_id]);
-    if ($stmt_check_fav->fetchColumn()) {
-        $is_favorit = true;
+if ($angebot && isset($_SESSION['user_id'])) {
+    try {
+        $is_favorit = $angebotService->isFavoritForUser((int)$_SESSION['user_id']);
+    } catch (\Throwable $th) {
+        error_log('Fehler beim Prüfen des Favoritenstatus: ' . $th->getMessage());
     }
 }
 
-// Zur Weiterleitung auf das Profil des Anbieters
-$anbieterProfilLink = 'nutzer-bewertungen.php?id=' . $angebot['user_id'];
+// Link zum Verkäuferprofil vorbereiten
+$anbieterProfilLink = ($angebot && isset($angebot['user_id']))
+    ? 'nutzer-bewertungen.php?id=' . $angebot['user_id']
+    : 'nutzer-bewertungen.php';
 
+// Bilder zum Angebot laden, falls Daten vorhanden sind
 if (!$angebot) {
     $error_message = "Das angeforderte Angebot konnte nicht gefunden werden.";
 } else {
-    // 3. Bilder zum Angebot aus der Datenbank abfragen (Tabelle `offer_pic`)
-    $stmt_images = $db->prepare('SELECT * FROM offer_pic WHERE offer_id = :id ORDER BY is_cover DESC');
-    $stmt_images->execute(['id' => $angebot_id]);
-    $images = $stmt_images->fetchAll(PDO::FETCH_ASSOC);
-}
-
-// Helper-Funktion zum Formatieren von Daten
-function formatDate($dateString) {
-    if (empty($dateString)) return 'N/A';
     try {
-        return (new DateTime($dateString))->format('d.m.Y H:i') . ' Uhr';
-    } catch (Exception $e) {
-        return 'Ungültiges Datum';
+        $images = $angebotService->getOfferImages();
+    } catch (\Throwable $th) {
+        error_log('Fehler beim Laden der Angebotsbilder: ' . $th->getMessage());
+        $images = [];
     }
 }
 
-// Helper-Funktion zum Formatieren von Preisen
-function formatPrice($price) {
-    if ($price === null || $price === '') return 'N/A';
-    return number_format((float)$price, 2, ',', '.') . ' €';
-}
-
-$startpreisWert = isset($angebot['startpreis']) ? (float) $angebot['startpreis'] : null;
+// Startpreis für Darstellungen vorbereiten
+$startpreisWert = (is_array($angebot) && isset($angebot['startpreis']))
+    ? (float) $angebot['startpreis']
+    : null;
 $startpreis = $startpreisWert !== null
     ? number_format($startpreisWert, 2, ',', '.') . ' €'
     : 'Preis unbekannt';
@@ -70,7 +70,7 @@ $startpreis = $startpreisWert !== null
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auktify | <?php echo isset($angebot['title']) ? htmlspecialchars($angebot['title']) : 'Angebot nicht gefunden'; ?></title>
+    <title>Auktify | <?php echo $angebotTitle ? htmlspecialchars($angebotTitle) : 'Angebot nicht gefunden'; ?></title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/angebote.css">
     <link rel="stylesheet" href="styles/aktuelles-angebot.css">
@@ -98,15 +98,15 @@ $startpreis = $startpreisWert !== null
                         <dl class="angebot-meta">
                             <div class="meta-item">
                                 <dt>Startpreis</dt>
-                                <dd><?php echo formatPrice($angebot['startpreis']); ?></dd>
+                                <dd><?php echo Helper::formatPrice($angebot['startpreis']); ?></dd>
                             </div>
                             <div class="meta-item">
                                 <dt>Auktionsstart</dt>
-                                <dd><?php echo formatDate($angebot['start']); ?></dd>
+                                <dd><?php echo Helper::formatDate($angebot['start']); ?></dd>
                             </div>
                             <div class="meta-item">
                                 <dt>Auktionsende</dt>
-                                <dd><?php echo formatDate($angebot['ende']); ?></dd>
+                                <dd><?php echo Helper::formatDate($angebot['ende']); ?></dd>
                             </div>
                         </dl>
                         <!-- Überprüfung ob der User der Ersteller ist oder ob er Admin ist, wenn eins zutrifft, darf er löschen oder bearbeiten--> 
