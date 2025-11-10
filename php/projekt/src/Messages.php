@@ -55,7 +55,7 @@ class Messages {
 
         if($userId){
             $insertQuery = 'INSERT INTO messages (user_id, title, preview, time, `read`)
-                            VALUES (:userId, :title, :preview, NOW(), 0)';
+                            VALUES (:userId, :title, :preview, DATE_ADD(NOW(), INTERVAL 1 HOUR), 0)';
             $insertStmt = $this->dbconnection->prepare($insertQuery);
             $insertStmt->bindValue(':userId', $userId['user_id'], \PDO::PARAM_INT);
             $insertStmt->bindValue(':title', 'Neues Gebot erhalten', \PDO::PARAM_STR);
@@ -81,7 +81,7 @@ class Messages {
         }
         $insertMessageStmt = $this->dbconnection->prepare(
             'INSERT INTO messages (user_id, title, preview, time, `read`)
-             VALUES (:userId, :title, :preview, NOW(), 0)'
+             VALUES (:userId, :title, :preview, DATE_ADD(NOW(), INTERVAL 1 HOUR), 0)'
         );
         $updateOfferStmt = $this->dbconnection->prepare(
             'UPDATE offers SET isOver = 1 WHERE offer_id = :offerId'
