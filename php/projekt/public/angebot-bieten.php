@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../src/Bid.php';
 require_once __DIR__ . '/../src/Messages.php';
-require_once __DIR__ . '/../src/db-connection.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -19,23 +18,26 @@ $standardMail = '';
 $_SESSION['last_site'] = 'angebot-bieten';
 $_SESSION['URL'] = $_SERVER['REQUEST_URI'];
 
+// Wenn der Nutzer eingeloggt ist, seine E-Mail als Standardwert setzen
 if (isset($_SESSION['loggedin']) && isset($_SESSION['user_mail'])) {
     $standardMail = $_SESSION['user_mail'];
 }
 
+// Formular-Submit verarbeiten
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOffer'])) {
     $bidAmount = isset($_POST['bid_amount']) ? (float) $_POST['bid_amount'] : null;
     $bidEmail = isset($_POST['bid_email']) ? filter_var($_POST['bid_email'], FILTER_VALIDATE_EMAIL) : null;
 
+    // Gebot speichern über die Bid-Klasse
     if($bidAmount !== null && $bidEmail !== null && $offerId !== null) {
         $bid = new Bid($offerId, $bidAmount, $bidEmail);
         $result = $bid->saveBid();
         $pageTitle = htmlspecialchars($result['message']);
         $isSuccess = $result['success'];
+        // Bei Erfolg Nachricht an Angebotsbesitzer senden
         if($isSuccess) {
             try {
-                $db = mitDBverbinden();
-                $messages = new Messages($db);
+                $messages = new Messages();
                 $req = $messages->sendMessageWhenBidding($bidEmail, $offerId);
             } catch (\Throwable $th) {
                 echo "Fehler beim Senden der Nachricht: " . $th->getMessage();

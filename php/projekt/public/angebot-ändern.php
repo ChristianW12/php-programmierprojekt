@@ -1,21 +1,26 @@
 <?php
+// Session initialisieren und benötigte Klassen laden
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once __DIR__ . '/../src/Angebot.php';
 
+// Default-Werte für Formularfelder initialisieren
 $angebotTitel = '';
 $angebotBeschreibung = '';
 $angebotPreis = '';
 $angebotEndDatum = '';
 $angebotKategorie = '';
 
+// Angebots-ID aus GET/POST lesen
 $angebotId = $_GET['id'] ?? ($_POST['offer_id'] ?? null);
 
-try{
+// Angebotsdaten laden, um Formular vorzufüllen
+try {
     $angebot = new Angebot((int)$angebotId);
     $angebotDaten = $angebot->getOfferWithId();
     if ($angebotDaten) {
+        // Formularfelder mit bestehenden Daten füllen
         $angebotTitel = $angebotDaten['title'] ?? '';
         $angebotBeschreibung = $angebotDaten['beschreibung'] ?? '';
         $angebotPreis = $angebotDaten['startpreis'] ?? '';
@@ -26,7 +31,8 @@ try{
     error_log("Fehler beim Laden des Angebots: " . $e->getMessage());
 }
 
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['offer_id']) && !empty($_POST['offer_id'])) {
+// Formular-Submit verarbeiten und Änderungen speichern
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['offer_id']) && !empty($_POST['offer_id'])) {
     $offerId = (int)$_POST['offer_id'];
     $title = $_POST['title'] ?? '';
     $beschreibung = $_POST['beschreibung'] ?? '';
@@ -34,6 +40,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['offer_id']) && !empty(
     $ende = $_POST['ende'] ?? '';
 
     try {
+        // Angebot aktualisieren über die Angebot-Klasse
         $res = $angebot->updateOffer($offerId, $title, $beschreibung, $preis, $ende);
         if ($res) {
             header("Location: angebote.php");

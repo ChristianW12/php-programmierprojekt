@@ -1,11 +1,12 @@
 <?php
+require_once __DIR__ . '/db-connection.php';
 class Messages {
      
     private $dbconnection;
     private $messages;
 
-    public function __construct($db) {
-        $this->dbconnection = $db;
+    public function __construct() {
+        $this->dbconnection = mitDBverbinden();
         $this->messages = [];
     }
 
