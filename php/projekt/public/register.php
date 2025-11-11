@@ -1,41 +1,38 @@
-<?php
+<?php //Refactored
+// Session sauber initialisieren, um User-Kontext und Nachrichtenstatus zu kennen.
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require __DIR__ . '/../src/Db.php';
-require __DIR__ . '/../src/db-connection.php';
+
+require __DIR__ . '/../src/UserService.php';
+try {
+   $userService = new UserService();
+} catch (\Throwable $th) {
+    echo "Fehler: " . $th->getMessage();
+}
 
 $registration_error = '';
 
+// Formular-Submit entgegennahmen und über den Service registrieren.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register_submit'])) {
-    $user_name = $_POST['name'] ?? '';
-    $user_mail = $_POST['email'] ?? '';
-    $user_password = $_POST['password'] ?? '';
-    $user_password_repeat = $_POST['password_repeat'] ?? '';
+    $payload = [
+        'name' => $_POST['name'] ?? '',
+        'mail' => $_POST['email'] ?? '',
+        'password' => $_POST['password'] ?? '',
+        'password_repeat' => $_POST['password_repeat'] ?? '',
+        'plz' => $_POST['plz'] ?? '',
+        'str' => $_POST['str'] ?? '',
+        'ort' => $_POST['ort'] ?? '',
+    ];
 
-    if ($user_password !== $user_password_repeat) {
-        $registration_error = "Die Passwörter stimmen nicht überein.";
-    } else {
-        $db = mitDBverbinden();
-        $stmt = $db->prepare("SELECT * FROM users WHERE mail = :mail");
-        $stmt->execute(['mail' => $user_mail]);
-        if ($stmt->fetch()) {
-            $registration_error = "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits.";
-        } else {
-            $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
-            $stmt = $db->prepare("INSERT INTO users (name, mail, password, plz, str, ort) VALUES (:name, :mail, :password, :plz, :str, :ort)");
-            $stmt->execute([
-                ':name' => $user_name,
-                ':mail' => $user_mail,
-                ':password' => $hashed_password,
-                ':plz' => $_POST['plz'],
-                ':str' => $_POST['str'],
-                ':ort' => $_POST['ort']
-            ]);
-            header('Location: login.php');
-            exit();
-        }
+    $result = $userService->registerUser($payload);
+
+    if ($result['success']) {
+        header('Location: login.php');
+        exit;
     }
+
+    $registration_error = $result['message'] ?? 'Registrierung fehlgeschlagen. Bitte erneut versuchen.';
 }
 ?>
 <!DOCTYPE html>

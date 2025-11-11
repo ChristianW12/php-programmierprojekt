@@ -1,4 +1,4 @@
-<?php
+<?php // Refactored
 $homeHrefPrefix = '';
 ?>
 <!DOCTYPE html>

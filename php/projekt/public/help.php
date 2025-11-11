@@ -1,4 +1,4 @@
-<?php
+<?php // Refactored
 $extraCss = ['styles/help.css'];
 require_once '../partials/head.php';
 require_once '../partials/header.php';

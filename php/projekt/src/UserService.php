@@ -124,6 +124,65 @@ class UserService
     }
 
     /**
+     * Registriert einen neuen Nutzer inkl. Plausibilitätsprüfungen.
+     *
+     * @param array{name?: string, mail?: string, password?: string, password_repeat?: string, plz?: string, str?: string, ort?: string} $formData
+     * @return array{success: bool, message?: string}
+     */
+    public function registerUser(array $formData): array
+    {
+        $payload = [
+            'name' => trim($formData['name'] ?? ''),
+            'mail' => trim($formData['mail'] ?? ''),
+            'password' => (string)($formData['password'] ?? ''),
+            'password_repeat' => (string)($formData['password_repeat'] ?? ''),
+            'plz' => trim($formData['plz'] ?? ''),
+            'str' => trim($formData['str'] ?? ''),
+            'ort' => trim($formData['ort'] ?? ''),
+        ];
+
+        if (in_array('', [$payload['name'], $payload['mail'], $payload['password'], $payload['password_repeat'], $payload['plz'], $payload['str'], $payload['ort']], true)) {
+            return ['success' => false, 'message' => 'Bitte alle Felder ausfüllen.'];
+        }
+
+        if ($payload['password'] !== $payload['password_repeat']) {
+            return ['success' => false, 'message' => 'Die Passwörter stimmen nicht überein.'];
+        }
+
+        if (!filter_var($payload['mail'], FILTER_VALIDATE_EMAIL)) {
+            return ['success' => false, 'message' => 'Bitte eine gültige E-Mail-Adresse verwenden.'];
+        }
+
+        $stmt = $this->db->prepare('SELECT COUNT(*) FROM users WHERE mail = :mail');
+        $stmt->bindValue(':mail', $payload['mail'], \PDO::PARAM_STR);
+        $stmt->execute();
+
+        if ((int)$stmt->fetchColumn() > 0) {
+            return ['success' => false, 'message' => 'Ein Benutzer mit dieser E-Mail-Adresse existiert bereits.'];
+        }
+
+        $insertStmt = $this->db->prepare(
+            'INSERT INTO users (name, mail, password, plz, str, ort)
+             VALUES (:name, :mail, :password, :plz, :str, :ort)'
+        );
+
+        $passwordHash = password_hash($payload['password'], PASSWORD_DEFAULT);
+
+        $success = $insertStmt->execute([
+            ':name' => $payload['name'],
+            ':mail' => $payload['mail'],
+            ':password' => $passwordHash,
+            ':plz' => $payload['plz'],
+            ':str' => $payload['str'],
+            ':ort' => $payload['ort'],
+        ]);
+
+        return $success
+            ? ['success' => true]
+            : ['success' => false, 'message' => 'Registrierung fehlgeschlagen. Bitte erneut versuchen.'];
+    }
+
+    /**
      * Prüft, ob das übergebene Passwort zum Nutzer passt.
      */
     public function verifyPassword(int $userId, string $plainPassword): bool

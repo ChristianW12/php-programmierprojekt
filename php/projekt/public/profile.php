@@ -1,50 +1,53 @@
-<?php
-if (session_start() === PHP_SESSION_NONE){
+<?php //Refactored
+// Session sauber initialisieren, um User-Kontext und Nachrichtenstatus zu kennen.
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if(!isset($_SESSION['loggedin']) ){
+// Nur eingeloggte Nutzer dürfen das Profil sehen.
+if (!isset($_SESSION['loggedin'])) {
     header('Location: login.php');
     exit;
 }
 
-// Dateien für DB-Verbindung und DB-Hilfsfunktionen einbinden
-require __DIR__ . '/../src/db-connection.php';
-require_once __DIR__ . '/../src/Db.php';
-require_once __DIR__ . '/../src/Messages.php';
+require __DIR__ . '/../src/UserService.php';
+require __DIR__ . '/../src/Messages.php';
 
-try {
-    $db = mitDBverbinden();
-    $stmt = $db->prepare("SELECT * FROM users WHERE mail = :mail");
-    $stmt->execute([':mail' => $_SESSION['user_mail']]);
-    $user_from_db = $stmt->fetch(PDO::FETCH_ASSOC);
-} catch (Exception $ex) {
-    $user_from_db = [];
-    
+$userService = new UserService();
+$messagesService = new Messages();
+$userMail = $_SESSION['user_mail'] ?? '';
+$userMessages = [];
+$unreadMessages = 0;
+
+// Benutzer inklusive Adressdaten aus der DB holen; ohne Datensatz zurück zum Login.
+$currentUser = $userService->getUserByMail($userMail);
+if (!$currentUser) {
+    session_destroy();
+    header('Location: login.php');
+    exit;
 }
 
+$userId = (int)($currentUser['user_id'] ?? 0);
+
+// Nachrichtenübersicht füllen (Fehler werden geloggt, die Seite bleibt aber nutzbar).
 try {
-    $messagesService = new Messages($db);
-    $userMessages = $messagesService->getMessagesForUser((int) ($user_from_db['user_id'] ?? 0));
+    $userMessages = $messagesService->getMessagesForUser($userId);
     $unreadMessages = $messagesService->countUnreadMessages($userMessages);
-} catch (Exception $ex) {
-    $userMessages = [];
-    $unreadMessages = 0;
+} catch (\Throwable $th) {
+    error_log('Nachrichten konnten nicht geladen werden: ' . $th->getMessage());
 }
 
+// POST-Aktion: alle Nachrichten als gelesen markieren.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Read-All'])) {
     try {
-        $updatedMessages = $messagesService->markAllAsRead((int) ($user_from_db['user_id'] ?? 0));
-
-        // ✅ Wenn erfolgreich, Seite neu laden:
-        header("Location: " . $_SERVER['REQUEST_URI']);
-        exit; // ganz wichtig: beendet das Skript nach dem Redirect!
-
-    } catch (Exception $ex) {
-        error_log("Fehler beim Markieren der Nachrichten als gelesen: " . $ex->getMessage());
+        if ($messagesService->markAllAsRead($userId)) {
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+            exit;
+        }
+    } catch (\Throwable $th) {
+        error_log('Markieren als gelesen fehlgeschlagen: ' . $th->getMessage());
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -122,25 +125,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Read-All'])) {
                 <h3><strong>Persönliche Informationen</strong></h3>
                 <div class="form-group-display">
                     <label>Name</label>
-                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['name']); ?></div>
+                    <div class="form-control-display"><?php echo htmlspecialchars($currentUser['name'] ?? ''); ?></div>
                 </div>
                 <div class="form-group-display">
                     <label>E-Mail</label>
-                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['mail']); ?></div>
+                    <div class="form-control-display"><?php echo htmlspecialchars($currentUser['mail'] ?? ''); ?></div>
                 </div>
                 <hr>
                 <h3><strong>Adresse</strong></h3>
                 <div class="form-group-display">
                     <label>Straße</label>
-                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['str']); ?></div>
+                    <div class="form-control-display"><?php echo htmlspecialchars($currentUser['str'] ?? ''); ?></div>
                 </div>
                 <div class="form-group-display">
                     <label>Ort</label>
-                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['ort']); ?></div>
+                    <div class="form-control-display"><?php echo htmlspecialchars($currentUser['ort'] ?? ''); ?></div>
                 </div>
                 <div class="form-group-display">
                     <label>Postleitzahl</label>
-                    <div class="form-control-display"><?php echo htmlspecialchars($user_from_db['plz']); ?></div>
+                    <div class="form-control-display"><?php echo htmlspecialchars($currentUser['plz'] ?? ''); ?></div>
                 </div>
                 <div class="profile-actions">
                     <a href="profile-edit.php" class="btn">Profil bearbeiten</a>
