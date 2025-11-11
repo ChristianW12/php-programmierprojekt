@@ -10,6 +10,11 @@ class Angebot {
         $this->dbconnection = mitDBverbinden();
     }
 
+    /**
+     * Gibt das aktuelle Angebot als Array zurück.
+     *
+     * @return array<string, mixed>|false
+     */
     public function getOfferWithId(){
         if(!isset($this->offerId)){
             throw new InvalidArgumentException("Offer ID is not set.");
@@ -22,6 +27,12 @@ class Angebot {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Prüft, ob das Angebot als Favorit für den angegebenen Nutzer existiert.
+     *
+     * @param int $userId
+     * @return bool
+     */
     public function isFavoritForUser(int $userId): bool {
         $query = 'SELECT 1 FROM favourites WHERE user_id = :user_id AND offer_id = :offer_id';
         $stmt = $this->dbconnection->prepare($query);
@@ -32,6 +43,11 @@ class Angebot {
         return (bool) $stmt->fetchColumn();
     }
 
+    /**
+     * Lädt alle Bilder zum Angebot, Cover zuerst.
+     *
+     * @return array<int, array<string, mixed>>
+     */
     public function getOfferImages(): array {
         $query = 'SELECT * FROM offer_pic WHERE offer_id = :offer_id ORDER BY is_cover DESC';
         $stmt = $this->dbconnection->prepare($query);
@@ -42,6 +58,16 @@ class Angebot {
         return $result ?: [];
     }
 
+    /**
+     * Aktualisiert Kerndaten des Angebots.
+     *
+     * @param int $offerId
+     * @param string $title
+     * @param string $beschreibung
+     * @param float $startpreis
+     * @param string $ende
+     * @return bool
+     */
     public function updateOffer($offerId, $title, $beschreibung, $startpreis, $ende): bool {
         $query = 'UPDATE offers 
                   SET title = :title, beschreibung = :beschreibung, startpreis = :startpreis, ende = :ende 
@@ -57,7 +83,12 @@ class Angebot {
     }
 
     /**
-     * Löscht das Angebot inklusive zugehöriger Bids und Bilder nach Berechtigungsprüfung.
+     * Löscht das Angebot inklusive Geboten/Bildern nach Berechtigungsprüfung.
+     *
+     * @param int $currentUserId
+     * @param bool $isAdmin
+     * @param string $imageBasePath
+     * @return bool
      */
     public function deleteOffer(int $currentUserId, bool $isAdmin = false, string $imageBasePath = ''): bool
     {

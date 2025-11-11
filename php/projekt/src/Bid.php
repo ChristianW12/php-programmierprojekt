@@ -14,18 +14,38 @@ class Bid {
         $this->dbconnection = mitDBverbinden();
     }
 
+    /**
+     * Liefert die Angebots-ID, für die geboten wird.
+     *
+     * @return int
+     */
     public function getOfferId(): int {
         return $this->offerId;
     }
 
+    /**
+     * Gibt den Gebotsbetrag zurück.
+     *
+     * @return float
+     */
     public function getBidderPrice(): float {
         return $this->bidderPrice;
     }
 
+    /**
+     * Gibt die Mailadresse des Bieters zurück.
+     *
+     * @return string
+     */
     public function getBidderEmail(): string {
         return $this->bidderEmail;
     }
 
+    /**
+     * Speichert das Gebot inklusive Proxy-Bidding-Logik und liefert Status/Message.
+     *
+     * @return array{success: bool, message: string}
+     */
     public function saveBid(): array {
         $this->dbconnection->beginTransaction();
         try {
@@ -103,16 +123,33 @@ class Bid {
 
     // Hilfsmethoden zur Verbesserung der Lesbarkeit von saveBid()
 
+    /**
+     * Fügt einen Bid-Datensatz mit Highest-Flag hinzu.
+     *
+     * @param int $isHighest
+     * @return void
+     */
     private function insertBid(int $isHighest): void {
         $stmt = $this->dbconnection->prepare('INSERT INTO bids (offer_id, mail, price, highest_price) VALUES (?, ?, ?, ?)');
         $stmt->execute([$this->offerId, $this->bidderEmail, $this->bidderPrice, $isHighest]);
     }
 
+    /**
+     * Aktualisiert den sichtbaren Höchstpreis im Angebot.
+     *
+     * @param float $price
+     * @return void
+     */
     private function updateOfferPrice(float $price): void {
         $stmt = $this->dbconnection->prepare('UPDATE offers SET hoechstpreis = ? WHERE offer_id = ?');
         $stmt->execute([$price, $this->offerId]);
     }
 
+    /**
+     * Setzt alle Gebote eines Angebots auf „nicht höchstes Gebot“.
+     *
+     * @return void
+     */
     private function resetHighestBids(): void {
         $stmt = $this->dbconnection->prepare('UPDATE bids SET highest_price = 0 WHERE offer_id = ?');
         $stmt->execute([$this->offerId]);

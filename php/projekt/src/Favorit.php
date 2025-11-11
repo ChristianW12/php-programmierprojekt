@@ -7,6 +7,13 @@ class Favorit {
         $this->db = mitDBverbinden();
     } 
 
+    /**
+     * Markiert ein Angebot als Favorit für den Nutzer.
+     *
+     * @param int $userId
+     * @param int $offerId
+     * @return bool
+     */
     public function add(int $userId, int $offerId): bool {
         if ($this->isFavorite($userId, $offerId)) {
             return true; // Already a favorite
@@ -21,6 +28,13 @@ class Favorit {
         }
     }
 
+    /**
+     * Entfernt einen Favoriteneintrag.
+     *
+     * @param int $userId
+     * @param int $offerId
+     * @return bool
+     */
     public function remove(int $userId, int $offerId): bool {
         try {
             $stmt = $this->db->prepare('DELETE FROM favourites WHERE user_id = :user_id AND offer_id = :offer_id');
@@ -31,12 +45,25 @@ class Favorit {
         }
     }
 
+    /**
+     * Prüft, ob ein Angebot bereits Favorit eines Nutzers ist.
+     *
+     * @param int $userId
+     * @param int $offerId
+     * @return bool
+     */
     public function isFavorite(int $userId, int $offerId): bool {
         $stmt = $this->db->prepare('SELECT 1 FROM favourites WHERE user_id = :user_id AND offer_id = :offer_id');
         $stmt->execute([':user_id' => $userId, ':offer_id' => $offerId]);
         return (bool)$stmt->fetchColumn();
     }
 
+    /**
+     * Liefert alle Favoriten-Angebote des Nutzers.
+     *
+     * @param int $userId
+     * @return array<int, array<string, mixed>>
+     */
     public function getByUser(int $userId): array {
         $stmt = $this->db->prepare('SELECT o.* FROM offers o JOIN favourites f ON o.offer_id = f.offer_id WHERE f.user_id = :user_id');
         $stmt->execute([':user_id' => $userId]);

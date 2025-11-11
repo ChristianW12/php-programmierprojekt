@@ -24,6 +24,11 @@ class Filter {
         $this->dbconnection = mitDBverbinden();
         $this->data = [];
     }
+    /**
+     * Lädt alle aktiven Angebote und puffert sie lokal.
+     *
+     * @return array<int, array<string, mixed>>|null
+     */
     public function getData() {
         $query = 'SELECT offer_id, user_id, title, beschreibung, startpreis, start, ende FROM offers WHERE ende > NOW() ORDER BY start DESC';
         $result = $this->dbconnection->query($query);
@@ -34,6 +39,11 @@ class Filter {
             return $this->data;
         }
     }
+    /**
+     * Sortiert gepufferte Angebote nach Startdatum (neueste zuerst).
+     *
+     * @return array<int, array<string, mixed>>
+     */
     public function nachNeuste() {
         if(empty($this->data)) {
             $this->getData();
@@ -46,6 +56,13 @@ class Filter {
         return $this->data;
     }
 
+    /**
+     * Filtert Angebote innerhalb einer Startpreis-Spanne.
+     *
+     * @param float|int $anfang
+     * @param float|int $ende
+     * @return array<int, array<string, mixed>>
+     */
     public function nachPreisspanne($anfang,$ende) {
         if(empty($this->data)) {
             $this->getData();
@@ -57,28 +74,38 @@ class Filter {
         }
         return $this->data;
     }
-
-public function nachSuche($suchbegriff) {
-    if (empty($this->data)) {
-        $this->getData();
+    /**
+     * Filtert nach Textsuche inkl. toleranter Levenshtein-Prüfung.
+     *
+     * @param string $suchbegriff
+     * @return array<int, array<string, mixed>>
+     */
+    public function nachSuche($suchbegriff) {
+        if (empty($this->data)) {
+            $this->getData();
+        }
+        if (!empty($this->data)) {
+            $suchbegriff = trim(strtolower($suchbegriff));
+            $this->data = array_filter($this->data, function($item) use ($suchbegriff) {
+                $title = strtolower($item['title'] ?? '');
+                $beschreibung = strtolower($item['beschreibung'] ?? '');
+                if (stripos($title, $suchbegriff) !== false || stripos($beschreibung, $suchbegriff) !== false) {
+                    return true;
+                }
+                $distanceTitle = levenshtein($suchbegriff, $title);
+                $distanceBeschreibung = levenshtein($suchbegriff, $beschreibung);
+                $threshold = 2;
+                return ($distanceTitle <= $threshold || $distanceBeschreibung <= $threshold);
+            });
+        }
+        return $this->data;
     }
-    if (!empty($this->data)) {
-        $suchbegriff = trim(strtolower($suchbegriff));
-        $this->data = array_filter($this->data, function($item) use ($suchbegriff) {
-            $title = strtolower($item['title'] ?? '');
-            $beschreibung = strtolower($item['beschreibung'] ?? '');
-            if (stripos($title, $suchbegriff) !== false || stripos($beschreibung, $suchbegriff) !== false) {
-                return true;
-            }
-            $distanceTitle = levenshtein($suchbegriff, $title);
-            $distanceBeschreibung = levenshtein($suchbegriff, $beschreibung);
-            $threshold = 2;
-            return ($distanceTitle <= $threshold || $distanceBeschreibung <= $threshold);
-        });
-    }
-    return $this->data;
-}
 
+    /**
+     * Liefert Angebote sortiert nach Anzahl der Gebote.
+     *
+     * @return array<int, array<string, mixed>>
+     */
     public function nachBeliebteste() {
         if (empty($this->data)) {
             $this->getData();
@@ -94,6 +121,12 @@ public function nachSuche($suchbegriff) {
         return [];
     }
 
+    /**
+     * Gibt alle Angebote eines Nutzers zurück.
+     *
+     * @param int $userId
+     * @return array<int, array<string, mixed>>
+     */
     public function nachMeineAngebote($userId) {
         $query = 'SELECT offer_id, user_id, title, beschreibung, startpreis, start, ende 
                   FROM offers 
@@ -110,6 +143,12 @@ public function nachSuche($suchbegriff) {
         return $angebote;
     }
 
+    /**
+     * Ermittelt alle Favoriten eines Nutzers.
+     *
+     * @param int $userId
+     * @return array<int, array<string, mixed>>
+     */
     public function nachFavoriten($userId)
     {
         $query = 'SELECT o.* FROM offers o JOIN favourites f ON o.offer_id = f.offer_id WHERE f.user_id = :userId';
@@ -119,6 +158,12 @@ public function nachSuche($suchbegriff) {
         return $this->data;
     }
 
+    /**
+     * Filtert Angebote nach einer Kategorie.
+     *
+     * @param string $kategorie
+     * @return array<int, array<string, mixed>>
+     */
     public function nachKategorie(String $kategorie)
     {
         // nur gültige Kategorie anzeigen

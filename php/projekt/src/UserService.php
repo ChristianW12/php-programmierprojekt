@@ -15,6 +15,8 @@ class UserService
     /**
      * Authentifiziert einen Nutzer anhand Mail/Passwort und kümmert sich um Legacy-Rehashes.
      *
+     * @param string $mail
+     * @param string $plainPassword
      * @return array{success: bool, user?: array<string, mixed>, message?: string}
      */
     public function loginUser(string $mail, string $plainPassword): array
@@ -67,6 +69,7 @@ class UserService
     /**
      * Lädt einen Nutzer anhand seiner Mail-Adresse.
      *
+     * @param string $mail
      * @return array<string, mixed>|null
      */
     public function getUserByMail(string $mail): ?array
@@ -91,7 +94,9 @@ class UserService
     /**
      * Aktualisiert die Stammdaten eines Nutzers.
      *
+     * @param int $userId
      * @param array{name?: string, mail?: string, ort?: string, plz?: string, str?: string} $profileData
+     * @return bool
      */
     public function updateUserProfile(int $userId, array $profileData): bool
     {
@@ -184,6 +189,10 @@ class UserService
 
     /**
      * Prüft, ob das übergebene Passwort zum Nutzer passt.
+     *
+     * @param int $userId
+     * @param string $plainPassword
+     * @return bool
      */
     public function verifyPassword(int $userId, string $plainPassword): bool
     {
@@ -198,6 +207,10 @@ class UserService
     /**
      * Entfernt alle zum Nutzer gehörenden Daten (eigene Gebote, Angebote inkl. Bilder)
      * und löscht anschließend den Nutzer selbst.
+     *
+     * @param int $userId
+     * @param string $imageBasePath
+     * @return bool
      */
     public function deleteUser(int $userId, string $imageBasePath = ''): bool
     {

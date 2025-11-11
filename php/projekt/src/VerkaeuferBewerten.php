@@ -10,7 +10,12 @@ class VerkaeuferBewerten
         $this->db = mitDbverbinden();
     }
 
-    // Funktion zum Laden des Verkäufers anhand der ID
+    /**
+     * Lädt einen Verkäufer anhand seiner ID.
+     *
+     * @param int $id
+     * @return array<string, mixed>|false
+     */
     public function verkaeuferLaden(int $id)
     {
         // Verkäufer anhand der ID aus der DB laden
@@ -19,7 +24,12 @@ class VerkaeuferBewerten
         return $stmt->fetch(PDO::FETCH_ASSOC); // Verkäufer-Daten als assoziatives Array zurückgeben
     }
 
-    // Funktion zum Speichern einer neuen Bewertung
+    /**
+     * Speichert eine Bewertung für den übergebenen Verkäufer anhand von POST-Daten.
+     *
+     * @param array<string, mixed> $verkaeufer_from_db
+     * @return void
+     */
     public function bewertungenSpeichern(array $verkaeufer_from_db)
     {
         // Prüfen, ob das Bewertungsformular abgeschickt wurde und der Nutzer eingeloggt ist
@@ -42,7 +52,12 @@ class VerkaeuferBewerten
             exit;
         }
     }
-    // Funktion zum Laden aller Bewertungen für den Verkäufer
+    /**
+     * Lädt alle Bewertungen eines Verkäufers.
+     *
+     * @param array<string, mixed> $verkaeufer_from_db
+     * @return array<int, array<string, mixed>>
+     */
     public function bewertungenLaden(array $verkaeufer_from_db)
     {
         // Alle Bewertungen für den Verkäufer aus der Datenbank laden
@@ -54,7 +69,12 @@ class VerkaeuferBewerten
         $stmtBewertungen->execute([':target' => $verkaeufer_from_db['user_id']]);
         return $stmtBewertungen->fetchAll(PDO::FETCH_ASSOC); // Alle Bewertungen als Array zurückgeben
     }
-    // Funktion zur Berechnung des durchschnittlichen Ratings
+    /**
+     * Berechnet das durchschnittliche Rating über alle Bewertungen.
+     *
+     * @param array<int, array<string, mixed>> $bewertungen
+     * @return float|null
+     */
     public function durchschnittlichesRating(array $bewertungen)
     {
         // Falls Bewertungen vorhanden sind, Durchschnitt berechnen

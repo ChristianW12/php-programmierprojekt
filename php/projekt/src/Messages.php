@@ -10,6 +10,12 @@ class Messages {
         $this->messages = [];
     }
 
+    /**
+     * Lädt alle Nachrichten für einen Nutzer (neueste zuerst).
+     *
+     * @param int $userId
+     * @return array<int, array<string, mixed>>
+     */
     public function getMessagesForUser(int $userId): array
     {
         $query = 'SELECT message_id, user_id, title, preview, time, `read`
@@ -26,6 +32,12 @@ class Messages {
         return $this->messages;
     }
 
+    /**
+     * Zählt ungelesene Nachrichten.
+     *
+     * @param array<int, array<string, mixed>> $messages
+     * @return int
+     */
     public function countUnreadMessages(array $messages): int
     {
         return array_reduce(
@@ -35,6 +47,12 @@ class Messages {
         );
     }
 
+    /**
+     * Markiert alle Nachrichten eines Nutzers als gelesen.
+     *
+     * @param int $userId
+     * @return bool
+     */
     public function markAllAsRead(int $userId): bool
     {
         $query = 'UPDATE messages
@@ -47,6 +65,13 @@ class Messages {
         return $stmt->execute();
     }
 
+    /**
+     * Legt eine Nachricht für den Angebotsersteller an, wenn ein Gebot eingeht.
+     *
+     * @param string $userEmail
+     * @param int $offerId
+     * @return bool
+     */
     public function sendMessageWhenBidding(string $userEmail, int $offerId): bool{
         $query = 'SELECT user_id FROM offers WHERE offer_id = :offerId';
         $stmt = $this->dbconnection->prepare($query);
@@ -63,8 +88,15 @@ class Messages {
             $insertStmt->bindValue(':preview', 'Ein neues Gebot wurde für Ihr Angebot abgegeben von ' . $userEmail, \PDO::PARAM_STR);
             return $insertStmt->execute();
         }
+
+        return false;
     }
 
+    /**
+     * Informiert Verkäufer nach Angebotsende und markiert Angebote als beendet.
+     *
+     * @return bool
+     */
     public function sendMessageWhenOfferOver(): bool {
         $query = 'SELECT o.offer_id,
                          o.user_id,

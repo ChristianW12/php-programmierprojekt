@@ -10,7 +10,18 @@ class AngebotErsteller
         $this->db = mitDbverbinden();
     }
 
-    // Funktion zum Erstellen eines neuen Angebots
+    /**
+     * Legt ein neues Angebot inkl. Basisdaten an und gibt dessen ID zurück.
+     *
+     * @param int $user_id
+     * @param string $titel
+     * @param string $beschreibung
+     * @param string|null $kategorie
+     * @param float $startpreis
+     * @param string $ende
+     * @param \PDO $db
+     * @return int|string
+     */
     public function angebotErstellen($user_id, $titel, $beschreibung, $kategorie, $startpreis, $ende, $db)
     {
         $query = 'INSERT INTO offers (user_id, title, beschreibung, startpreis, ende, kategorie) VALUES(?,?,?,?,?,?)'; // SQL-Query zum Einfügen eines neuen Angebots
@@ -26,7 +37,15 @@ class AngebotErsteller
         return $this->db->lastInsertId(); // Rückgabe der ID des neu erstellten Angebots
     }
 
-    // Funktion zum Verarbeiten eines einzelnen Bild-Uploads
+    /**
+     * Speichert ein einzelnes hochgeladenes Bild samt Cover-Flag zum Angebot.
+     *
+     * @param array $file_input
+     * @param int $neue_angebot_id
+     * @param string $upload_dir
+     * @param bool $is_cover
+     * @return void
+     */
     public function bildVerarbeiten($file_input, $neue_angebot_id, $upload_dir, $is_cover = false)
     {
         // Überprüfen, ob eine Datei hochgeladen wurde
@@ -44,7 +63,14 @@ class AngebotErsteller
         }
     }
 
-    // Funktion zum Verarbeiten von mehreren Bild-Uploads
+    /**
+     * Persistiert mehrere zusätzliche Angebotsbilder.
+     *
+     * @param array $files_input
+     * @param int $neue_angebot_id
+     * @param string $upload_dir
+     * @return void
+     */
     public function bilderVerarbeiten($files_input, $neue_angebot_id, $upload_dir)
     {
         if (isset($files_input)) {

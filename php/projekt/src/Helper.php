@@ -4,6 +4,9 @@ class Helper
 {
     /**
      * Konvertiert Datumsstrings in ein deutsches Anzeigeformat.
+     *
+     * @param string|null $dateString
+     * @return string
      */
     public static function formatDate(?string $dateString): string
     {
@@ -20,6 +23,9 @@ class Helper
 
     /**
      * Formatiert numerische Preise als Euro-Betrag.
+     *
+     * @param mixed $price
+     * @return string
      */
     public static function formatPrice(mixed $price): string
     {

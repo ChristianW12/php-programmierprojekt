@@ -1,5 +1,13 @@
 <?php
 class Db extends PDO {
+    /**
+     * Führt eine Query aus und fängt PDO-Exceptions ab, um Fehlermeldungen auszugeben.
+     *
+     * @param string $statement
+     * @param int|null $mode
+     * @param mixed ...$fetch_mode_args
+     * @return PDOStatement|false
+     */
     public function query(
         string $statement,
         ?int $mode = PDO::FETCH_ASSOC,
