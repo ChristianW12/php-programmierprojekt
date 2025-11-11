@@ -9,7 +9,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - Footer aktualisieren (Christian)
 - ✅ Redirect nach Gebot (Luca)
 - ✅ Grüner Plus-Button rechts unten fixed, Filter zurücksetzen grauer Button, Kategorien schöner (Melina)
-- Filter verbessern -> Mehrfach Filterung ermöglichen (Melina)
+- ✅ Filter verbessern -> Mehrfach Filterung ermöglichen (Melina)
 - ✅ Anbieter bekommt bei abgegebenen Angeboten Nachricht, bekommt Benachrichtigungen wenn Auktion vorbei ist wer gewonnen hat
   --> Check erfolgt immer wenn auf Profil geclicked wird (Luca)
 - ✅ Angebote aus Favoriten entfernen können (Melina)
@@ -23,6 +23,14 @@ Bugs:
 - User sollte zu jedem User nur eine Bewertung abgeben können
 -
 
+---
+
+ausstehend:
+
+- Refactoring fertigstellen
+- Doku für Abgabe beginnen (Installationsanweisung, Voraussetzung, Erklärungen etc)
+- Testing!
+- 
 ## Obligatorische Features
 
 - Artikel als Hauptentität: Titel, Text (HTML/Markdown), Bild, Beginn- und Endzeitpunkt der Auktion
