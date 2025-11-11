@@ -12,8 +12,12 @@ require_once __DIR__ . '/../src/VerkaeuferBewerten.php';
 // DB-Verbindung herstellen
 $db = mitDBverbinden();
 
-// VerkaeuferBewerten-Objekt erstellen
-$verkaeuferBewerten = new VerkaeuferBewerten($db);
+// VerkaeuferBewerten-Objekt erstellen, in Try Catch um Fehler bei DB Verbindung abzufangen
+try {
+    $verkaeuferBewerten = new VerkaeuferBewerten();
+} catch (\Throwable $th) {
+    echo "Fehler: " . $th->getMessage();
+}
 
 // Verkäufer anhand der ID aus der DB laden, wenn keine ID übergeben wurde, 0 hineingeben
 $verkaeufer_from_db = $verkaeuferBewerten->verkaeuferLaden($_GET['id'] ?? 0);

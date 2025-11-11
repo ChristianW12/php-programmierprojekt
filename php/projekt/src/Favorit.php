@@ -1,11 +1,11 @@
 <?php
-
+require_once __DIR__ . '/db-connection.php';
 class Favorit {
     private PDO $db;
 
-    public function __construct(PDO $db) {
-        $this->db = $db;
-    }
+    public function __construct() {
+        $this->db = mitDBverbinden();
+    } 
 
     public function add(int $userId, int $offerId): bool {
         if ($this->isFavorite($userId, $offerId)) {

@@ -1,13 +1,13 @@
 <?php //Refactored
-
+require_once __DIR__ . '/db-connection.php';
 class VerkaeuferBewerten
 {
     // Datenbankverbindung
     public $db;
 
     // Konstruktor zur Initialisierung der Datenbankverbindung
-    public function __construct($db) {
-        $this->db = $db;
+    public function __construct() {
+        $this->db = mitDbverbinden();
     }
 
     // Funktion zum Laden des Verkäufers anhand der ID

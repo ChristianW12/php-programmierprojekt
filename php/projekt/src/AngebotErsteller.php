@@ -1,13 +1,13 @@
 <?php // Halbwegs Refactored (Christian nochmal eigenen Code anschauen)
-
-class neuesAngebotEdit
+require_once __DIR__ . '/db-connection.php';
+class AngebotErsteller
 {
     // Datenbankverbindung
     public $db;
 
     // Konstruktor zur Initialisierung der Datenbankverbindung
-    public function __construct($db) {
-        $this->db = $db;
+    public function __construct() {
+        $this->db = mitDbverbinden();
     }
 
     // Funktion zum Erstellen eines neuen Angebots

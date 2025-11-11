@@ -2,8 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require __DIR__ . '/../src/Db.php';
-require __DIR__ . '/../src/db-connection.php';
+require __DIR__ . '/../src/UserService.php';
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -17,95 +16,50 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
     $user_mail = $_POST['email'] ?? '';
     $user_password = $_POST['password'] ?? '';
 
-    // DB Verbindung aufbauen
-    $db = mitDBverbinden();
+    $userService = new UserService();
+    $loginResult = $userService->loginUser($user_mail, $user_password);
 
-    // Benutzer in der Datenbank suchen
-    $stmt = $db->prepare("select* from users where mail = :mail");
-    $stmt->execute([':mail' => $user_mail]);
-    // Daten vom User in einem Array speichern
-    $user_from_db = $stmt->fetch(Db::FETCH_ASSOC);
+    if ($loginResult['success'] ?? false) {
+        $userData = $loginResult['user'] ?? [];
 
-    // Passwort überprüfen
-    if($user_from_db) {
-        // Kontrolle, ob Passwort gehashed ist
-        if (password_needs_rehash($user_from_db['password'], PASSWORD_DEFAULT)) {
-            // wenn nicht gehashed, direkt vergleichen
-            if ($user_password === $user_from_db['password']) {
-                // Hash und Update des Passworts in der DB
-                $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
-                $update_stmt = $db->prepare("UPDATE users SET password = :password WHERE user_id = :user_id");
-                $update_stmt->execute([':password' => $hashed_password, ':user_id' => $user_from_db['user_id']]);
-                // Login erfolgreich
-                $_SESSION['loggedin'] = true;
-                $_SESSION['user_mail'] = $user_from_db['mail'];
-                $_SESSION['user_id'] = $user_from_db['user_id'];
-                $_SESSION['is_admin'] = $user_from_db['is_admin'];
+        $_SESSION['loggedin'] = true;
+        $_SESSION['user_mail'] = $userData['mail'] ?? $user_mail;
+        $_SESSION['user_id'] = $userData['user_id'] ?? null;
+        $_SESSION['is_admin'] = $userData['is_admin'] ?? 0;
 
-                // Switch zum zurückkommen auf die letzte besuchte Seite
-                switch ($_SESSION['last_site']) {
-                case 'profil':
-                    header("Location: profile.php");
-                    exit();
-                    break;
-                case 'angebot erstellen':
-                    header('Location: neuesAngebot.php');
-                    exit();
-                    break;
-                default:  
-                    header("Location: index.php");
-                    exit();
-                    break;
-                }
-            } else {
-                $login_error = "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
-            }
-        } else {
-            // wenn schon gehashed, normales Passwort-Verify
-            if (password_verify($user_password, $user_from_db['password'])) {
-                // Login successful
-                $_SESSION['loggedin'] = true;
-                $_SESSION['user_mail'] = $user_from_db['mail'];
-                $_SESSION['user_id'] = $user_from_db['user_id'];
-                $_SESSION['is_admin'] = $user_from_db['is_admin'];
-
-                // Switch zum zurückkommen auf die letzte besuchte Seite
-                switch ($_SESSION['last_site']) {
-                case 'profil':
-                    header("Location: profile.php");
-                    exit();
-                    break;
-                case 'angebot erstellen':
-                    header('Location: neuesAngebot.php');
-                    exit();
-                    break;
-                case 'angebot-bieten':
-                    header('Location: ' . $_SESSION['URL']);
-                    exit();
-                    break;
-                case 'meine angebote':
-                    header('Location: angebote.php?sort=meineAngebote');
-                    exit();
-                    break;
-                case 'favoriten':
-                    header('Location: angebote.php?sort=favoriten');
-                    exit();
-                    break;
-                case 'nutzer-bewerten':
-                    header('Location: ' . $_SESSION['URL_Bewertungen']);
-                    exit();
-                    break;
-                default:  
-                    header("Location: index.php");
-                    exit();
-                    break;
-                }
-            } else {
-                $login_error = "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
-            }
+        // Switch zum zurückkommen auf die letzte besuchte Seite
+        switch ($_SESSION['last_site'] ?? '') {
+        case 'profil':
+            header("Location: profile.php");
+            exit();
+            break;
+        case 'angebot erstellen':
+            header('Location: neuesAngebot.php');
+            exit();
+            break;
+        case 'angebot-bieten':
+            header('Location: ' . ($_SESSION['URL'] ?? 'angebote.php'));
+            exit();
+            break;
+        case 'meine angebote':
+            header('Location: angebote.php?sort=meineAngebote');
+            exit();
+            break;
+        case 'favoriten':
+            header('Location: angebote.php?sort=favoriten');
+            exit();
+            break;
+        case 'nutzer-bewerten':
+            header('Location: ' . ($_SESSION['URL_Bewertungen'] ?? 'nutzer-bewertungen.php'));
+            exit();
+            break;
+        default:  
+            header("Location: index.php");
+            exit();
+            break;
         }
     } else {
-        $login_error = "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
+        $login_error = $loginResult['message'] ?? "Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.";
     }
 }
 ?>

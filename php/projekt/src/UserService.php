@@ -13,6 +13,117 @@ class UserService
     }
 
     /**
+     * Authentifiziert einen Nutzer anhand Mail/Passwort und kümmert sich um Legacy-Rehashes.
+     *
+     * @return array{success: bool, user?: array<string, mixed>, message?: string}
+     */
+    public function loginUser(string $mail, string $plainPassword): array
+    {
+        $stmt = $this->db->prepare('SELECT * FROM users WHERE mail = :mail');
+        $stmt->bindValue(':mail', $mail, \PDO::PARAM_STR);
+        $stmt->execute();
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            return [
+                'success' => false,
+                'message' => 'Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.',
+            ];
+        }
+
+        $storedPassword = (string)($user['password'] ?? '');
+        $needsRehash = password_needs_rehash($storedPassword, PASSWORD_DEFAULT);
+
+        if ($needsRehash) {
+            // Altpasswörter wurden im Klartext gespeichert -> direkter Vergleich
+            if ($plainPassword !== $storedPassword) {
+                return [
+                    'success' => false,
+                    'message' => 'Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.',
+                ];
+            }
+
+            $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+            $updateStmt = $this->db->prepare('UPDATE users SET password = :password WHERE user_id = :user_id');
+            $updateStmt->bindValue(':password', $hashedPassword, \PDO::PARAM_STR);
+            $updateStmt->bindValue(':user_id', (int)$user['user_id'], \PDO::PARAM_INT);
+            $updateStmt->execute();
+            $storedPassword = $hashedPassword;
+        } elseif (!password_verify($plainPassword, $storedPassword)) {
+            return [
+                'success' => false,
+                'message' => 'Ungültiger Benutzername oder Passwort. Versuchen Sie es nochmal.',
+            ];
+        }
+
+        unset($user['password']);
+
+        return [
+            'success' => true,
+            'user' => $user,
+        ];
+    }
+
+    /**
+     * Lädt einen Nutzer anhand seiner Mail-Adresse.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getUserByMail(string $mail): ?array
+    {
+        $mail = trim($mail);
+        if ($mail === '') {
+            return null;
+        }
+
+        $stmt = $this->db->prepare('SELECT * FROM users WHERE mail = :mail LIMIT 1');
+        $stmt->bindValue(':mail', $mail, \PDO::PARAM_STR);
+        $stmt->execute();
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
+
+        if ($user) {
+            unset($user['password']); // Passwort nie an Aufrufer zurückgeben
+        }
+
+        return $user;
+    }
+
+    /**
+     * Aktualisiert die Stammdaten eines Nutzers.
+     *
+     * @param array{name?: string, mail?: string, ort?: string, plz?: string, str?: string} $profileData
+     */
+    public function updateUserProfile(int $userId, array $profileData): bool
+    {
+        $payload = [
+            'name' => trim($profileData['name'] ?? ''),
+            'mail' => trim($profileData['mail'] ?? ''),
+            'ort' => trim($profileData['ort'] ?? ''),
+            'plz' => trim($profileData['plz'] ?? ''),
+            'str' => trim($profileData['str'] ?? ''),
+        ];
+
+        if ($userId <= 0 || in_array('', $payload, true)) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare(
+            'UPDATE users
+             SET name = :name, mail = :mail, ort = :ort, plz = :plz, str = :strasse
+             WHERE user_id = :user_id'
+        );
+
+        return $stmt->execute([
+            ':name' => $payload['name'],
+            ':mail' => $payload['mail'],
+            ':ort' => $payload['ort'],
+            ':plz' => $payload['plz'],
+            ':strasse' => $payload['str'],
+            ':user_id' => $userId,
+        ]);
+    }
+
+    /**
      * Prüft, ob das übergebene Passwort zum Nutzer passt.
      */
     public function verifyPassword(int $userId, string $plainPassword): bool

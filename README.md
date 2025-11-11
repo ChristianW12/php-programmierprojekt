@@ -18,7 +18,10 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 ---
 
-mögliche weiter Features:
+Bugs:
+
+- User sollte zu jedem User nur eine Bewertung abgeben können
+-
 
 ## Obligatorische Features
 

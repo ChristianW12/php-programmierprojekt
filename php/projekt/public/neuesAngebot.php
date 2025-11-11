@@ -4,18 +4,14 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Dateien für DB-Verbindung, DB-Hilfsfunktionen einbinden, und neuesAngebotEdit-Klasse einbinden
-require __DIR__ . '/../src/db-connection.php';
-require_once __DIR__ . '/../src/Db.php';
-require_once __DIR__ . '/../src/neuesAngebotEdit.php';
+// neuesAngebotEdit-Klasse einbinden
 
-// DB-Verbindung herstellen
-$db = mitDBverbinden();
+require_once __DIR__ . '/../src/neuesAngebotEdit.php';
 
 // Prüfen ob das Formular abgeschickt wurde und der Nutzer eingeloggt ist
 if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     // Neues AngebotEdit-Objekt erstellen
-    $angebotNeu = new neuesAngebotEdit($db);
+    $angebotNeu = new neuesAngebotEdit();
     // 1. Angebot erstellen und die neue ID in einer Variable speichern
     $kategorie = !empty($_POST['kategorie']) ? $_POST['kategorie'] : null; // Kategorie ist optional, daher Inhalt prüfen und ggf. auf Null setzen
 
@@ -38,7 +34,8 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     header('Location: angebote.php');
     exit;
 
-} else if (!isset($_SESSION['loggedin'])) {     // Prüfen ob der Nutzer eingeloggt ist, sonst Weiterleitung.
+    // Prüfen ob der Nutzer eingeloggt ist, sonst Weiterleitung.
+} else if (!isset($_SESSION['loggedin'])) {     
     header('Location: login.php');
     exit;
 }
