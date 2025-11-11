@@ -7,9 +7,11 @@ require __DIR__ . '/../src/Filter.php';
 require __DIR__ . '/../src/Messages.php';
 
 // Standardwerte für Filter/Suche vorbereiten
-$dataRows = [];
 $activeSort = $_GET['sort'] ?? 'neueste';
 $gewaehlteKategorie = $_GET['kategorie'] ?? '';
+$minPreis = !empty($_GET['min-preis']) ? floatval($_GET['min-preis']) : null;
+$maxPreis = !empty($_GET['max-preis']) ? floatval($_GET['max-preis']) : null;
+$suchbegriff = isset($_GET['q']) && !empty(trim($_GET['q'])) ? trim($_GET['q']) : null;
 
 try {
     // Filter- und Nachrichten-Service initialisieren
@@ -17,35 +19,45 @@ try {
     $messagesService = new Messages();
     $messagesService->sendMessageWhenOfferOver();
 
-    // Kategorie- oder Preisfilter anwenden
-    if (!empty($gewaehlteKategorie)) {
-        $dataRows = $filter->nachKategorie($gewaehlteKategorie);
-    } elseif (isset($_GET['preisfilter'])) {
-        $minPreis = !empty($_GET['min-preis']) ? floatval($_GET['min-preis']) : 0;
-        $maxPreis = !empty($_GET['max-preis']) ? floatval($_GET['max-preis']) : PHP_INT_MAX;
-        $dataRows = $filter->nachPreisspanne($minPreis, $maxPreis);
-    } else {
-        // Sortierung auswerten
-        if ($activeSort === 'beliebteste') {
-            $dataRows = $filter->nachBeliebteste();
-        } elseif ($activeSort === 'meineAngebote') {
-            if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
-                header("Location: login.php");
-                $_SESSION['last_site'] = 'meine angebote';
-                exit;
-            }
-            $dataRows = $filter->nachMeineAngebote($_SESSION['user_id']);
-        } elseif ($activeSort === 'favoriten') {
-            if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
-                header("Location: login.php");
-                $_SESSION['last_site'] = 'favoriten';
-                exit;
-            }
-            $dataRows = $filter->nachFavoriten($_SESSION['user_id']);
-        } else {
-            $dataRows = $filter->nachNeuste();
+    // Die Filter werden nun verketten, anstatt sich gegenseitig auszuschließen
+    // Zuerst wird die Basissortierung angewendet
+    if ($activeSort === 'beliebteste') {
+        $filter->nachBeliebteste();
+    } elseif ($activeSort === 'meineAngebote') {
+        if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+            header("Location: login.php");
+            $_SESSION['last_site'] = 'meine angebote';
+            exit;
         }
+        $filter->nachMeineAngebote($_SESSION['user_id']);
+    } elseif ($activeSort === 'favoriten') {
+        if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+            header("Location: login.php");
+            $_SESSION['last_site'] = 'favoriten';
+            exit;
+        }
+        $filter->nachFavoriten($_SESSION['user_id']);
+    } else {
+        $filter->nachNeuste();
     }
+
+    // Zusätzliche Filter werden an die Abfrage angehängt
+    if (!empty($gewaehlteKategorie)) {
+        $filter->nachKategorie($gewaehlteKategorie);
+    }
+
+    if (isset($_GET['preisfilter'])) {
+        $minPreis = $minPreis ?? 0;
+        $maxPreis = $maxPreis ?? PHP_INT_MAX;
+        $filter->nachPreisspanne($minPreis, $maxPreis);
+    }
+
+    if ($suchbegriff) {
+        $filter->nachSuche($suchbegriff);
+    }
+
+    // Die Ergebnisse werden am Ende abgerufen, nachdem alle Filter angewendet wurden
+    $dataRows = $filter->getResults();
 
     // Direktlink zum Erstellen eines Angebots behandeln
     if (isset($_GET['neuesAngebot'])) {
@@ -57,12 +69,6 @@ try {
             header("Location: login.php");
             exit;
         }
-    }
-
-    // Freitextsuche anwenden
-    if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
-        $suchbegriff = trim($_GET['q']);
-        $dataRows = $filter->nachSuche($suchbegriff);
     }
 } catch (PDOException $e) {
     echo 'Verbindungsfehler: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
@@ -89,12 +95,8 @@ try {
                 <?php
                 $queryParams = $_GET;
 
-                //Kategorien-Filter immer entfernen
-                unset($queryParams['kategorie']);
-
                 // "Neueste"
                 $queryParams['sort'] = 'neueste';
-                unset($queryParams['preisfilter']); // wie gehabt
                 $neuesteUrl = '?' . http_build_query($queryParams);
 
                 // "Beliebteste"
@@ -108,11 +110,6 @@ try {
                 // "Favoriten"
                 $queryParams['sort'] = 'favoriten';
                 $favoritenUrl = '?' . http_build_query($queryParams);
-
-                // "Kategorien"
-                $queryParams = $_GET;
-                unset($queryParams['kategorie']);
-
                 ?>
                 <a href="<?= $neuesteUrl ?>" class="btn-sort <?= $activeSort === 'neueste' ? 'active' : '' ?>">Neueste</a>
                 <a href="<?= $beliebtesteUrl ?>" class="btn-sort <?= $activeSort === 'beliebteste' ? 'active' : '' ?>">Beliebteste</a>
@@ -124,24 +121,34 @@ try {
         <div class="filter-section">
             <h3 class="filter-title">Kategorie</h3>
             <form method="get" style="margin:0;">
-                <input type="hidden" name="sort" value="neueste">
+                <?php
+                /**
+                 * Erzeugt versteckte Eingabefelder für alle aktuellen Query-Parameter
+                 * außer `kategorie`, damit beim Wechsel der Kategorie andere Filter erhalten bleiben
+                 */
+                foreach ($_GET as $key => $value) {
+                    if ($key !== 'kategorie') {
+                        echo '<input type="hidden" name="' . htmlspecialchars($key, ENT_QUOTES, 'UTF-8') . '" value="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '">';
+                    }
+                }
+                ?>
                 <select id="kategorie" name="kategorie" class="btn-sort" onchange="this.form.submit()">
                     <option value="">Auswählen</option>
-                    <option value="Elektronik" <?= (($_GET['kategorie'] ?? '') === 'Elektronik') ? 'selected' : '' ?>>Elektronik</option>
-                    <option value="Computer & Zubehör" <?= (($_GET['kategorie'] ?? '') === 'Computer & Zubehör') ? 'selected' : '' ?>>Computer & Zubehör</option>
-                    <option value="Haushalt & Küche" <?= (($_GET['kategorie'] ?? '') === 'Haushalt & Küche') ? 'selected' : '' ?>>Haushalt & Küche</n>
-                    <option value="Möbel & Wohnen" <?= (($_GET['kategorie'] ?? '') === 'Möbel & Wohnen') ? 'selected' : '' ?>>Möbel & Wohnen</option>
-                    <option value="Kleidung & Accessoires" <?= (($_GET['kategorie'] ?? '') === 'Kleidung & Accessoires') ? 'selected' : '' ?>>Kleidung & Accessoires</option>
-                    <option value="Filme & Musik" <?= (($_GET['kategorie'] ?? '') === 'Filme & Musik') ? 'selected' : '' ?>>Filme & Musik</option>
-                    <option value="Bücher & Comics" <?= (($_GET['kategorie'] ?? '') === 'Bücher & Comics') ? 'selected' : '' ?>>Bücher & Comics</option>
-                    <option value="Sport & Freizeit" <?= (($_GET['kategorie'] ?? '') === 'Sport & Freizeit') ? 'selected' : '' ?>>Sport & Freizeit</option>
-                    <option value="Spielzeug & Modelle" <?= (($_GET['kategorie'] ?? '') === 'Spielzeug & Modelle') ? 'selected' : '' ?>>Spielzeug & Modelle</option>
-                    <option value="Sammeln & Antiquitäten" <?= (($_GET['kategorie'] ?? '') === 'Sammeln & Antiquitäten') ? 'selected' : '' ?>>Sammeln & Antiquitäten</option>
-                    <option value="Fahrzeuge & Zubehör" <?= (($_GET['kategorie'] ?? '') === 'Fahrzeuge & Zubehör') ? 'selected' : '' ?>>Fahrzeuge & Zubehör</option>
-                    <option value="Musik & Instrumente" <?= (($_GET['kategorie'] ?? '') === 'Musik & Instrumente') ? 'selected' : '' ?>>Musik & Instrumente</option>
-                    <option value="Tierbedarf" <?= (($_GET['kategorie'] ?? '') === 'Tierbedarf') ? 'selected' : '' ?>>Tierbedarf</option>
-                    <option value="Reisen & Gepäck" <?= (($_GET['kategorie'] ?? '') === 'Reisen & Gepäck') ? 'selected' : '' ?>>Reisen & Gepäck</option>
-                    <option value="Sonstiges" <?= (($_GET['kategorie'] ?? '') === 'Sonstiges') ? 'selected' : '' ?>>Sonstiges</option>
+                    <option value="Elektronik" <?= ($gewaehlteKategorie === 'Elektronik') ? 'selected' : '' ?>>Elektronik</option>
+                    <option value="Computer & Zubehör" <?= ($gewaehlteKategorie === 'Computer & Zubehör') ? 'selected' : '' ?>>Computer & Zubehör</option>
+                    <option value="Haushalt & Küche" <?= ($gewaehlteKategorie === 'Haushalt & Küche') ? 'selected' : '' ?>>Haushalt & Küche</n>
+                    <option value="Möbel & Wohnen" <?= ($gewaehlteKategorie === 'Möbel & Wohnen') ? 'selected' : '' ?>>Möbel & Wohnen</option>
+                    <option value="Kleidung & Accessoires" <?= ($gewaehlteKategorie === 'Kleidung & Accessoires') ? 'selected' : '' ?>>Kleidung & Accessoires</option>
+                    <option value="Filme & Musik" <?= ($gewaehlteKategorie === 'Filme & Musik') ? 'selected' : '' ?>>Filme & Musik</option>
+                    <option value="Bücher & Comics" <?= ($gewaehlteKategorie === 'Bücher & Comics') ? 'selected' : '' ?>>Bücher & Comics</option>
+                    <option value="Sport & Freizeit" <?= ($gewaehlteKategorie === 'Sport & Freizeit') ? 'selected' : '' ?>>Sport & Freizeit</option>
+                    <option value="Spielzeug & Modelle" <?= ($gewaehlteKategorie === 'Spielzeug & Modelle') ? 'selected' : '' ?>>Spielzeug & Modelle</option>
+                    <option value="Sammeln & Antiquitäten" <?= ($gewaehlteKategorie === 'Sammeln & Antiquitäten') ? 'selected' : '' ?>>Sammeln & Antiquitäten</option>
+                    <option value="Fahrzeuge & Zubehör" <?= ($gewaehlteKategorie === 'Fahrzeuge & Zubehör') ? 'selected' : '' ?>>Fahrzeuge & Zubehör</option>
+                    <option value="Musik & Instrumente" <?= ($gewaehlteKategorie === 'Musik & Instrumente') ? 'selected' : '' ?>>Musik & Instrumente</option>
+                    <option value="Tierbedarf" <?= ($gewaehlteKategorie === 'Tierbedarf') ? 'selected' : '' ?>>Tierbedarf</option>
+                    <option value="Reisen & Gepäck" <?= ($gewaehlteKategorie === 'Reisen & Gepäck') ? 'selected' : '' ?>>Reisen & Gepäck</option>
+                    <option value="Sonstiges" <?= ($gewaehlteKategorie === 'Sonstiges') ? 'selected' : '' ?>>Sonstiges</option>
                 </select>
             </form>
         </div>
@@ -149,9 +156,15 @@ try {
         <div class="filter-section">
             <h3 class="filter-title">Preisspanne</h3>
             <form id="filter-form" method="get">
-                <?php if ($activeSort): ?>
-                    <input type="hidden" name="sort" value="<?= htmlspecialchars($activeSort) ?>">
-                <?php endif; ?>
+                <?php
+                // Fügt aktuelle Query-Parameter als versteckte Felder hinzu,
+                // ausgenommen 'min-preis', 'max-preis' und 'preisfilter'
+                foreach ($_GET as $key => $value) {
+                    if (!in_array($key, ['min-preis', 'max-preis', 'preisfilter'])) {
+                        echo '<input type="hidden" name="' . htmlspecialchars($key) . '" value="' . htmlspecialchars($value) . '">';
+                    }
+                }
+                ?>
                 <div class="price-filter">
                     <div class="price-input-group">
                         <label for="min-preis">Min. Preis:</label>

@@ -1,4 +1,11 @@
-<?php // Refactored
+<?php
+/**
+ * Diese Datei zeigt die Details eines einzelnen Angebots an
+ * Sie lädt Angebotsdaten, Bilder und den Favoritenstatus für den angemeldeten Benutzer
+ * Basierend auf dem Status des Benutzers (Besitzer, Admin, normaler Benutzer)
+ * werden verschiedene Aktionen (Bearbeiten, Löschen, Bieten, Favorisieren) angeboten
+ */
+
 // Session initialisieren und benötigte Klassen laden
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -6,14 +13,16 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require __DIR__ . '/../src/Angebot.php';
 require __DIR__ . '/../src/Helper.php';
+require __DIR__ . '/../src/Favorit.php';
+require __DIR__ . '/../src/db-connection.php';
 
-// Angebots-ID einlesen und Basisvariablen vorbereiten
+// Angebots-ID aus der URL einlesen und Basisvariablen vorbereiten
 $angebot_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 $angebot = null;
 $images = [];
 $error_message = null;
 
-// Ungültige IDs sofort zurück zur Übersicht schicken
+// Ungültige Angebots-IDs sofort zurück zur Übersicht schicken
 if (!$angebot_id) {
     header('Location: angebote.php');
     exit;
@@ -25,6 +34,7 @@ try {
     $angebot = $angebotService->getOfferWithId();
 } catch (\Throwable $th) {
     error_log('Fehler beim Laden des Angebots: ' . $th->getMessage());
+    $error_message = "Ein Fehler ist beim Laden des Angebots aufgetreten.";
 }
 
 $angebotTitle = is_array($angebot) ? ($angebot['title'] ?? null) : null;
@@ -33,7 +43,9 @@ $angebotTitle = is_array($angebot) ? ($angebot['title'] ?? null) : null;
 $is_favorit = false;
 if ($angebot && isset($_SESSION['user_id'])) {
     try {
-        $is_favorit = $angebotService->isFavoritForUser((int)$_SESSION['user_id']);
+        $db = mitDBverbinden();
+        $favorit = new Favorit($db);
+        $is_favorit = $favorit->isFavorite((int)$_SESSION['user_id'], $angebot_id);
     } catch (\Throwable $th) {
         error_log('Fehler beim Prüfen des Favoritenstatus: ' . $th->getMessage());
     }
@@ -52,6 +64,7 @@ if (!$angebot) {
         $images = $angebotService->getOfferImages();
     } catch (\Throwable $th) {
         error_log('Fehler beim Laden der Angebotsbilder: ' . $th->getMessage());
+        // Bei Fehler leeres Array, um weitere Verarbeitung zu ermöglichen
         $images = [];
     }
 }

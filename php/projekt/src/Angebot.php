@@ -1,10 +1,18 @@
 <?php
 require_once __DIR__ . '/db-connection.php';
 
+/**
+ * Die Angebot-Klasse verwaltet alle Operationen, die sich auf ein einzelnes Angebot beziehen,
+ * wie das Abrufen von Angebotsdetails, Bildern, das Aktualisieren und Löschen von Angeboten.
+ */
 class Angebot {
     private \PDO $dbconnection;
     private int $offerId;
 
+    /**
+     * Konstruktor der Angebot-Klasse
+     * Initialisiert die Datenbankverbindung und setzt die Angebots-ID
+     */
     public function __construct(int $offerId) {
         $this->offerId = $offerId;
         $this->dbconnection = mitDBverbinden();
@@ -25,22 +33,6 @@ class Angebot {
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * Prüft, ob das Angebot als Favorit für den angegebenen Nutzer existiert.
-     *
-     * @param int $userId
-     * @return bool
-     */
-    public function isFavoritForUser(int $userId): bool {
-        $query = 'SELECT 1 FROM favourites WHERE user_id = :user_id AND offer_id = :offer_id';
-        $stmt = $this->dbconnection->prepare($query);
-        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':offer_id', $this->offerId, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return (bool) $stmt->fetchColumn();
     }
 
     /**
@@ -66,7 +58,7 @@ class Angebot {
      * @param string $beschreibung
      * @param float $startpreis
      * @param string $ende
-     * @return bool
+     * @return bool True bei erfolgreicher Aktualisierung, sonst false sonst
      */
     public function updateOffer($offerId, $title, $beschreibung, $startpreis, $ende): bool {
         $query = 'UPDATE offers 
@@ -150,4 +142,3 @@ class Angebot {
         }
     }
 }
-   

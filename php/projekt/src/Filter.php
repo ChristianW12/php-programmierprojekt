@@ -2,7 +2,7 @@
 require_once __DIR__ . '/db-connection.php';
 
 /*
- * Beim Erstellen von einem Objekt dieser Klasse wird die Variable übergeben 
+ * Beim Erstellen von einem Objekt dieser Klasse wird die Variable übergeben
  * welche wir erstellen beim Verbinden mit der Datenbank
  * Bisher sah das wie folgt aus
  *    try{
@@ -12,48 +12,32 @@ require_once __DIR__ . '/db-connection.php';
         exit;
     }
 
-    * Dieses $db wird dann beim erstellen vom Objekt mit an die Klasse Filter übergeben damit wir auch hier Zugriffsmöglichkeiten auf di
-    * Datenbank haben 
+    * Dieses $db wird dann beim erstellen vom Objekt mit an die Klasse Filter übergeben damit wir auch hier Zugriffsmöglichkeiten auf die
+    * Datenbank haben
  */
-class Filter {
-     
+
+class Filter
+{
     private $dbconnection;
-    private $data;
+    private $queryParams = [];
+    private $whereClauses = ['ende > NOW()'];
+    private $joins = '';
+    private $orderBy = 'start DESC';
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->dbconnection = mitDBverbinden();
-        $this->data = [];
     }
-    /**
-     * Lädt alle aktiven Angebote und puffert sie lokal.
-     *
-     * @return array<int, array<string, mixed>>|null
-     */
-    public function getData() {
-        $query = 'SELECT offer_id, user_id, title, beschreibung, startpreis, start, ende FROM offers WHERE ende > NOW() ORDER BY start DESC';
-        $result = $this->dbconnection->query($query);
 
-        if($result !== false && $result->rowCount() > 0){
-            $rows = $result->fetchAll(PDO::FETCH_ASSOC);
-            $this->data = $rows;
-            return $this->data;
-        }
-    }
     /**
-     * Sortiert gepufferte Angebote nach Startdatum (neueste zuerst).
+     * Sortiert nach Startdatum (neueste zuerst)
      *
      * @return array<int, array<string, mixed>>
      */
-    public function nachNeuste() {
-        if(empty($this->data)) {
-            $this->getData();
-        }
-        if(!empty($this->data)){
-            usort($this->data, function($a, $b) {
-                return strtotime($b['start']) - strtotime($a['start']);
-            });
-        }
-        return $this->data;
+    public function nachNeuste()
+    {
+        $this->orderBy = 'start DESC';
+        return $this;
     }
 
     /**
@@ -63,42 +47,25 @@ class Filter {
      * @param float|int $ende
      * @return array<int, array<string, mixed>>
      */
-    public function nachPreisspanne($anfang,$ende) {
-        if(empty($this->data)) {
-            $this->getData();
-        }
-        if(!empty($this->data)){
-            $this->data = array_filter($this->data, function($item) use ($anfang, $ende) {
-                return $item['startpreis'] >= $anfang && $item['startpreis'] <= $ende;
-            });
-        }
-        return $this->data;
+    public function nachPreisspanne($anfang, $ende)
+    {
+        $this->whereClauses[] = 'startpreis BETWEEN :min_preis AND :max_preis';
+        $this->queryParams[':min_preis'] = $anfang;
+        $this->queryParams[':max_preis'] = $ende;
+        return $this;
     }
+
     /**
      * Filtert nach Textsuche inkl. toleranter Levenshtein-Prüfung.
      *
      * @param string $suchbegriff
      * @return array<int, array<string, mixed>>
      */
-    public function nachSuche($suchbegriff) {
-        if (empty($this->data)) {
-            $this->getData();
-        }
-        if (!empty($this->data)) {
-            $suchbegriff = trim(strtolower($suchbegriff));
-            $this->data = array_filter($this->data, function($item) use ($suchbegriff) {
-                $title = strtolower($item['title'] ?? '');
-                $beschreibung = strtolower($item['beschreibung'] ?? '');
-                if (stripos($title, $suchbegriff) !== false || stripos($beschreibung, $suchbegriff) !== false) {
-                    return true;
-                }
-                $distanceTitle = levenshtein($suchbegriff, $title);
-                $distanceBeschreibung = levenshtein($suchbegriff, $beschreibung);
-                $threshold = 2;
-                return ($distanceTitle <= $threshold || $distanceBeschreibung <= $threshold);
-            });
-        }
-        return $this->data;
+    public function nachSuche($suchbegriff)
+    {
+        $this->whereClauses[] = '(title LIKE :search OR beschreibung LIKE :search)';
+        $this->queryParams[':search'] = '%' . $suchbegriff . '%';
+        return $this;
     }
 
     /**
@@ -106,19 +73,11 @@ class Filter {
      *
      * @return array<int, array<string, mixed>>
      */
-    public function nachBeliebteste() {
-        if (empty($this->data)) {
-            $this->getData();
-        }
-        $query = 'SELECT o.*, COUNT(b.bid_id) AS bid_count FROM offers o LEFT JOIN bids b ON o.offer_id = b.offer_id GROUP BY o.offer_id ORDER BY bid_count DESC';
-        $result = $this->dbconnection->query($query);
-
-        if($result !== false && $result->rowCount() > 0){
-            $rows = $result->fetchAll(PDO::FETCH_ASSOC);
-            $this->data = $rows;
-            return $this->data;
-        }
-        return [];
+    public function nachBeliebteste()
+    {
+        $this->joins .= ' LEFT JOIN bids b ON o.offer_id = b.offer_id';
+        $this->orderBy = 'COUNT(b.bid_id) DESC';
+        return $this;
     }
 
     /**
@@ -127,20 +86,11 @@ class Filter {
      * @param int $userId
      * @return array<int, array<string, mixed>>
      */
-    public function nachMeineAngebote($userId) {
-        $query = 'SELECT offer_id, user_id, title, beschreibung, startpreis, start, ende 
-                  FROM offers 
-                  WHERE user_id = :userId';
-
-        $stmt = $this->dbconnection->prepare($query);
-
-        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        $angebote = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $angebote;
+    public function nachMeineAngebote($userId)
+    {
+        $this->whereClauses[] = 'o.user_id = :user_id';
+        $this->queryParams[':user_id'] = $userId;
+        return $this;
     }
 
     /**
@@ -151,28 +101,44 @@ class Filter {
      */
     public function nachFavoriten($userId)
     {
-        $query = 'SELECT o.* FROM offers o JOIN favourites f ON o.offer_id = f.offer_id WHERE f.user_id = :userId';
-        $stmt = $this->dbconnection->prepare($query);
-        $stmt->execute([':userId' => $userId]);
-        $this->data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $this->data;
+        $this->joins .= ' JOIN favourites f ON o.offer_id = f.offer_id';
+        $this->whereClauses[] = 'f.user_id = :user_id';
+        $this->queryParams[':user_id'] = $userId;
+        return $this;
     }
 
     /**
-     * Filtert Angebote nach einer Kategorie.
+     * Setzt einen Kategorie-Filter für die Abfrage
      *
-     * @param string $kategorie
+     * @param string $kategorie Kategorie-Name
      * @return array<int, array<string, mixed>>
      */
-    public function nachKategorie(String $kategorie)
+    public function nachKategorie(string $kategorie)
     {
-        // nur gültige Kategorie anzeigen
-        $query = "SELECT * FROM offers WHERE kategorie = :kategorie ORDER BY start DESC"; //:kategorie als Platzhalter (Sicherer als . $kategorie)
+        $this->whereClauses[] = 'kategorie = :kategorie';
+        $this->queryParams[':kategorie'] = $kategorie;
+        return $this;
+    }
 
-        $stmt = $this->dbconnection->prepare($query);
-        $stmt->bindValue(':kategorie', $kategorie, \PDO::PARAM_STR);
-        $stmt->execute();
+    /**
+     * Baut die Abfrage und liefert die Ergebnisse als Array von assoziativen Arrays
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getResults()
+    {
+        $sql = 'SELECT o.* FROM offers AS o ' . $this->joins;
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if (!empty($this->whereClauses)) {
+            $sql .= ' WHERE ' . implode(' AND ', $this->whereClauses);
+        }
+
+        $sql .= ' GROUP BY o.offer_id';
+        $sql .= ' ORDER BY ' . $this->orderBy;
+
+        $stmt = $this->dbconnection->prepare($sql);
+        $stmt->execute($this->queryParams);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

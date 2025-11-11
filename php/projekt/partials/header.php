@@ -15,7 +15,6 @@ $userIconLink = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true ?
     <nav class="main-nav" aria-label="Hauptnavigation">
         <a href="<?= $verlinkungHomepage ?>#about">Über uns</a>
         <a href="<?= $verlinkungAngebot ?>">Angebote</a>
-        <a href="#footer">Zum Footer</a>
     </nav>
     <form class="search" action="angebote.php" method="get">
         <label class="sr-only" for="search">Suche</label>
