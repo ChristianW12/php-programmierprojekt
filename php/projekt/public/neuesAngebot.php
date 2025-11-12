@@ -6,12 +6,12 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // neuesAngebotEdit-Klasse einbinden
 
-require_once __DIR__ . '/../src/neuesAngebotEdit.php';
+require_once __DIR__ . '/../src/AngebotErsteller.php';
 
 // Prüfen ob das Formular abgeschickt wurde und der Nutzer eingeloggt ist
 if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     // Neues AngebotEdit-Objekt erstellen
-    $angebotNeu = new neuesAngebotEdit();
+    $angebotNeu = new AngebotErstller();
     // 1. Angebot erstellen und die neue ID in einer Variable speichern
     $kategorie = !empty($_POST['kategorie']) ? $_POST['kategorie'] : null; // Kategorie ist optional, daher Inhalt prüfen und ggf. auf Null setzen
 
@@ -109,8 +109,8 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
             <div class="form-gruppe">
                 <label for="enddatum">Enddatum:</label>
                 <input type="datetime-local" id="enddatum" name="enddatum" required
-                       min="<?php echo date('Y-m-d\TH:i', strtotime('+1 hour')); ?>" <!-- Enddatum mindestens 1 Stunde in der Zukunft -->
-                       max="<?php echo date('Y-m-d\TH:i', strtotime('+1 year')); ?>"> <!-- Enddatum maximal 1 Jahr in der Zukunft -->
+                       min="<?php echo date('Y-m-d\TH:i', strtotime('+1 hour')); ?>" <?php /* Enddatum mindestens 1 Stunde in der Zukunft */ ?>
+                       max="<?php echo date('Y-m-d\TH:i', strtotime('+1 year')); ?>"> <?php /* Enddatum maximal 1 Jahr in der Zukunft */ ?>
             </div>
 
             <div class="form-actions">
