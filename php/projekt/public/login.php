@@ -96,7 +96,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])){
                     <button type="submit" class="primary-action" name="login_submit">Anmelden</button>
                 </div>
             </form>
-            <p>Neu hier? <a href="register.php">Konto erstellen</a></p>
+            </br>
+            <p>Neu hier? <a href="register.php"><b>Konto erstellen<b></a></p>
         </div>
     </section>
 </main>

@@ -6,32 +6,27 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 
 ## TODO
 
-- Footer aktualisieren (Christian)
-- ✅ Redirect nach Gebot (Luca)
-- ✅ Grüner Plus-Button rechts unten fixed, Filter zurücksetzen grauer Button, Kategorien schöner (Melina)
-- ✅ Filter verbessern -> Mehrfach Filterung ermöglichen (Melina)
-- ✅ Anbieter bekommt bei abgegebenen Angeboten Nachricht, bekommt Benachrichtigungen wenn Auktion vorbei ist wer gewonnen hat
-  --> Check erfolgt immer wenn auf Profil geclicked wird (Luca)
-- ✅ Angebote aus Favoriten entfernen können (Melina)
-- ✅ Kommentarfunktion (Alex) -> Potenziell noch "Scrolling" einfügen
-- Hilfe Seite (Christian)
+- nicht alle Angebote anzeigen, dynamisch weitere mit Button laden (Christian)
+- Artikel müssen absteigend nach dem Enddatum angezeigt werden, Neuste nicht mehr ausgewählt, Filterung nach Ende absteigend (Alex)
+- Fehler bei Benachrichtungenen beheben, Preis stimmt nicht (Alex)
+- Security testen (alle)
+- Redirect anpassen (Christian) 
+- Doku für Abgabe beginnen (Installationsanweisung, Voraussetzung, Erklärungen etc) (Melina)
 
 ---
-
-Bugs:
-
-- User sollte zu jedem User nur eine Bewertung abgeben können
--
-
----
-
-ausstehend:
-
-- Refactoring fertigstellen
-- Doku für Abgabe beginnen (Installationsanweisung, Voraussetzung, Erklärungen etc)
-- Testing!
-- 
 ## Obligatorische Features
+
+- Profil mit Benachrichtungen und User-Verwaltung
+- erweiterte Suchfunktion
+- Filterfunktionen
+- Adminrechte für Angebotsverwaltung
+- Kategorien für Angebote
+- Favoriten
+- Kommentare und Rezension für Ersteller
+- Hilfe- und Über Uns-Seite
+- mehr als 1 Bild bei Angeboten
+- Ebay-Bieten, es wird nur der zweithöchste Preis + 1 € gezahlt
+- 
 
 - Artikel als Hauptentität: Titel, Text (HTML/Markdown), Bild, Beginn- und Endzeitpunkt der Auktion
 - CRUD-Funktionalität für Artikel: Erstellen, Anzeigen, Bearbeiten, Löschen
