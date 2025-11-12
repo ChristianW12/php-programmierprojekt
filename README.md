@@ -12,22 +12,7 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 - Security testen (alle)
 - Redirect anpassen (Christian) 
 - Doku für Abgabe beginnen (Installationsanweisung, Voraussetzung, Erklärungen etc) (Melina)
-<<<<<<< HEAD
-
 ---
-=======
----
-
-Bugs:
-
--
-
----
-
-ausstehend:
-
-- 
->>>>>>> 4c42c7741d59642cfb61e94fa8298f5ace409e34
 ## Obligatorische Features
 
 - Profil mit Benachrichtungen und User-Verwaltung
