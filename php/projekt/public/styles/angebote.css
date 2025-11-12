@@ -29,6 +29,8 @@ main {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     position: sticky;
     top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
     height: fit-content;
 }
 
