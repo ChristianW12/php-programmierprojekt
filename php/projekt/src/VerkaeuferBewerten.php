@@ -58,7 +58,7 @@ class VerkaeuferBewerten
      * @param array<string, mixed> $verkaeufer_from_db
      * @return array<int, array<string, mixed>>
      */
-    public function bewertungenLaden(array $verkaeufer_from_db)
+    public function bewertungenLaden(array $verkaeufer_from_db): array
     {
         // Alle Bewertungen für den Verkäufer aus der Datenbank laden
         $stmtBewertungen = $this->db->prepare("

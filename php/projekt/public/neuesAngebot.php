@@ -11,7 +11,7 @@ require_once __DIR__ . '/../src/AngebotErsteller.php';
 // Prüfen ob das Formular abgeschickt wurde und der Nutzer eingeloggt ist
 if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     // Neues AngebotEdit-Objekt erstellen
-    $angebotNeu = new AngebotErstller();
+    $angebotNeu = new AngebotErsteller();
     // 1. Angebot erstellen und die neue ID in einer Variable speichern
     $kategorie = !empty($_POST['kategorie']) ? $_POST['kategorie'] : null; // Kategorie ist optional, daher Inhalt prüfen und ggf. auf Null setzen
 
@@ -35,7 +35,7 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     exit;
 
     // Prüfen ob der Nutzer eingeloggt ist, sonst Weiterleitung.
-} else if (!isset($_SESSION['loggedin'])) {     
+} else if (!isset($_SESSION['loggedin'])) {
     header('Location: login.php');
     exit;
 }

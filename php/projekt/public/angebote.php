@@ -7,7 +7,7 @@ require __DIR__ . '/../src/Filter.php';
 require __DIR__ . '/../src/Messages.php';
 
 // Standardwerte für Filter/Suche vorbereiten
-$activeSort = $_GET['sort'] ?? 'neueste';
+$activeSort = $_GET['sort'] ?? '';
 $gewaehlteKategorie = $_GET['kategorie'] ?? '';
 $minPreis = !empty($_GET['min-preis']) ? floatval($_GET['min-preis']) : null;
 $maxPreis = !empty($_GET['max-preis']) ? floatval($_GET['max-preis']) : null;
@@ -19,8 +19,8 @@ try {
     $messagesService = new Messages();
     $messagesService->sendMessageWhenOfferOver();
 
-    // Die Filter werden nun verketten, anstatt sich gegenseitig auszuschließen
-    // Zuerst wird die Basissortierung angewendet
+    // Die Filter werden nun verkettet, anstatt sich gegenseitig auszuschließen
+    // Sortierung abfragen und entsprechenden Filter anwenden, Default ist "Ende bald"
     if ($activeSort === 'beliebteste') {
         $filter->nachBeliebteste();
     } elseif ($activeSort === 'meineAngebote') {
@@ -37,9 +37,11 @@ try {
             exit;
         }
         $filter->nachFavoriten($_SESSION['user_id']);
+    } elseif ($activeSort === 'neueste') {
+        $filter->nachNeuste(); // Neueste Angebote zuerst
     } else {
-        $filter->nachNeuste();
-    }
+        $filter->nachEndeBald(); // Default: Enddatum aufsteigend (bald endend zuerst)
+        }
 
     // Zusätzliche Filter werden an die Abfrage angehängt
     if (!empty($gewaehlteKategorie)) {
@@ -103,7 +105,7 @@ try {
                 $queryParams['sort'] = 'beliebteste';
                 $beliebtesteUrl = '?' . http_build_query($queryParams);
 
-                // "Meine"
+                // "Meine Angebote"
                 $queryParams['sort'] = 'meineAngebote';
                 $meineUrl = '?' . http_build_query($queryParams);
 
@@ -136,7 +138,7 @@ try {
                     <option value="">Auswählen</option>
                     <option value="Elektronik" <?= ($gewaehlteKategorie === 'Elektronik') ? 'selected' : '' ?>>Elektronik</option>
                     <option value="Computer & Zubehör" <?= ($gewaehlteKategorie === 'Computer & Zubehör') ? 'selected' : '' ?>>Computer & Zubehör</option>
-                    <option value="Haushalt & Küche" <?= ($gewaehlteKategorie === 'Haushalt & Küche') ? 'selected' : '' ?>>Haushalt & Küche</n>
+                    <option value="Haushalt & Küche" <?= ($gewaehlteKategorie === 'Haushalt & Küche') ? 'selected' : '' ?>>Haushalt & Küche</option>
                     <option value="Möbel & Wohnen" <?= ($gewaehlteKategorie === 'Möbel & Wohnen') ? 'selected' : '' ?>>Möbel & Wohnen</option>
                     <option value="Kleidung & Accessoires" <?= ($gewaehlteKategorie === 'Kleidung & Accessoires') ? 'selected' : '' ?>>Kleidung & Accessoires</option>
                     <option value="Filme & Musik" <?= ($gewaehlteKategorie === 'Filme & Musik') ? 'selected' : '' ?>>Filme & Musik</option>
