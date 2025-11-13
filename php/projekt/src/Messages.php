@@ -101,8 +101,8 @@ class Messages {
         $query = 'SELECT o.offer_id,
                          o.user_id,
                          o.title,
-                         b.mail   AS highest_bidder_email,
-                         b.price  AS highest_bid
+                         o.hoechstpreis AS highest_bid,
+                         b.mail   AS highest_bidder_email
                   FROM offers o
                   LEFT JOIN bids b ON b.offer_id = o.offer_id AND b.highest_price = 1
                   WHERE o.isOver = 0 AND o.ende <= NOW()';

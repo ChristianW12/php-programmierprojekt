@@ -7,8 +7,8 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 ## TODO
 
 - nicht alle Angebote anzeigen, dynamisch weitere mit Button laden (Christian)
-- Artikel müssen absteigend nach dem Enddatum angezeigt werden, Neuste nicht mehr ausgewählt, Filterung nach Ende absteigend (Alex)
-- Fehler bei Benachrichtungenen beheben, Preis stimmt nicht (Alex)
+FERTIG: Artikel müssen absteigend nach dem Enddatum angezeigt werden, Neuste nicht mehr ausgewählt, Filterung nach Ende absteigend (Alex)
+FERTIG: Fehler bei Benachrichtungenen beheben, Preis stimmt nicht (Alex)
 - Security testen (alle)
 - Redirect anpassen (Christian) 
 - Doku für Abgabe beginnen (Installationsanweisung, Voraussetzung, Erklärungen etc) (Melina)

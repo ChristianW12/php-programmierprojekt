@@ -175,6 +175,8 @@
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
     z-index: 5;
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
 .message-panel.is-open {
