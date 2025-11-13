@@ -5,7 +5,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // neuesAngebotEdit-Klasse einbinden
-
 require_once __DIR__ . '/../src/AngebotErsteller.php';
 
 // Prüfen ob das Formular abgeschickt wurde und der Nutzer eingeloggt ist
@@ -15,7 +14,7 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
     // 1. Angebot erstellen und die neue ID in einer Variable speichern
     $kategorie = !empty($_POST['kategorie']) ? $_POST['kategorie'] : null; // Kategorie ist optional, daher Inhalt prüfen und ggf. auf Null setzen
 
-    $neue_angebot_id = $angebotNeu->angebotErstellen($_SESSION['user_id'], $_POST['titel'], $_POST['beschreibung'], $kategorie, (float)$_POST['startpreis'], $_POST['enddatum'], $db);
+    $neue_angebot_id = $angebotNeu->angebotErstellen($_SESSION['user_id'], $_POST['titel'], $_POST['beschreibung'], $kategorie, (float)$_POST['startpreis'], $_POST['enddatum']);
 
     // --- BILD-VERARBEITUNG ---
 

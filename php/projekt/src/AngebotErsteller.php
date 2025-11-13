@@ -22,11 +22,11 @@ class AngebotErsteller
      * @param \PDO $db
      * @return int|string
      */
-    public function angebotErstellen($user_id, $titel, $beschreibung, $kategorie, $startpreis, $ende, $db)
+    public function angebotErstellen($user_id, $titel, $beschreibung, $kategorie, $startpreis, $ende)
     {
         $query = 'INSERT INTO offers (user_id, title, beschreibung, startpreis, ende, kategorie) VALUES(?,?,?,?,?,?)'; // SQL-Query zum Einfügen eines neuen Angebots
         //Query vorbereiten, Parameter binden und Query ausführen
-        $stmt = $db->prepare($query);
+        $stmt = $this->db->prepare($query);
         $stmt->bindParam(1, $user_id);
         $stmt->bindParam(2, $titel, PDO::PARAM_STR);
         $stmt->bindParam(3, $beschreibung, PDO::PARAM_STR);
