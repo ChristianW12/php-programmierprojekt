@@ -89,7 +89,7 @@ class Bid {
                 return ['success' => true, 'message' => 'Glückwunsch, Sie sind Höchstbietender!'];
             }
 
-            // Fall B: Es gibt bereits Gebote.
+            // Wenn es bereits Gebote gibt muss folgend weiter gemacht werden.
             $current_highest_max_bid = (float)$current_highest_max_bid;
 
             // Wenn das neue Maximalgebot NICHT HÖHER ist als das bisherige.
@@ -100,6 +100,7 @@ class Bid {
                 $this->updateOfferPrice($new_current_price);
 
                 $this->dbconnection->commit();
+                // Antwort an den User, dass er zwar ein Gebot abgegeben hat, aber nicht der Höchstbietende ist.
                 return ['success' => true, 'message' => 'Ihr Gebot wurde angenommen, aber ein anderer Bieter hat ein höheres Maximalgebot.'];
             
             // Wenn das neue Maximalgebot HÖHER ist als das bisherige.
@@ -112,11 +113,13 @@ class Bid {
                 $this->updateOfferPrice($new_current_price); // Den sichtbaren Preis aktualisieren.
 
                 $this->dbconnection->commit();
+                // Antwort an den User, dass er nun der Höchstbietende ist.
                 return ['success' => true, 'message' => 'Glückwunsch, Sie sind neuer Höchstbietender!'];
             }
 
         } catch (Exception $e) {
             $this->dbconnection->rollBack();
+            // Für den Fall das ein Fehler auftritt, wird dieser zurückgegeben.
             return ['success' => false, 'message' => $e->getMessage()];
         }
     }
