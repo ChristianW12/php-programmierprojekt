@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Bei Fehlern Werte im Formular erhalten und Hinweis anzeigen.
-    $profileError = 'Profil konnte nicht gespeichert werden. Bitte Daten prüfen.';
+    $profileError = 'Profil konnte nicht gespeichert werden. Bitte prüfen Sie Ihre Daten.';
     $currentUser = array_merge($currentUser, $normalizedInput);
 }
 ?>

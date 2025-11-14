@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Read-All'])) {
                         <header class="message-panel__header">
                             <div>
                                 <p class="message-panel__eyebrow">Posteingang</p>
-                                <h2>Deine Nachrichten</h2>
+                                <h2>Ihre Nachrichten</h2>
                             </div>
                             <button type="button" class="message-close" aria-label="Nachrichten schließen" data-message-close>&times;</button>
                         </header>

@@ -16,9 +16,9 @@ $homeHrefPrefix = '';
             <div class="content-grid">
                 <div class="section-text">
                     <div class="section-intro">Willkommen!</div>
-                    <h1>Entdecke dein nächstes Lieblingsstück</h1>
+                    <h1>Entdecken Sie Ihr nächstes Lieblingsstück</h1>
                     <p>
-                        Stöbere durch kuratierte Auktionen und sichere dir besondere Fundstücke.
+                        Stöbern Sie durch kuratierte Auktionen und sichern Sie sich besondere Fundstücke.
                         Von Vintage bis Moderne – wir bringen Anbieter und Liebhaber auf einer
                         Plattform zusammen.
                     </p>
@@ -51,7 +51,7 @@ $homeHrefPrefix = '';
                     <p>
                         Wir glauben, dass Auktionen fair, zugänglich und transparent sein sollten.
                         Deshalb bieten wir klare Abläufe, sichere Zahlungen und hilfreiche Tools,
-                        damit du jede Auktion mit einem guten Gefühl abschließen kannst.
+                        damit Sie jede Auktion mit einem guten Gefühl abschließen können.
                     </p>
                     <!-- <button class="primary-action" type="button">Jetzt loslegen</button> -->
                 </div>

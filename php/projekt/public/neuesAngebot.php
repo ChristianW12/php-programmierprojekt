@@ -75,7 +75,7 @@ if (isset($_POST['angebotErstellen']) & isset($_SESSION['loggedin'])) {
 
             <div class="form-gruppe">
                 <label for="beschreibung">Beschreibung:</label>
-                <textarea id="beschreibung" name="beschreibung" rows="5" placeholder="Beschreibe dein Produkt..." required></textarea>
+                <textarea id="beschreibung" name="beschreibung" rows="5" placeholder="Beschreiben Sie Ihr Produkt..." required></textarea>
             </div>
 
             <div class="form-gruppe">

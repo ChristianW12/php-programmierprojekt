@@ -49,7 +49,7 @@ class Bid {
     public function saveBid(): array {
         $this->dbconnection->beginTransaction();
         try {
-            // 1. Notwendige Daten holen (inkl. Sperre der Angebotszeile gegen Race Conditions)
+            // 1. Notwendige Daten holen
             $offerStmt = $this->dbconnection->prepare(
                 'SELECT u.mail AS creator_mail, o.startpreis 
                  FROM offers o JOIN users u ON o.user_id = u.user_id 
