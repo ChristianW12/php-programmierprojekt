@@ -61,7 +61,7 @@ CREATE TABLE `offers` (
   `hoechstpreis` decimal(10,2) DEFAULT NULL,
   `start` datetime NOT NULL DEFAULT current_timestamp(),
   `ende` datetime NOT NULL,
-  `kategorie` varchar(50) DEFAULT NULL CHECK (`kategorie` is null or `kategorie` in ('Elektronik','Computer & Zubehör','Haushalt & Küche','Möbel & Wohnen','Kleidung & Accessoires','Filme & Musik','Bücher & Comics','Sport & Freizeit','Spielzeug & Modelle','Sammeln & Antiquitäten','Fahrzeuge & Zubehör','Musik & Instrumente','Tierbedarf','Reisen & Gepäck')),
+  `kategorie` varchar(50) NOT NULL CHECK (`kategorie` is null or `kategorie` in ('Elektronik','Computer & Zubehör','Haushalt & Küche','Möbel & Wohnen','Kleidung & Accessoires','Filme & Musik','Bücher & Comics','Sport & Freizeit','Spielzeug & Modelle','Sammeln & Antiquitäten','Fahrzeuge & Zubehör','Musik & Instrumente','Tierbedarf','Reisen & Gepäck', 'Sonstiges')),
   `isOver` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
