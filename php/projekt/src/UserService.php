@@ -139,6 +139,12 @@ class UserService
             return ['success' => false, 'message' => 'Diese E-Mail-Adresse wird bereits von einem anderen Konto verwendet.'];
         }
 
+        $stmtName = $this->db->prepare('SELECT user_id FROM users WHERE name = :name AND user_id != :user_id');
+        $stmtName->execute([':name' => $payload['name'], ':user_id' => $userId]);
+        if ($stmtName->fetch()) {
+            return ['success' => false, 'message' => 'Dieser Benutzername wird bereits verwendet.'];
+        }
+
         $stmt = $this->db->prepare(
             'UPDATE users
              SET name = :name, mail = :mail, ort = :ort, plz = :plz, str = :strasse
