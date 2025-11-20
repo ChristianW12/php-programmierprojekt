@@ -7,25 +7,13 @@ Auktify soll eine Möglichkeit geben, verschiedene Produkte anzubieten, darauf b
 ## TODO
 
 - nicht alle Angebote anzeigen, dynamisch weitere mit Button laden (Christian)
-FERTIG: Artikel müssen absteigend nach dem Enddatum angezeigt werden, Neuste nicht mehr ausgewählt, Filterung nach Ende absteigend (Alex)
-FERTIG: Fehler bei Benachrichtungenen beheben, Preis stimmt nicht (Alex)
+- ✅: Artikel müssen absteigend nach dem Enddatum angezeigt werden, Neuste nicht mehr ausgewählt, Filterung nach Ende absteigend (Alex)
+- ✅: Fehler bei Benachrichtungenen beheben, Preis stimmt nicht (Alex)
 - Security testen (alle)
 - Redirect anpassen (Christian) 
 - Doku für Abgabe beginnen (Installationsanweisung, Voraussetzung, Erklärungen etc) (Melina)
 ---
 ## Obligatorische Features
-
-- Profil mit Benachrichtungen und User-Verwaltung
-- erweiterte Suchfunktion
-- Filterfunktionen
-- Adminrechte für Angebotsverwaltung
-- Kategorien für Angebote
-- Favoriten
-- Kommentare und Rezension für Ersteller
-- Hilfe- und Über Uns-Seite
-- mehr als 1 Bild bei Angeboten
-- Ebay-Bieten, es wird nur der zweithöchste Preis + 1 € gezahlt
-- 
 
 - Artikel als Hauptentität: Titel, Text (HTML/Markdown), Bild, Beginn- und Endzeitpunkt der Auktion
 - CRUD-Funktionalität für Artikel: Erstellen, Anzeigen, Bearbeiten, Löschen

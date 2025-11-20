@@ -88,6 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register_submit'])) {
                     <button type="submit" class="primary-action" name="register_submit">Registrieren</button>
                 </div>
             </form>
+            <br>
+            <p class="switch-form-link">
+                Sie haben bereits ein Konto? <a href="login.php"><b>Hier anmelden</b></a>.
+            </p>
         </div>
     </section>
 </main>

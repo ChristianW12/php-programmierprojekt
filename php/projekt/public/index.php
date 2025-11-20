@@ -18,9 +18,10 @@ $homeHrefPrefix = '';
                     <div class="section-intro">Willkommen!</div>
                     <h1>Entdecken Sie Ihr nächstes Lieblingsstück</h1>
                     <p>
-                        Stöbern Sie durch kuratierte Auktionen und sichern Sie sich besondere Fundstücke.
-                        Von Vintage bis Moderne – wir bringen Anbieter und Liebhaber auf einer
-                        Plattform zusammen.
+                        Treten Sie ein in eine Welt, in der jedes Objekt eine Geschichte erzählt. Bei Auktify bringen wir leidenschaftliche Sammler, anspruchsvolle Käufer
+                        und engagierte Verkäufer zusammen. Entdecken Sie eine sorgfältig kuratierte Auswahl an Kunst, Antiquitäten, Designklassikern und seltenen Fundstücken.
+                        Erleben Sie den Nervenkitzel einer Auktion und finden Sie das eine Stück, das Ihre Sammlung vervollständigt oder Ihrem Zuhause eine persönliche Note verleiht.
+                        Ihr nächstes Lieblingsstück ist nur ein Gebot entfernt.
                     </p>
                 </div>
                 <figure class="image-placeholder has-image">
@@ -32,12 +33,12 @@ $homeHrefPrefix = '';
         <section class="section" id="about">
             <div class="content-grid single">
                 <div class="section-text center">
-                    <h2>Über uns</h2>
+                    <h2>Unsere Leidenschaft, Ihre Plattform</h2>
                     <p>
-                        Wir sind ein motiviertes Team aus Sammlerinnen und Sammlern, das
-                        besondere Geschichten hinter einzigartigen Gegenständen sichtbar macht.
-                        Unsere Mission ist es, das Auktions-Erlebnis ins digitale Zeitalter zu holen,
-                        ohne den Charme klassischer Auktionen zu verlieren.
+                        Auktify wurde aus einer tiefen Faszination für das Besondere gegründet. Wir sind mehr als nur eine Plattform – wir sind ein Team von Enthusiasten, das
+                        die Geschichten hinter wertvollen Objekten liebt und teilt. Unsere Mission ist es, das klassische Auktionserlebnis mit den Vorteilen der digitalen Welt
+                        zu verbinden: zugänglich, transparent und benutzerfreundlich. Wir schaffen einen vertrauensvollen Marktplatz, der die Freude am Sammeln und Handeln in den
+                        Mittelpunkt stellt und eine Gemeinschaft von Gleichgesinnten verbindet.
                     </p>
                 </div>
             </div>
@@ -46,14 +47,16 @@ $homeHrefPrefix = '';
         <section class="section accent" id="auctions">
             <div class="content-grid reversed">
                 <div class="section-text">
-                    <div class="section-intro">Unser Ziel</div>
-                    <h2>Transparente Auktionen für alle</h2>
+                    <div class="section-intro">Unser Versprechen an Sie</div>
+                    <h2>Transparenz und Fairness bei jeder Auktion</h2>
                     <p>
-                        Wir glauben, dass Auktionen fair, zugänglich und transparent sein sollten.
-                        Deshalb bieten wir klare Abläufe, sichere Zahlungen und hilfreiche Tools,
-                        damit Sie jede Auktion mit einem guten Gefühl abschließen können.
+                        Wir sind überzeugt, dass Vertrauen die Grundlage jeder erfolgreichen Auktion ist. Deshalb verpflichten wir uns zu absoluter Transparenz und Fairness. Von klaren
+                        Artikelbeschreibungen über nachvollziehbare Gebotsschritte bis hin zu sicheren und geschützten Zahlungsprozessen – wir sorgen für einen reibungslosen Ablauf.
+                        Ob Sie als Käufer ein neues Schmuckstück suchen oder als Verkäufer Ihre Schätze einem neuen Publikum präsentieren: Bei Auktify können Sie sich auf einen integren
+                        und professionellen Partner verlassen.
                     </p>
-                    <!-- <button class="primary-action" type="button">Jetzt loslegen</button> -->
+                    <br>
+                    <a href="register.php" class="primary-action">Jetzt registrieren</a>
                 </div>
                 <figure class="image-placeholder has-image">
                     <img src="bilder/Transaktion.png" alt="Zwei Personen schließen eine Auktionstransaktion ab">
