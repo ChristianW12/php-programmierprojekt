@@ -17,9 +17,8 @@ class Db extends PDO {
         try {
             return parent::query($statement, $mode, ...$fetch_mode_args);
         } catch (PDOException $e) {
-            echo '<div style="color: red">DB ERROR: ' . $e->getMessage();
-            echo '<br/>Query: ' . $statement . '</div>';
-            return false;
+            error_log(sprintf('DB ERROR: %s | Query: %s', $e->getMessage(), $statement));
+            throw new RuntimeException('Ein Datenbankfehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 0, $e);
         }
     }
 }
