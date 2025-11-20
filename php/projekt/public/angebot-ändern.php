@@ -15,7 +15,6 @@ require_once __DIR__ . '/../src/Angebot.php';
 // Default-Werte für Formularfelder initialisieren
 $angebotTitel = '';
 $angebotBeschreibung = '';
-$angebotPreis = '';
 $angebotEndDatum = '';
 $angebotKategorie = '';
 
@@ -33,7 +32,6 @@ try {
         // Formularfelder mit bestehenden Daten füllen
         $angebotTitel = $angebotDaten['title'] ?? '';
         $angebotBeschreibung = $angebotDaten['beschreibung'] ?? '';
-        $angebotPreis = $angebotDaten['startpreis'] ?? '';
         $angebotEndDatum = str_replace(' ', 'T', $angebotDaten['ende'] ?? '');
         $angebotKategorie = $angebotDaten['kategorie'] ?? '';
         $angebotBesitzerId = (int)($angebotDaten['user_id'] ?? 0);
@@ -57,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['offer_id']) && !empty
     $offerId = (int)$_POST['offer_id'];
     $title = $_POST['title'] ?? '';
     $beschreibung = $_POST['beschreibung'] ?? '';
-    $preis = (float)($_POST['preis'] ?? 0);
+    $preis = (float)($angebotDaten['startpreis'] ?? 0);
     $ende = $_POST['ende'] ?? '';
 
     try {
@@ -102,11 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['offer_id']) && !empty
                         <textarea id="beschreibung" name="beschreibung" required rows="5" placeholder="Beschreiben Sie Ihr Angebot ausführlich"><?php echo htmlspecialchars($angebotBeschreibung, ENT_QUOTES, 'UTF-8'); ?></textarea>
                     </div>
                     <hr>
-                    <h3><strong>Preis &amp; Laufzeit</strong></h3>
-                    <div class="form-group">
-                        <label for="preis">Preis</label>
-                        <input id="preis" type="number" step="0.01" min="0" max="99999999.99" name="preis" placeholder="Preis in Euro" value="<?php echo htmlspecialchars($angebotPreis, ENT_QUOTES, 'UTF-8'); ?>" required>
-                    </div>
+                    <h3><strong>Laufzeit</strong></h3>
                     <div class="form-group">
                         <label for="ende">Ende</label>
                         <input id="ende" type="datetime-local" name="ende" required
