@@ -44,14 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Trim angewendet, damit unnötige Leerzeichen nicht gespeichert werden.
     $normalizedInput = array_map('trim', $formInput);
 
-    if ($userService->updateUserProfile((int)$currentUser['user_id'], $normalizedInput)) {
+    $result = $userService->updateUserProfile((int)$currentUser['user_id'], $normalizedInput);
+
+    if ($result['success']) {
         $_SESSION['user_mail'] = $normalizedInput['mail'];
         header('Location: profile.php');
         exit;
     }
 
     // Bei Fehlern Werte im Formular erhalten und Hinweis anzeigen.
-    $profileError = 'Profil konnte nicht gespeichert werden. Bitte prüfen Sie Ihre Daten.';
+    $profileError = $result['message'] ?? 'Profil konnte nicht gespeichert werden. Bitte prüfen Sie Ihre Daten.';
     $currentUser = array_merge($currentUser, $normalizedInput);
 }
 ?>

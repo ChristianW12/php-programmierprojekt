@@ -98,7 +98,7 @@ class UserService
      * @param array{name?: string, mail?: string, ort?: string, plz?: string, str?: string} $profileData
      * @return bool
      */
-    public function updateUserProfile(int $userId, array $profileData): bool
+    public function updateUserProfile(int $userId, array $profileData): array
     {
         $payload = [
             'name' => trim($profileData['name'] ?? ''),
@@ -109,7 +109,34 @@ class UserService
         ];
 
         if ($userId <= 0 || in_array('', $payload, true)) {
-            return false;
+            return ['success' => false, 'message' => 'Bitte alle Felder ausfüllen.'];
+        }
+
+        if (!preg_match('/[a-zA-Z]/', $payload['name'])) {
+            return ['success' => false, 'message' => 'Der Benutzername muss mindestens einen Buchstaben enthalten.'];
+        }
+
+        if (!filter_var($payload['mail'], FILTER_VALIDATE_EMAIL)) {
+            return ['success' => false, 'message' => 'Bitte eine gültige E-Mail-Adresse verwenden.'];
+        }
+
+        if (!ctype_digit($payload['plz']) || strlen($payload['plz']) !== 5) {
+            return ['success' => false, 'message' => 'Bitte eine gültige, 5-stellige Postleitzahl eingeben.'];
+        }
+
+        if (preg_match('/[0-9]/', $payload['ort'])) {
+            return ['success' => false, 'message' => 'Der Ortsname darf keine Zahlen enthalten.'];
+        }
+
+        if (strlen($payload['ort']) < 2) {
+            return ['success' => false, 'message' => 'Der Ortsname muss mindestens 2 Zeichen lang sein.'];
+        }
+
+        // kontrolle, ob die E-Mail-Adresse bereits von einem anderen Nutzer verwendet wird
+        $stmt = $this->db->prepare('SELECT user_id FROM users WHERE mail = :mail AND user_id != :user_id');
+        $stmt->execute([':mail' => $payload['mail'], ':user_id' => $userId]);
+        if ($stmt->fetch()) {
+            return ['success' => false, 'message' => 'Diese E-Mail-Adresse wird bereits von einem anderen Konto verwendet.'];
         }
 
         $stmt = $this->db->prepare(
@@ -118,7 +145,7 @@ class UserService
              WHERE user_id = :user_id'
         );
 
-        return $stmt->execute([
+        $success = $stmt->execute([
             ':name' => $payload['name'],
             ':mail' => $payload['mail'],
             ':ort' => $payload['ort'],
@@ -126,6 +153,10 @@ class UserService
             ':strasse' => $payload['str'],
             ':user_id' => $userId,
         ]);
+
+        return $success
+            ? ['success' => true]
+            : ['success' => false, 'message' => 'Profil-Aktualisierung fehlgeschlagen.'];
     }
 
     /**
@@ -150,12 +181,32 @@ class UserService
             return ['success' => false, 'message' => 'Bitte alle Felder ausfüllen.'];
         }
 
+        if (!preg_match('/[a-zA-Z]/', $payload['name'])) {
+            return ['success' => false, 'message' => 'Der Benutzername muss mindestens einen Buchstaben enthalten.'];
+        }
+
+        if (strlen($payload['password']) < 8) {
+            return ['success' => false, 'message' => 'Das Passwort muss mindestens 8 Zeichen lang sein.'];
+        }
+
         if ($payload['password'] !== $payload['password_repeat']) {
             return ['success' => false, 'message' => 'Die Passwörter stimmen nicht überein.'];
         }
 
         if (!filter_var($payload['mail'], FILTER_VALIDATE_EMAIL)) {
             return ['success' => false, 'message' => 'Bitte eine gültige E-Mail-Adresse verwenden.'];
+        }
+
+        if (!ctype_digit($payload['plz']) || strlen($payload['plz']) !== 5) {
+            return ['success' => false, 'message' => 'Bitte eine gültige, 5-stellige Postleitzahl eingeben.'];
+        }
+
+        if (preg_match('/[0-9]/', $payload['ort'])) {
+            return ['success' => false, 'message' => 'Der Ortsname darf keine Zahlen enthalten.'];
+        }
+
+        if (strlen($payload['ort']) < 2) {
+            return ['success' => false, 'message' => 'Der Ortsname muss mindestens 2 Zeichen lang sein.'];
         }
 
         $stmt = $this->db->prepare('SELECT COUNT(*) FROM users WHERE mail = :mail');
