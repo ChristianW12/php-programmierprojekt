@@ -17,14 +17,16 @@ require_once '../partials/header.php';
                 <p>Sie können den Angeboten Bilder hinzufügen, sowie ein Cover-Bild, welches auf der <a href="angebote.php">Angebotsseite</a> angezeigt wird.</p>
                 <p>Jedem Angebot kann wahlweise auch eine Kategorie zugewiesen werden, damit eine einfachere Suche und Einteilung der Angebote durch die Nutzer beim Suchen möglich ist.</p>
                 <h3>Gebote abgeben</h3>
-                <p>Für das Abgeben eines Gebotes müssen Sie sich nicht einloggen. Sie müssen lediglich eine E-Mail sowie einen Preis eintragen. 
-                    Über die E-Mail-Adresse kann der Ersteller beim Ablaufen des Angebots sich bei Ihnen melden.</p>
+                <p>Für das Abgeben eines Gebotes müssen Sie sich nicht einloggen. Sie müssen lediglich eine E-Mail-Adresse sowie einen Preis eintragen. 
+                    Über die E-Mail-Adresse kann sich der Ersteller beim Ablaufen des Angebots bei Ihnen melden.</p>
                 <p>Das Bieten funktioniert nach dem Ebay-Biet-Verfahren. Sie geben also einen Preis ein, den Sie höchstens bereit wären zu zahlen. 
                     Wenn Sie der Höchstbietende sind, müssen Sie nur den Preis des Zweithöchstbietenden + 1 € zahlen.</p>
+                <h3>Angebot ändern</h3>
+                <p>Der Ersteller kann jederzeit seine Angebote bearbeiten. Falls sich der Ersteller beim Preis vertan hat, so muss das gesamte Angebot gelöscht werden.</p>
                 <h3>Angebotsende</h3>
                 <p>Wenn ein Angebot zu Ende geht, wird der Ersteller über den Preis und die E-Mail des Höchstbietenden benachrichtigt.</p>
-                <p>Hat ein Nutzer ein Konto und beim Bieten dieselbe E-Mail-Adresse wie bei der Kontoerstellung verwendet, erhält er ebenfalls eine Benachrichtigung.
-                    In dieser steht ebenfalls der zu zahlende Preis sowie der Titel des Angebots.</p>
+                <p>Hat ein Nutzer ein Konto und beim Bieten dieselbe E-Mail-Adresse verwendet, die er auch bei der Kontoerstellung angegeben hat, erhält er ebenfalls eine Benachrichtigung.
+                    In dieser Benachrichtigung steht ebenfalls der zu zahlende Preis sowie der Titel des Angebots.</p>
                 <h3>Filter</h3>
                 <p>Der Filter kann nach verschiedenen Präferenzen eingestellt werden. Wenn man eingeloggt ist, kann man Angebote auch als Favoriten speichern. 
                     Diese können dann über den Filter angezeigt werden.</p>
@@ -49,7 +51,7 @@ require_once '../partials/header.php';
                 <p>Auf der linken Seite haben Sie verschiedene Benachrichtigungen. Diese können Folgendes anzeigen:
                 <ul>
                     <li>Benachrichtigungen für den Ersteller, wenn ein Gebot auf eines seiner Angebote abgegeben wurde.</li>
-                    <li>Benachrichtigungen an den Nutzer, wenn er überboten wurde. (<b>WARNUNG!</b> Funktioniert nur, wenn Sie die gleiche E-Mail zum Bieten verwenden wie für die Anmeldung bei Ihrem Konto.)</li>
+                    <li>Benachrichtigungen an den Nutzer, wenn er überboten wurde. (<b>WARNUNG!</b> Funktioniert nur, wenn Sie dieselbe E-Mail-Adresse zum Bieten verwenden, die Sie auch für die Anmeldung bei Ihrem Konto nutzen.)</li>
                 </ul>
             </div>
         </div>
