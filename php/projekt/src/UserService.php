@@ -166,6 +166,14 @@ class UserService
             return ['success' => false, 'message' => 'Ein Benutzer mit dieser E-Mail-Adresse existiert bereits.'];
         }
 
+        $stmt = $this->db->prepare('SELECT COUNT(*) FROM users WHERE name = :name');
+        $stmt->bindValue(':name', $payload['name'], \PDO::PARAM_STR);
+        $stmt->execute();
+
+        if ((int)$stmt->fetchColumn() > 0) {
+            return ['success' => false, 'message' => 'Der Benutzername ist bereits vergeben.'];
+        }
+
         $insertStmt = $this->db->prepare(
             'INSERT INTO users (name, mail, password, plz, str, ort)
              VALUES (:name, :mail, :password, :plz, :str, :ort)'

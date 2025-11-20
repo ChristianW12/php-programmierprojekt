@@ -49,7 +49,8 @@ class AngebotErsteller
     public function bildVerarbeiten($file_input, $neue_angebot_id, $upload_dir, $is_cover = false)
     {
         // Überprüfen, ob eine Datei hochgeladen wurde
-        if (isset($file_input) && $file_input['error'] === UPLOAD_ERR_OK) {
+        try {
+            if (isset($file_input) && $file_input['error'] === UPLOAD_ERR_OK) {
             $dateiendung = pathinfo($file_input['name'], PATHINFO_EXTENSION);
             $prefix = $is_cover ? 'cover_' : 'image_';
             $neuer_dateiname = 'angebot_' . $neue_angebot_id . '_' . $prefix . time() . '.' . $dateiendung;
@@ -60,6 +61,10 @@ class AngebotErsteller
                 $stmt = $this->db->prepare('INSERT INTO offer_pic (offer_id, path, is_cover) VALUES (?, ?, ?)');
                 $stmt->execute([$neue_angebot_id, $neuer_dateiname, (int)$is_cover]);
             }
+        }
+        }
+        catch (\Throwable $th) {
+            echo "Fehler beim Hochladen des Bildes: " . $th->getMessage();
         }
     }
 
