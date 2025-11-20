@@ -3,6 +3,13 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    $_SESSION['last_site'] = 'angebot-bearbeiten';
+    header('Location: login.php');
+    exit;
+}
+
 require_once __DIR__ . '/../src/Angebot.php';
 
 // Default-Werte für Formularfelder initialisieren
@@ -14,11 +21,14 @@ $angebotKategorie = '';
 
 // Angebots-ID aus GET/POST lesen
 $angebotId = $_GET['id'] ?? ($_POST['offer_id'] ?? null);
+$currentUserId = (int)($_SESSION['user_id'] ?? 0);
+$isAdmin = isset($_SESSION['is_admin']) && (int)$_SESSION['is_admin'] === 1;
+$angebotBesitzerId = null;
 
 // Angebotsdaten laden, um Formular vorzufüllen
 try {
     $angebot = new Angebot((int)$angebotId);
-    $angebotDaten = $angebot->getOfferWithId();
+    $angebotDaten = $angebotId ? $angebot->getOfferWithId() : null;
     if ($angebotDaten) {
         // Formularfelder mit bestehenden Daten füllen
         $angebotTitel = $angebotDaten['title'] ?? '';
@@ -26,9 +36,20 @@ try {
         $angebotPreis = $angebotDaten['startpreis'] ?? '';
         $angebotEndDatum = str_replace(' ', 'T', $angebotDaten['ende'] ?? '');
         $angebotKategorie = $angebotDaten['kategorie'] ?? '';
+        $angebotBesitzerId = (int)($angebotDaten['user_id'] ?? 0);
     }
 } catch (Exception $e) {
     error_log("Fehler beim Laden des Angebots: " . $e->getMessage());
+}
+
+if (!$angebotDaten) {
+    header('Location: angebote.php');
+    exit;
+}
+
+if (!$isAdmin && $angebotBesitzerId !== $currentUserId) {
+    header('Location: aktuelles-angebot.php?id=' . urlencode((string)$angebotId));
+    exit;
 }
 
 // Formular-Submit verarbeiten und Änderungen speichern
