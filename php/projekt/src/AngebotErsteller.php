@@ -5,6 +5,8 @@ class AngebotErsteller
     // Datenbankverbindung
     public $db;
 
+    private const MAX_UPLOAD_BYTES = 5 * 1024 * 1024; // 5 MB Limit pro Datei
+
     // Konstruktor zur Initialisierung der Datenbankverbindung
     public function __construct() {
         $this->db = mitDbverbinden();
@@ -51,19 +53,23 @@ class AngebotErsteller
         // Überprüfen, ob eine Datei hochgeladen wurde
         try {
             if (isset($file_input) && $file_input['error'] === UPLOAD_ERR_OK) {
-            $dateiendung = pathinfo($file_input['name'], PATHINFO_EXTENSION);
-            $prefix = $is_cover ? 'cover_' : 'image_';
-            $neuer_dateiname = 'angebot_' . $neue_angebot_id . '_' . $prefix . time() . '.' . $dateiendung;
-            $ziel_pfad = $upload_dir . $neuer_dateiname;
+                $fileSize = (int)($file_input['size'] ?? 0);
+                if ($fileSize <= 0 || $fileSize > self::MAX_UPLOAD_BYTES) {
+                    throw new RuntimeException('Die hochgeladene Datei überschreitet die maximal erlaubte Größe von 5 MB.');
+                }
 
-            if (move_uploaded_file($file_input['tmp_name'], $ziel_pfad)) {
-                // Speichere den Bildpfad in der Datenbank
-                $stmt = $this->db->prepare('INSERT INTO offer_pic (offer_id, path, is_cover) VALUES (?, ?, ?)');
-                $stmt->execute([$neue_angebot_id, $neuer_dateiname, (int)$is_cover]);
+                $dateiendung = pathinfo($file_input['name'], PATHINFO_EXTENSION);
+                $prefix = $is_cover ? 'cover_' : 'image_';
+                $neuer_dateiname = 'angebot_' . $neue_angebot_id . '_' . $prefix . time() . '.' . $dateiendung;
+                $ziel_pfad = $upload_dir . $neuer_dateiname;
+
+                if (move_uploaded_file($file_input['tmp_name'], $ziel_pfad)) {
+                    // Speichere den Bildpfad in der Datenbank
+                    $stmt = $this->db->prepare('INSERT INTO offer_pic (offer_id, path, is_cover) VALUES (?, ?, ?)');
+                    $stmt->execute([$neue_angebot_id, $neuer_dateiname, (int)$is_cover]);
+                }
             }
-        }
-        }
-        catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             echo "Fehler beim Hochladen des Bildes: " . $th->getMessage();
         }
     }
@@ -81,6 +87,10 @@ class AngebotErsteller
         if (isset($files_input)) {
             foreach ($files_input['tmp_name'] as $key => $tmp_name) {
                 if ($files_input['error'][$key] === UPLOAD_ERR_OK) {
+                    $fileSize = (int)($files_input['size'][$key] ?? 0);
+                    if ($fileSize <= 0 || $fileSize > self::MAX_UPLOAD_BYTES) {
+                        continue;
+                    }
                     $dateiendung = pathinfo($files_input['name'][$key], PATHINFO_EXTENSION);
                     $neuer_dateiname = 'angebot_' . $neue_angebot_id . '_image_' . time() . '_' . $key . '.' . $dateiendung;
                     $ziel_pfad = $upload_dir . $neuer_dateiname;
