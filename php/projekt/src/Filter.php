@@ -22,7 +22,7 @@ class Filter
     private $queryParams = [];
     private $whereClauses = ['o.ende > NOW()'];
     private $joins = '';
-    private $orderBy = 'o.ende ASC';
+    private $orderBy = 'o.ende DESC';
 
     public function __construct()
     {
@@ -41,13 +41,13 @@ class Filter
     }
 
     /**
-     * Sortiert nach Enddatum (baldigste zuerst)
+     * Sortiert nach Enddatum (spätestes zuerst)
      *
      * @return array<int, array<string, mixed>>
      */
     public function nachEndeBald()
     {
-        $this->orderBy = 'o.ende ASC';
+        $this->orderBy = 'o.ende DESC';
         return $this;
     }
 

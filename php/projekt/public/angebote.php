@@ -40,7 +40,7 @@ try {
     } elseif ($activeSort === 'neueste') {
         $filter->nachNeuste(); // Neueste Angebote zuerst
     } else {
-        $filter->nachEndeBald(); // Default: Enddatum aufsteigend (bald endend zuerst)
+        $filter->nachEndeBald(); // Default: Enddatum absteigend (spätestes zuerst)
         }
 
     // Zusätzliche Filter werden an die Abfrage angehängt
